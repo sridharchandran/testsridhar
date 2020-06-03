@@ -1,0 +1,165 @@
+<html>
+<head>
+<style>
+h1:hover, h2:hover, p:hover, img:hover {		
+	background: #05f;
+	opacity: 0.25;
+}
+</style>
+<script src="../assets/js/jquery-3.4.1.min.js"></script>
+<script>
+//$(document).ready(function () {		
+	//$('h1').mouseover(function () {			 
+		//$(this).css('color','red');					
+	//}).mouseout(function() {
+		//$(this).css('color','grey');
+	//});
+	
+	//$('p').mouseover(function () {			 
+		//$(this).css('color','red');					
+	//}).mouseout(function() {
+		//$(this).css('color','grey');
+	//});
+//});
+
+function add(){		
+	//alert("hi");
+		
+	var mousePosition;
+	var offset = [0,0];
+	var isDown = false;
+		
+	var dDiv = document.createElement('div');
+	dDiv.id = 'block';
+	dDiv.className = 'block';
+	dDiv.innerHTML = "<h1>Hi I am your new Experience</h1><p>Coming to your page soon</p>";	
+	document.getElementsByTagName('body')[0].appendChild(dDiv);
+	
+	dDiv.style.display = "block";
+	dDiv.style.cursor = "move";
+	dDiv.style.right = "300px";
+	dDiv.style.top = "300px";
+	dDiv.style.width = "500px";
+	dDiv.style.height = "100px";	
+	dDiv.style.position = "fixed";
+	
+	dDiv.addEventListener('mousedown', function(e) {
+	    isDown = true;
+	    offset = [
+	    	dDiv.offsetLeft - e.clientX,
+	    	dDiv.offsetTop - e.clientY
+	    ];
+	}, true);
+	
+	document.addEventListener('mouseup', function() {
+	    isDown = false;	
+	    //research
+	   	//1.
+	    //dDiv.style.display = "inline-block";
+	    //dDiv.style.position = "static";
+	    //2. THIS WORKS:
+	    var parentPositionLeft = dDiv.getBoundingClientRect().left;
+	    var parentPositionTop = dDiv.getBoundingClientRect().top;
+	    //alert("parentPositionLeft: "+parentPositionLeft);
+	    //alert("parentPositionTop: "+parentPositionTop);
+	    dDiv.style.left = parentPositionLeft+'px';
+	    dDiv.style.top = parentPositionTop+'px';
+	    dDiv.style.position = "absolute";
+        //console.log(dDiv.style.left);  
+        //for (let name of dDiv.getAttributeNames()) {
+		  //let value = dDiv.getAttribute(name);
+		  //console.log(name, value);
+		//}
+      	//end::research
+	    
+	}, true);
+	
+	document.addEventListener('mousemove', function(event) {
+	    event.preventDefault();
+	    if (isDown) {
+	        mousePosition = {	    
+	            x : event.clientX,
+	            y : event.clientY	    
+	        };
+	        dDiv.style.left = (mousePosition.x + offset[0]) + 'px';
+	        dDiv.style.top  = (mousePosition.y + offset[1]) + 'px';	        
+	    }
+	    
+	    //research
+	    //console.log(event.target.className);
+	    
+	    //GOAL: Move all elements below this position by the height of the new added element	  	
+	  	//read this: https://javascript.info/modifying-document
+	    //1.
+	    //Move elements below this postion down
+	    //var lonelyimage = document.getElementsByTagName("img")[0];	    
+	    //lonelyimage.style.display = "block";
+	    //lonelyimage.style.position = "fixed";	    
+	    //lonelyimage.style.top = "300px";
+	    
+	    //2. THIS WORKS
+	    document.querySelectorAll('body *').forEach(function(node) {	    		    
+	    	if (node instanceof Element && (node.getAttribute('id') != 'block')) {	    		
+	    		//node.style.display = "block";
+	    		//node.style.position = "fixed";	    
+	    		//node.style.top = "300px";	
+	    		//console.log(node);
+	    		//console.log(node.getBoundingClientRect().left);
+	    		//console.log(node.getBoundingClientRect().top);
+	    		//if(node.getBoundingClientRect().top == dDiv.getBoundingClientRect().top) {
+	    		//	console.log(node);
+	    		//}
+	    		
+	    		var rect1
+	    		var overlap = !(rect1.right < rect2.left || rect1.left > rect2.right || rect1.bottom < rect2.top || rect1.top > rect2.bottom)
+	    		
+	    	}	    		    		    
+		});
+	    
+	    //end::research
+	    
+	}, true);	
+}
+
+function getStyle(el, styleProp) {
+  var value, defaultView = (el.ownerDocument || document).defaultView;
+  // W3C standard way:
+  if (defaultView && defaultView.getComputedStyle) {
+    // sanitize property name to css notation
+    // (hypen separated words eg. font-Size)
+    styleProp = styleProp.replace(/([A-Z])/g, "-$1").toLowerCase();
+    return defaultView.getComputedStyle(el, null).getPropertyValue(styleProp);
+  } else if (el.currentStyle) { // IE
+    // sanitize property name to camelCase
+    styleProp = styleProp.replace(/\-(\w)/g, function(str, letter) {
+      return letter.toUpperCase();
+    });
+    value = el.currentStyle[styleProp];
+    // convert other units to pixels on IE
+    if (/^\d+(em|pt|%|ex)?$/i.test(value)) { 
+      return (function(value) {
+        var oldLeft = el.style.left, oldRsLeft = el.runtimeStyle.left;
+        el.runtimeStyle.left = el.currentStyle.left;
+        el.style.left = value || 0;
+        value = el.style.pixelLeft + "px";
+        el.style.left = oldLeft;
+        el.runtimeStyle.left = oldRsLeft;
+        return value;
+      })(value);
+    }
+    return value;
+  }
+}
+</script>
+</head>
+<body>
+<h1>Dynamic Div</h1>
+<button onclick="javascript:add()">Add Experience</button>
+<hr>
+
+<h1>Hello World</h1>
+<p>Lorem Ipsum</p>
+<img src="https://assets.simpleviewcms.com/simpleview/image/upload/c_fill,h_640,q_75,w_640/v1/clients/ftlauderdale-redesign/jenn_beaches_137e66ee-d8b0-441b-a1e2-7ad46cd27d36.png"></img>
+
+</body>
+</html>

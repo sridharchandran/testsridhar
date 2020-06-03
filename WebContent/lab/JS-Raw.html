@@ -1,0 +1,24 @@
+<script> 
+function geo() { 
+  var u = new URL(window.location.href); 
+  var c = u.searchParams.get("simulate"); 
+  var s = "http://demo.onwardpath.com/GeoTargetService/a/g/g?o=1&simulate="+c+"&url="+u.toString(); 
+  var x = new XMLHttpRequest(); 
+  console.log(s); 
+  x.responseType = 'json'; 
+  x.onreadystatechange = function() { 
+    if (this.readyState == 4 && this.status == 200) { 
+      let data = this.response;
+      var length = x.getResponseHeader("X-Json-Length");
+      for(var i = 1; i <= length; i++) {
+        var e=document.getElementById(data[i].divid);
+        if (e != null)	 
+          e.innerHTML = data[i].embedCode; 
+      }
+    } 
+  }; 
+  x.open("GET", s);
+  x.send(); 
+}
+window.onload = geo; 
+</script> <!-- End::GeoSmart-Header -->

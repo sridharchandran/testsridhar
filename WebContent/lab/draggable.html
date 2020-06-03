@@ -1,0 +1,65 @@
+<html>
+<head>
+<script>
+function add(){		
+	
+	var pageurl = document.getElementById("pageurl").value;
+			
+	var stage = document.getElementById("stage");	
+	stage.innerHTML += '<object type="text/html" data="'+pageurl+'" width="100%" height="800px" style="overflow:auto;border:2px ridge blue"></object>';
+	stage.style.display = "block";
+	
+	var mousePosition;
+	var offset = [0,0];
+	var isDown = false;
+	
+	var previewdiv = document.getElementById("previewdiv");
+	previewdiv.style.display = "block";
+	previewdiv.style.cursor = "move";
+	previewdiv.style.right = "300px";
+	previewdiv.style.top = "300px";
+	previewdiv.style.width = "500px";
+	previewdiv.style.height = "100px";
+		
+	previewdiv.addEventListener('mousedown', function(e) {
+	    isDown = true;
+	    offset = [
+	    	previewdiv.offsetLeft - e.clientX,
+	    	previewdiv.offsetTop - e.clientY
+	    ];
+	}, true);
+	
+	document.addEventListener('mouseup', function() {
+	    isDown = false;
+	}, true);
+	
+	document.addEventListener('mousemove', function(event) {
+	    event.preventDefault();
+	    if (isDown) {
+	        mousePosition = {	    
+	            x : event.clientX,
+	            y : event.clientY	    
+	        };
+	        previewdiv.style.left = (mousePosition.x + offset[0]) + 'px';
+	        previewdiv.style.top  = (mousePosition.y + offset[1]) + 'px';
+	    }
+	}, true);
+}
+
+</script>
+</head>
+<body>
+<h1>Drag-able</h1>
+
+<input id="pageurl" type="text" placeholder="URL">						
+
+<button type="reset" onclick="javascript:add()">Preview</button>
+
+<div id="previewdiv" style="position: fixed; display: none;">										
+	<h1 style="color:#008733; text-align: center;">Welcome To Acme Inc</h1>
+ 	<p>The transition of People Energy Wisconsin branches to Acme Inc is complete. You can now conduct your business at any Acme Inc! We're excited to work with you! </p>
+</div>
+
+<div id="stage" style="display: none;"></div>
+</body>
+</html>
