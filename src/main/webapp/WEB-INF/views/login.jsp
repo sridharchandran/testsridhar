@@ -123,7 +123,7 @@
 								}								
 								%>
 								<!--begin::Form-->
-								<form class="kt-login-v1__form kt-form" action="wem/UserController" method="post" autocomplete="off" enctype="multipart/form-data">								
+								<form class="kt-login-v1__form kt-form" action="wem/login" modelAttribute="user" method="post" autocomplete="off" enctype="multipart/form-data">								
 									<input type="hidden" name="pageName" value="login">
 									<div class="form-group">
 										<input class="form-control" type="text" placeholder="Username" name="userName" autocomplete="off">
