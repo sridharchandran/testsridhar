@@ -1,4 +1,4 @@
-<%@page import="com.onwardpath.wem.model.User"%>
+<%-- <%@page import="com.onwardpath.wem.model.User"%> --%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -164,31 +164,31 @@ var loadFile = function(event) {
 
 <!--begin::Page Custom Styles(used by this page) -->
 <link
-	href="./wem/assets/css/demo1/pages/custom/general/user/login-v1.css"
+	href="wem/assets/css/demo1/pages/custom/general/user/login-v1.css"
 	rel="stylesheet" type="text/css" />
 
 <!--end::Page Custom Styles -->
 
 <!--begin::Global Theme Styles(used by all pages) -->
-<link href="./wem/assets/vendors/global/vendors.bundle.css"
+<link href="wem/assets/vendors/global/vendors.bundle.css"
 	rel="stylesheet" type="text/css" />
-<link href="./wem/assets/css/demo1/style.bundle.css"
+<link href="wem/assets/css/demo1/style.bundle.css"
 	rel="stylesheet" type="text/css" />
 
 <!--end::Global Theme Styles -->
 
 <!--begin::Layout Skins(used by all pages) -->
-<link href="./wem/assets/css/demo1/skins/header/base/light.css"
+<link href="wem/assets/css/demo1/skins/header/base/light.css"
 	rel="stylesheet" type="text/css" />
-<link href="./wem/assets/css/demo1/skins/header/menu/light.css"
+<link href="wem/assets/css/demo1/skins/header/menu/light.css"
 	rel="stylesheet" type="text/css" />
-<link href="./wem/assets/css/demo1/skins/brand/navy.css"
+<link href="wem/assets/css/demo1/skins/brand/navy.css"
 	rel="stylesheet" type="text/css" />
-<link href="./wem/assets/css/demo1/skins/aside/navy.css"
+<link href="wem/assets/css/demo1/skins/aside/navy.css"
 	rel="stylesheet" type="text/css" />
 
 <!--end::Layout Skins -->
-<!-- link rel="shortcut icon" href="./wem/assets/media/logos/favicon.ico" / -->
+<!-- link rel="shortcut icon" href="wem/assets/media/logos/favicon.ico" / -->
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
 </head>
 
@@ -196,7 +196,7 @@ var loadFile = function(event) {
 
 <!-- begin::Body -->
 <body
-	style="background-image: url(./wem/assets/media/misc/bg_1.jpg)"
+	style="background-image: url(wem/assets/media/misc/bg_1.jpg)"
 class="kt-login-v1--enabled kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
 
 <!-- begin:: Page -->
@@ -212,12 +212,12 @@ class="kt-login-v1--enabled kt-quick-panel--right kt-demo-panel--right kt-offcan
 <div class="kt-login-v1__head">
 	<div class="kt-login-v1__logo">
 		<!-- a href="#">
-<img src="./wem/assets/media/logos/logo-4.png" alt="" / -->
+<img src="wem/assets/media/logos/logo-4.png" alt="" / -->
 <!-- /a-->
 	</div>
 	<div class="kt-login-v1__signup">
 		<h4 class="kt-login-v1__heading">Have an account?</h4>
-		<a href="/wem/login.jsp">Sign In</a>
+		<a href="/wem/login">Sign In</a>
 	</div>
 </div>
 
@@ -484,15 +484,15 @@ var KTAppOptions = {
 <!-- end::Global Config -->
 
 <!--begin::Global Theme Bundle(used by all pages) -->
-<script src="./wem/assets/vendors/global/vendors.bundle.js"
+<script src="wem/assets/vendors/global/vendors.bundle.js"
 	type="text/javascript"></script>
-<script src="./wem/assets/js/demo1/scripts.bundle.js"
+<script src="wem/assets/js/demo1/scripts.bundle.js"
 	type="text/javascript"></script>
 
 <!--end::Global Theme Bundle -->
 
 <!--begin::Page Scripts(used by this page) -->
-<script src="./wem/assets/js/demo1/pages/custom/general/login.js"
+<script src="wem/assets/js/demo1/pages/custom/general/login.js"
 	type="text/javascript"></script>
 
 <!--end::Page Scripts -->

@@ -55,13 +55,14 @@
     <!-- end::Head -->
     <!-- begin::Body -->
     <body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading" >    	     
-	    <%
+  <%
 		if (null == session.getAttribute("authenticated") || session.getAttribute("authenticated").equals("") || !session.getAttribute("authenticated").equals("true")) { 			
-			response.sendRedirect("/wem/login.jsp");
+			response.sendRedirect("/wem/login");
 		    return;
 		} else {%>			
 			<jsp:include page="_layout.jsp" />			
-		<%}%>                                    
+		<%}%>
+                                
         <!-- begin::GlobalConfig(global config for global JS sciprts) -->
         <script>            
         var KTAppOptions = {
