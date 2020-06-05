@@ -20,6 +20,13 @@ public class UserController {
 		return "login";
 	}
 	
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String authenticateUser(@ModelAttribute("user") User user) {
+ 
+        return "modelAndView";
+    }
+
+	
 	@GetMapping("/authenticate")
 	public String auth() {
 		
