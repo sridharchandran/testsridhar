@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,18 +33,18 @@ public class UserController {
 	}
 	
 	@GetMapping("/login")
-	public String login() {
-		
+	public String login(Model model) {
+		///model.addAttribute("user", new User()); 
 		return "login";
 	}
 	
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public Optional<User> authenticateUser(@ModelAttribute("user") User user) {
+    public Optional<User> authenticateUser(User user) {
  
-    	System.out.println("response email"+user.toString());
+    	System.out.println("response email"+user.getUserName());
 		/* return userRepo.findById(88); */
-    	return Optional.of(userRepo.findByEmail(user.getEmail()));
+    	return Optional.of(userRepo.findByEmail(user.getUserName()));
     }
     
 	@GetMapping("/byid")
