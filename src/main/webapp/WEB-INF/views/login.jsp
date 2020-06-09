@@ -6,7 +6,7 @@
 	<head>
 
 		<!--begin::Base Path (base relative path for assets of this page) -->
-		<base href="../../../">
+		<base href="/">
 
 		<!--end::Base Path -->
 		<meta charset="utf-8" />

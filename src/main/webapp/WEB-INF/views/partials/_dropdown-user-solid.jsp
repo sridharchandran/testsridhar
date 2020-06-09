@@ -5,18 +5,18 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.SQLException"%>
 <%@page import="java.sql.PreparedStatement"%>
-<%@page import="com.onwardpath.wem.util.Database"%>
+<%-- <%@page import="com.onwardpath.wem.util.Database"%> --%>
 <%@page import="java.sql.Connection"%>
 <%@page import="java.sql.Blob"%>
-<%@ page import="com.onwardpath.wem.model.User" %>
+<%@ page import="com.onwardpath.wem.entity.User" %>
 <%
 String fname = "";
 String lname = "";
-String pic = "";
+byte[] pic  = null;
   
 
 	
-int ids = ((User) session.getAttribute("user")).getOrganization_id();
+int ids = Integer.parseInt(session.getAttribute("org_id").toString());
  
 if (session.getAttribute("user") != null) {
 	fname = ((User) session.getAttribute("user")).getFirstname();
@@ -34,7 +34,7 @@ function logout() {
     <div class="kt-user-card__wrapper">
         <div class="kt-user-card__pic">
         	<%
-        	if (!pic.equals("")) {%>
+        	if (pic.length != 0) {%>
         		<img alt="Pic" src='/wem/DisplayImageController?id=<%=session.getAttribute("user_id")%>'/> 
         	<%}%>            
         </div>

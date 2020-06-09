@@ -1,5 +1,11 @@
 package com.onwardpath.wem.model;
 
+import java.util.Arrays;
+
+import javax.servlet.http.Part;
+
+import org.springframework.web.multipart.MultipartFile;
+
 public class SignupFormDTO {
 
 	private String orgName;
@@ -14,7 +20,7 @@ public class SignupFormDTO {
 	
 	private String email;
 	
-	private byte[] photo;
+	private MultipartFile photo;
 	
 	private String password;
 
@@ -66,11 +72,11 @@ public class SignupFormDTO {
 		this.email = email;
 	}
 
-	public byte[] getPhoto() {
+	public MultipartFile getPhoto() {
 		return photo;
 	}
 
-	public void setPhoto(byte[] photo) {
+	public void setPhoto(MultipartFile photo) {
 		this.photo = photo;
 	}
 
@@ -80,6 +86,13 @@ public class SignupFormDTO {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	@Override
+	public String toString() {
+		return "SignupFormDTO [orgName=" + orgName + ", domain=" + domain + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", phone=" + phone + ", email=" + email + ", photo=" + photo + ", password=" + password
+				+ "]";
 	}
 
 		

@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import="com.onwardpath.wem.model.User" %>
-
+<%@ page import="com.onwardpath.wem.entity.Organization" %>
+<%@ page import="com.onwardpath.wem.entity.User" %>
 
 
 <%
 String username = "";
-String profilepic = "";	
+byte[] profilepic = null;	
  
 	
-int ids = ((User) session.getAttribute("user")).getOrganization_id();
+int ids =  Integer.parseInt(session.getAttribute("org_id").toString());
 
     
    
@@ -30,14 +30,14 @@ if ((User) session.getAttribute("user") != null) {
                 <%=username%>	                                        	                   
             </span>   
             <%  
-            if (!username.equals("") && profilepic.equals("")) {
+            if (!username.equals("") && profilepic.length == 0) {
             	%>
             	<!--use below badge element instead the user avatar to display username's first letter(remove kt-hidden class to display it) -->
             	<span class="kt-badge kt-badge--username kt-badge--lg kt-badge--brand kt-badge--bold">
             	<%=username.charAt(0)%>
             	</span>
             	<%	
-            } else if(!profilepic.equals("")) {
+            } else if(profilepic.length != 0) {
             	%>
             	<img alt="Pic" src='/wem/DisplayImageController?id=<%=session.getAttribute("user_id")%>'/>
             	<% 
