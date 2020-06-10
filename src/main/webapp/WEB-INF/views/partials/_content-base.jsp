@@ -801,7 +801,7 @@
 								<div class="kt-widget-14__body">
 									<div class="kt-widget-14__product">
 										<div class="kt-widget-14__thumb">
-											<a href="#"><img src="./assets/media/blog/1.jpg" class="kt-widget-14__image--landscape" alt="" title="" /></a>
+											<a href="#"><img src="/wem/assets/media/blog/1.jpg" class="kt-widget-14__image--landscape" alt="" title="" /></a>
 										</div>
 										<div class="kt-widget-14__content">
 											<a href="#">
@@ -840,7 +840,7 @@
 								<div class="kt-widget-14__body">
 									<div class="kt-widget-14__product">
 										<div class="kt-widget-14__thumb">
-											<a href="#"><img src="./assets/media/blog/2.jpg" class="kt-widget-14__image--landscape" alt="" title="" /></a>
+											<a href="#"><img src="/wem/assets/media/blog/2.jpg" class="kt-widget-14__image--landscape" alt="" title="" /></a>
 										</div>
 										<div class="kt-widget-14__content">
 											<a href="#">
@@ -879,7 +879,7 @@
 								<div class="kt-widget-14__body">
 									<div class="kt-widget-14__product">
 										<div class="kt-widget-14__thumb">
-											<a href="#"><img src="./assets/media/blog/4.jpg" class="kt-widget-14__image--landscape" alt="" title="" /></a>
+											<a href="#"><img src="/wem/assets/media/blog/4.jpg" class="kt-widget-14__image--landscape" alt="" title="" /></a>
 										</div>
 										<div class="kt-widget-14__content">
 											<a href="#">
@@ -943,7 +943,7 @@
 								<div class="kt-widget-15__body">
 									<div class="kt-widget-15__author">
 										<div class="kt-widget-15__photo">
-											<a href="#"><img src="./assets/media/users/100_14.jpg" alt="" title="" /></a>
+											<a href="#"><img src="/wem/assets/media/users/100_14.jpg" alt="" title="" /></a>
 										</div>
 										<div class="kt-widget-15__detail">
 											<a href="#" class="kt-widget-15__name">Andy John</a>
@@ -980,7 +980,7 @@
 								<div class="kt-widget-15__body">
 									<div class="kt-widget-15__author">
 										<div class="kt-widget-15__photo">
-											<a href="#"><img src="./assets/media/users/100_3.jpg" alt="" title="" /></a>
+											<a href="#"><img src="/wem/assets/media/users/100_3.jpg" alt="" title="" /></a>
 										</div>
 										<div class="kt-widget-15__detail">
 											<a href="#" class="kt-widget-15__name">Patrick Smith</a>
@@ -1017,7 +1017,7 @@
 								<div class="kt-widget-15__body">
 									<div class="kt-widget-15__author">
 										<div class="kt-widget-15__photo">
-											<a href="#"><img src="./assets/media/users/100_7.jpg" alt="" title="" /></a>
+											<a href="#"><img src="/wem/assets/media/users/100_7.jpg" alt="" title="" /></a>
 										</div>
 										<div class="kt-widget-15__detail">
 											<a href="#" class="kt-widget-15__name">Amanda Collin</a>
@@ -1076,7 +1076,7 @@
 						<div class="kt-widget-7__items">
 							<div class="kt-widget-7__item">
 								<div class="kt-widget-7__item-pic">
-									<img src="./assets/media/files/doc.svg" alt="" />
+									<img src="/wem/assets/media/files/doc.svg" alt="" />
 								</div>
 								<div class="kt-widget-7__item-info">
 									<a href="#" class="kt-widget-7__item-title">
@@ -1127,7 +1127,7 @@
 							</div>
 							<div class="kt-widget-7__item">
 								<div class="kt-widget-7__item-pic">
-									<img src="./assets/media/files/pdf.svg" alt="" />
+									<img src="/wem/assets/media/files/pdf.svg" alt="" />
 								</div>
 								<div class="kt-widget-7__item-info">
 									<a href="#" class="kt-widget-7__item-title">
@@ -1178,7 +1178,7 @@
 							</div>
 							<div class="kt-widget-7__item">
 								<div class="kt-widget-7__item-pic">
-									<img src="./assets/media/files/jpg.svg" alt="" />
+									<img src="/wem/assets/media/files/jpg.svg" alt="" />
 								</div>
 								<div class="kt-widget-7__item-info">
 									<a href="#" class="kt-widget-7__item-title">
@@ -1229,7 +1229,7 @@
 							</div>
 							<div class="kt-widget-7__item">
 								<div class="kt-widget-7__item-pic">
-									<img src="./assets/media/files/zip.svg" alt="" />
+									<img src="/wem/assets/media/files/zip.svg" alt="" />
 								</div>
 								<div class="kt-widget-7__item-info">
 									<a href="#" class="kt-widget-7__item-title">
@@ -1280,7 +1280,7 @@
 							</div>
 							<div class="kt-widget-7__item">
 								<div class="kt-widget-7__item-pic">
-									<img src="./assets/media/files/xml.svg" alt="" />
+									<img src="/wem/assets/media/files/xml.svg" alt="" />
 								</div>
 								<div class="kt-widget-7__item-info">
 									<a href="#" class="kt-widget-7__item-title">
@@ -1331,7 +1331,7 @@
 							</div>
 						</div>
 						<div class="kt-widget-7__foot">
-							<img src="./assets/media/misc/clouds.png" alt="" />
+							<img src="/wem/assets/media/misc/clouds.png" alt="" />
 							<div class="kt-widget-7__upload">
 								<a href="#"><i class="flaticon-upload"></i></a>
 								<span>Drag files here</span>

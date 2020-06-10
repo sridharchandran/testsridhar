@@ -3,10 +3,10 @@ function logout() {
 	document.getElementById("logout").submit();
 }
 </script> 
-<%
+<%-- <%
 String view = request.getParameter("view");
 session.setAttribute("view", view); 
-%>
+%> --%>
 <jsp:include page="partials/_header-base-mobile.jsp" />
 <!-- begin:: Root -->
 <div class="kt-grid kt-grid--hor kt-grid--root">
@@ -17,12 +17,13 @@ session.setAttribute("view", view);
         <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
            <jsp:include page="partials/_header-base.jsp" />
             <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
-            	<jsp:include page="partials/_subheader-subheader-v1.jsp" />                  	                                                          
-                <%if(view != null && !view.equals("index")) {%>        	                	     
+            	<jsp:include page="partials/_subheader-subheader-v1.jsp" />  
+            	<jsp:include page="partials/_content-base.jsp" />                	                                                          
+               <%--  <%if(view != null && !view.equals("index")) {%>        	                	     
                 	<jsp:include page="<%=view%>" />   
                 <%} else {%>                	
-                	<jsp:include page="partials/_content-base.jsp" />
-                <%}%> 
+                	
+                <%}%>  --%>
                 
                 <!-- Begin::Session Timeout -->
                 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display: none;">
@@ -42,7 +43,7 @@ session.setAttribute("view", view);
 								</div>                   
 							</div>                   
 							<div class="modal-footer">                     
-								<form id="logout" action="UserController" method="post">
+								<form id="logout" action="logout" method="post">
 									<input type="hidden" name="pageName" value="logout">
 								</form>
 						    	<a href="javascript:logout();" class="btn btn-label-brand btn-upper btn-sm btn-bold">Sign Out</a>                     
@@ -65,5 +66,5 @@ session.setAttribute("view", view);
 <!-- end:: Topbar Offcanvas Panels -->
 <jsp:include page="partials/_layout-quick-panel.jsp" />
 <jsp:include page="partials/_layout-scrolltop.jsp" />
-<!-- jsp:include page="partials/_layout-toolbar.jsp" / -->
-<!-- jsp:include page="partials/_layout-demo-panel.jsp" / -->
+<!-- jsp:include page="partials/_layout-toolbar" / -->
+<!-- jsp:include page="partials/_layout-demo-panel" / -->

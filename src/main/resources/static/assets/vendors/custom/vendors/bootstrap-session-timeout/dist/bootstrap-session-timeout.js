@@ -18,8 +18,8 @@
             keepAliveUrl: '/keep-alive',
             ajaxType: 'POST',
             ajaxData: '',
-            redirUrl: '/timed-out',
-            logoutUrl: '/log-out',
+            redirUrl: 'logout',
+            logoutUrl: 'logout',
             warnAfter: 900000, // 15 minutes
             redirAfter: 1200000, // 20 minutes
             keepAliveInterval: 5000,
