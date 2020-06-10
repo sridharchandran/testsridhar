@@ -1,24 +1,41 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import="com.onwardpath.wem.model.User" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-
+<%@ page import=" java.io.ByteArrayOutputStream"%>
+<%@ page import=" java.io.ObjectOutputStream"%>
+<%@ page import=" java.io.Serializable"%>
 
 <%
 String username = "";
-String profilepic = "";	
+int id =0;
+ByteArrayOutputStream bos = new ByteArrayOutputStream();
+ObjectOutputStream oos = new ObjectOutputStream(bos);
+oos.writeObject(session.getAttribute("profile_pic"));
+oos.flush();
+byte [] profilepic = bos.toByteArray();
+System.out.println("profile bytes=="+profilepic);
  
 	
-int ids = ((User) session.getAttribute("user")).getOrganization_id();
+
 
     
    
   
 
-if ((User) session.getAttribute("user") != null) {
-	username = ((User) session.getAttribute("user")).getFirstname();
-	profilepic = ((User)session.getAttribute("user")).getProfile_pic();
+if (!(session.getAttribute("authenticated").equals(""))) {
+	username = session.getAttribute("firstname").toString();
+	System.out.println("username="+username);
+	 
+	 id  =  ( Integer ) session.getAttribute("userid");
+	 System.out.println("id="+id);
+	
+	
+	
+ 	
 }
 %>
+
+
 <!--begin: User Bar -->
 
 
@@ -30,7 +47,7 @@ if ((User) session.getAttribute("user") != null) {
                 <%=username%>	                                        	                   
             </span>   
             <%  
-            if (!username.equals("") && profilepic.equals("")) {
+            if (!username.equals("") && profilepic.equals(""))  {
             	%>
             	<!--use below badge element instead the user avatar to display username's first letter(remove kt-hidden class to display it) -->
             	<span class="kt-badge kt-badge--username kt-badge--lg kt-badge--brand kt-badge--bold">
@@ -39,7 +56,7 @@ if ((User) session.getAttribute("user") != null) {
             	<%	
             } else if(!profilepic.equals("")) {
             	%>
-            	<img alt="Pic" src='/wem/DisplayImageController?id=<%=session.getAttribute("user_id")%>'/>
+            	<img alt="Pic" src='/wem/DisplayImageController/<%=id%>'/>
             	<% 
             }            
             %>                                    

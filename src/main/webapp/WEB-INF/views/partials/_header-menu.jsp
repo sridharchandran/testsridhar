@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import="com.onwardpath.wem.model.User" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!-- begin:: Header Menu -->
 <button class="kt-header-menu-wrapper-close" id="kt_header_menu_mobile_close_btn"><i class="la la-close"></i></button>
 <div class="kt-header-menu-wrapper" id="kt_header_menu_wrapper">
@@ -9,10 +9,10 @@
     		<a href="javascript:;" class="kt-menu__link kt-menu__toggle">
     			<span class="kt-menu__link-text">
     	    	<%
-	            if (session.getAttribute("user") != null) {
-	            	String orgName = ((User) session.getAttribute("user")).getOrganization_name();
-	                if (orgName != null) {%>
-	                	<%=orgName%>	                            
+	            if (!(session.getAttribute("authenticated").equals(""))) {
+	            	System.out.println("org_name=="+session.getAttribute("org_name"));
+	                if (session.getAttribute("org_name") != null) {%>
+	                	<%=session.getAttribute("firstname")%> <%=session.getAttribute("lastname")%>		                            
 	            	<%}   
 	            }
 	            %>   		
