@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.onwardpath.wem.entity.Organization;
 import com.onwardpath.wem.entity.Role;
@@ -42,6 +43,9 @@ public class UserController {
 	 
 	 @Autowired
 	 OrgRepository orgRepo;
+	 
+	 @Autowired
+	 UserControllerImpl userControllerImpl;
 
 	 HttpSession session;
 	 
@@ -91,74 +95,67 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
-     public String createNewUser1(SignupFormDTO sufDTO) {
+     public String registerUserForm() {
         return "signup";
     }
     
+
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    @ResponseBody
-    public User createNewUser(SignupFormDTO signupFormDTO,HttpSession session) throws IOException {
-        User userExists = userService.findByEmail(signupFormDTO.getEmail());
-        Organization orgExists = userService.findOrgIDByDomain(signupFormDTO.getDomain());
-        String s = "";
-        byte[] photo = signupFormDTO.getPhoto().getBytes();
-        
-        User user = new User();
-        Organization org = new Organization();
-        
-        if (userExists != null) {
-          s = "There is already a user registered with the user name provided";
-          session.setAttribute("message", "Error. User " + signupFormDTO.getEmail()
-					+ " already exist. <a href='index.jsp'>Click here</a> to login");
-        }
-        else if(orgExists != null)
-        {
-        	System.out.println("Organization already exists");
-          	user.setAnalytics_id(1);
-          	user.setEmail(signupFormDTO.getEmail());
-          	user.setFirstname(signupFormDTO.getFirstName());
-          	user.setLastname(signupFormDTO.getLastName());
-          	user.setUserName(signupFormDTO.getEmail());
-          	user.setOrg_id(orgExists.getId());
-          	user.setPassword(bCryptPasswordEncoder.encode(signupFormDTO.getPassword()));
-          	user.setPhone1(signupFormDTO.getPhone());
-          	user.setProfile_pic(photo);
-          	user.setRole_id(1);
-          	userRepo.save(user);
-      	
-        	
-        }
-        
-        else {
-				  s = signupFormDTO.toString();
-				
-				  org.setName(signupFormDTO.getOrgName());
-				  org.setDomain(signupFormDTO.getDomain()); 
-				  org.setLogo("logourl"); 
-				  int getOrgID = orgRepo.save(org).getId();
-				  
-				  System.out.println("orgid"+getOrgID);
-				 
-			 
-          	         	
-          	user.setAnalytics_id(1);
-          	user.setEmail(signupFormDTO.getEmail());
-          	user.setFirstname(signupFormDTO.getFirstName());
-          	user.setLastname(signupFormDTO.getLastName());
-          	user.setUserName(signupFormDTO.getEmail());
-          	user.setOrg_id(getOrgID);
-          	user.setPassword(bCryptPasswordEncoder.encode(signupFormDTO.getPassword()));
-          	user.setPhone1(signupFormDTO.getPhone());
-          	user.setProfile_pic(photo);
-          	user.setRole_id(1);
-            userRepo.save(user);
-          	         	
-          	
-        	
-        }
-        return user;
+     public ModelAndView registration(SignupFormDTO signupFormDTO, HttpSession session) throws IOException {
+    	ModelAndView modelAndView = userControllerImpl.registerUser(signupFormDTO, session);
+    	return modelAndView;
     }
-       
+    
+    
+	/*
+	 * @RequestMapping(value = "/registration", method = RequestMethod.POST)
+	 * 
+	 * @ResponseBody public String createNewUser(SignupFormDTO
+	 * signupFormDTO,HttpSession session) throws IOException { User userExists =
+	 * userService.findByEmail(signupFormDTO.getEmail()); Organization orgExists =
+	 * userService.findOrgIDByDomain(signupFormDTO.getDomain()); String s = "";
+	 * byte[] photo = signupFormDTO.getPhoto().getBytes();
+	 * 
+	 * User user = new User(); Organization org = new Organization();
+	 * 
+	 * if (userExists != null) { session.setAttribute("message", "Error. User " +
+	 * signupFormDTO.getEmail() +
+	 * " already exist. <a href='index.jsp'>Click here</a> to login"); } else
+	 * if(orgExists != null) { System.out.println("Organization already exists");
+	 * user.setAnalytics_id(1); user.setEmail(signupFormDTO.getEmail());
+	 * user.setFirstname(signupFormDTO.getFirstName());
+	 * user.setLastname(signupFormDTO.getLastName());
+	 * user.setUserName(signupFormDTO.getEmail());
+	 * user.setOrg_id(orgExists.getId());
+	 * user.setPassword(bCryptPasswordEncoder.encode(signupFormDTO.getPassword()));
+	 * user.setPhone1(signupFormDTO.getPhone()); user.setProfile_pic(photo);
+	 * user.setRole_id(1); userRepo.save(user);
+	 * 
+	 * 
+	 * }
+	 * 
+	 * else { s = signupFormDTO.toString();
+	 * 
+	 * org.setName(signupFormDTO.getOrgName());
+	 * org.setDomain(signupFormDTO.getDomain()); org.setLogo("logourl"); int
+	 * getOrgID = orgRepo.save(org).getId();
+	 * 
+	 * System.out.println("orgid"+getOrgID);
+	 * 
+	 * 
+	 * 
+	 * user.setAnalytics_id(1); user.setEmail(signupFormDTO.getEmail());
+	 * user.setFirstname(signupFormDTO.getFirstName());
+	 * user.setLastname(signupFormDTO.getLastName());
+	 * user.setUserName(signupFormDTO.getEmail()); user.setOrg_id(getOrgID);
+	 * user.setPassword(bCryptPasswordEncoder.encode(signupFormDTO.getPassword()));
+	 * user.setPhone1(signupFormDTO.getPhone()); user.setProfile_pic(photo);
+	 * user.setRole_id(1); userRepo.save(user);
+	 * 
+	 * 
+	 * 
+	 * } return "login"; }
+	 */
  
 	@GetMapping("/authenticate")
 	public String auth() {

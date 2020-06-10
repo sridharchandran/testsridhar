@@ -13,20 +13,20 @@ import com.onwardpath.wem.repository.UserRepository;
 @Service
 public class UserServiceImpl implements UserService {
 	
-	@Autowired
     private UserRepository userRepository;
-	
-	@Autowired
     private OrgRepository orgRepository;
-    //private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository,
+    				   OrgRepository orgRepository,
+                       BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userRepository = userRepository;
+        this.orgRepository = orgRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 	
-	public UserServiceImpl(UserRepository userRepository) {
-		
-		this.userRepository = userRepository;
-		//this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-		
-	}
-	
+
 	@Override
 	public User findByEmail(String email) {
 		// TODO Auto-generated method stub
@@ -35,14 +35,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User findUserByUserName(String userName) {
-		// TODO Auto-generated method stub
 		return userRepository.findByUserName(userName);
 	}
 
 	@Override
 	public User saveUser(User user) {
-		
-	//	user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+	    user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		return userRepository.save(user);
 	}
 
@@ -53,7 +51,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Organization saveOrg(Organization org) {
-		// TODO Auto-generated method stub
 		return orgRepository.save(org);
 	}
 

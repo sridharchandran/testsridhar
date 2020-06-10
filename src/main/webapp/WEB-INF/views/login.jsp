@@ -72,7 +72,7 @@
 						</div>
 						<div class="kt-login-v1__signup">
 							<h4 class="kt-login-v1__heading">Don't have an account?</h4>
-							<a href="/wem/signup">Sign Up</a>
+							<a href="/wem/registration">Sign Up</a>
 						</div>
 					</div>
 
