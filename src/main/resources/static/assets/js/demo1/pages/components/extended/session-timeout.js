@@ -5,9 +5,9 @@ var KTSessionTimeoutDemo = function () {
         $.sessionTimeout({
             title: 'Session Timeout Notification',
             message: 'Your session is about to expire.',
-            keepAliveUrl: 'keepalive.jsp',
-            redirUrl: 'UserController?pageName=logout',
-            logoutUrl: 'UserController?pageName=logout',
+            keepAliveUrl: 'keepalive',
+            redirUrl: 'logout',
+            logoutUrl: 'logout',
             //warnAfter: 3000, //warn after 5 seconds
             warnAfter: 900000, //warn after 15 minutes	//Updated By Poovarasan 
             //redirAfter: 3500, //redirect after 16 seconds
