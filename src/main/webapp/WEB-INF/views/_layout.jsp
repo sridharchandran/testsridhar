@@ -42,10 +42,10 @@ session.setAttribute("view", view);
 								</div>                   
 							</div>                   
 							<div class="modal-footer">                     
-								<form id="logout" action="UserController" method="post">
+								<form id="logout" action="/wem/logout" method="post">
 									<input type="hidden" name="pageName" value="logout">
 								</form>
-						    	<a href="javascript:logout();" class="btn btn-label-brand btn-upper btn-sm btn-bold">Sign Out</a>                     
+							    	<a href="javascript:logout();" class="btn btn-label-brand btn-upper btn-sm btn-bold">Sign Out</a>                     
 								<button id="session-timeout-dialog-keepalive" type="button" class="btn btn-primary" data-dismiss="modal">Stay Connected</button>                   
 							</div>                 
 						</div>

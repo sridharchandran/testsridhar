@@ -23,13 +23,12 @@ import com.onwardpath.wem.entity.User;
 public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	 @Autowired
-	    private UserService userService;
+	 private UserService userService;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userService.findUserByUserName(username);
 	    return buildUserForAuthentication(user);
-
 	}
 	
 	/*
@@ -45,7 +44,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	private UserDetails buildUserForAuthentication(User user) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		authorities.add(new SimpleGrantedAuthority("ADMIN"));
-	 return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), authorities);
+   	 return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), authorities);
 	}
 
 }

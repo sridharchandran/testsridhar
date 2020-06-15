@@ -59,7 +59,14 @@
 		if (null == session.getAttribute("authenticated") || session.getAttribute("authenticated").equals("") || !session.getAttribute("authenticated").equals("true")) { 			
 			response.sendRedirect("/wem/login");
 		    return;
-		} else {%>			
+		} else {%>
+		<h1>User profile Page</h1>
+  <table>
+    <tr>
+      <td>First Name</td>
+      <td>${user.email}</td>
+    </tr>
+  </table>			
 			<jsp:include page="_layout.jsp" />			
 		<%}%>
                                 
