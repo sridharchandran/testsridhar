@@ -10,7 +10,8 @@ public class User {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+    @Column(name = "id")
+    private int id;
 	
 	private int org_id;
 	
@@ -28,14 +29,8 @@ public class User {
 	private String userName;
 	
 	private String phone1;
-	
-	/*
-	 * @ManyToMany(cascade = CascadeType.MERGE)
-	 * 
-	 * @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
-	 * inverseJoinColumns = @JoinColumn(name = "role_id")) private Set<Role> roles;
-	 */
-    @Lob
+
+	@Lob
     private byte[] profile_pic;
     
     private int role_id;

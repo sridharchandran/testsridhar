@@ -256,7 +256,7 @@ class="kt-login-v1--enabled kt-quick-panel--right kt-demo-panel--right kt-offcan
 		<div class="col-lg-12">
 			<!--begin::Portlet-->
 <form class="kt-form" id="kt_form"
-	action="wem/UserController" method="post"
+	action="wem/registration" method="post"
 	class="needs-validation" enctype="multipart/form-data">
 	<input type="hidden" name="pageName" value="signup"> <input
 		type="hidden" name="role" value="1">

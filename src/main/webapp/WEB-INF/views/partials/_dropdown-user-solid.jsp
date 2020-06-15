@@ -5,30 +5,25 @@
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.SQLException"%>
 <%@page import="java.sql.PreparedStatement"%>
-
+<%-- <%@page import="com.onwardpath.wem.util.Database"%> --%>
 <%@page import="java.sql.Connection"%>
 <%@page import="java.sql.Blob"%>
-
-<%@ page import=" java.io.ByteArrayOutputStream"%>
-<%@ page import=" java.io.ObjectOutputStream"%>
-<%@ page import=" java.io.Serializable"%>
-
+<%@ page import="com.onwardpath.wem.entity.User" %>
 <%
 String fname = "";
 String lname = "";
-int id =0;
+byte[] pic  = null;
   
 
-
-fname = session.getAttribute("firstname").toString();
-lname = session.getAttribute("lastname").toString();
-ByteArrayOutputStream bos = new ByteArrayOutputStream();
-ObjectOutputStream oos = new ObjectOutputStream(bos);
-oos.writeObject(session.getAttribute("profile_pic"));
-oos.flush();
-byte [] pic = bos.toByteArray();
-id  =  ( Integer ) session.getAttribute("userid");
-System.out.println("profile bytes=="+pic);
+	
+int ids = Integer.parseInt(session.getAttribute("org_id").toString());
+ 
+if (session.getAttribute("user") != null) {
+	fname = ((User) session.getAttribute("user")).getFirstname();
+	lname = ((User) session.getAttribute("user")).getLastname();
+	pic = ((User) session.getAttribute("user")).getProfile_pic();
+	
+}
 %>
 <script type="text/javascript">
 function logout() {	
@@ -39,8 +34,8 @@ function logout() {
     <div class="kt-user-card__wrapper">
         <div class="kt-user-card__pic">
         	<%
-        	if (!pic.equals("")) {%>
-        		<img alt="Pic" src='/wem/DisplayImageController/<%=id%>'/> 
+        	if (pic.length != 0) {%>
+        		<img alt="Pic" src='/wem/DisplayImageController?id=<%=session.getAttribute("user_id")%>'/> 
         	<%}%>            
         </div>
         <div class="kt-user-card__details">
@@ -80,7 +75,7 @@ function logout() {
         </a>
     </li>
     <li class="kt-nav__item kt-nav__item--custom kt-margin-t-15">    	    
-    	<form id="logout" action="logout" method="post" enctype="multipart/form-data">
+    	<form id="logout" action="UserController" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="pageName" value="logout">  
 		</form>   
     	<a href="javascript:logout();" class="btn btn-label-brand btn-upper btn-sm btn-bold">Sign Out</a>     	

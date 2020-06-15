@@ -1,120 +1,117 @@
 package com.onwardpath.wem.controller;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.zip.DataFormatException;
-import java.util.zip.Inflater;
 
 import javax.servlet.http.HttpSession;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.onwardpath.wem.entity.Organization;
+import com.onwardpath.wem.entity.Role;
 import com.onwardpath.wem.entity.User;
+import com.onwardpath.wem.model.SignupFormDTO;
+import com.onwardpath.wem.repository.OrgRepository;
+import com.onwardpath.wem.repository.RoleRepository;
 import com.onwardpath.wem.repository.UserRepository;
 import com.onwardpath.wem.service.UserService;
 
 @Controller
+/* @SessionAttributes("user") */
 public class UserController {
-	
-	 @Autowired
-	 private UserService userService;
-	 
-	 @Autowired
-	 UserRepository userRepo;
-	
-	@GetMapping("/signup")
-	public String signup() {
-		return "signup";
+
+	@Autowired
+	UserRepository userRepo;
+
+	@Autowired
+	OrgRepository orgRepo;
+
+	@Autowired
+	UserControllerImpl userControllerImpl;
+
+	HttpSession session;
+
+	/*
+	 * @ModelAttribute("user") public User userDetails() { User user = new User();
+	 * Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	 * 
+	 * if(auth.getName().contains("anonymous")) user = new User(); else user =
+	 * userRepo.findByUserName(auth.getName());
+	 * 
+	 * user = auth.getName().contains("anonymous") ? new User() :
+	 * userRepo.findByUserName(auth.getName()); return user; }
+	 */
+
+	@GetMapping("/home")
+	public String homePage() {
+		return "index";
 	}
-	
+
 	@GetMapping("/login")
-	public String login() {
-		
+	public String login(Model model) {
+		// model.addAttribute("user", new User());
 		return "login";
 	}
-	
-	
-	@GetMapping("/DisplayImageController/{id}")
-	public ResponseEntity<byte[]>  DisplayImage(@PathVariable("id") int id) throws IOException {
-		
-		User image  = userRepo.findById(id);
-		
-		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image.getProfile_pic());
-	}
-	
-	
-	
 
-	@RequestMapping (value = "/login", method = RequestMethod.POST)
-    
-    public  String loginsave(@ModelAttribute("user") User user, HttpSession session) {
-		 
-		
-    	System.out.println("response email==="+user.toString());
-    	System.out.println("user emajl=="+user.getUserName());
-    	User user1 = userRepo.findByEmail(user.getUserName()) ;
-    	
-    	System.out.println("result=="+user);
-    	if(user != null)
-    	{
-    		session.setAttribute("authenticated", "true");
-    		session.setAttribute("org_name", user1.getOrg_id());
-    		session.setAttribute("firstname", user1.getFirstname());
-    		session.setAttribute("lastname", user1.getLastname());
-    		session.setAttribute("profile_pic", user1.getProfile_pic());
-    		session.setAttribute("userid", user1.getId());
-    		System.out.println("organization id=="+user1.getOrg_id());
-    		System.out.println("firstname=="+user1.getFirstname());
-    	}
-    	
-		/* return userRepo.findById(88); */
-    	return "index";
-    }
-    
+	@GetMapping("/loginSuccess")
+	public String loginSuccess(HttpSession session) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("Authenticated User Name" + auth.getName());
+		User user = userRepo.findByUserName(auth.getName());
+		Organization org = orgRepo.findById(user.getOrg_id());
+		System.out.println("Authenticated User ID" + user.getId());
+		session.setAttribute("authenticated", "true");
+		session.setAttribute("user", user);
+		session.setAttribute("org", org);
+		session.setAttribute("user_id", user.getId());
+		session.setAttribute("org_id", user.getOrg_id());
+		session.setAttribute("site_id", null);
+		return "redirect:/home";
+	}
+
+//    @RequestMapping(value = "/login", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Optional<User> authenticateUser(User user) {
+// 
+//    	System.out.println("response email"+user.getUserName());
+//		/* return userRepo.findById(88); */ 
+//    	return Optional.of(userRepo.findByEmail(user.getUserName()));
+//    }
+
 	@GetMapping("/byid")
 	@ResponseBody
-    public Optional<User> byID(@ModelAttribute("user") User user) {
-		 
-    	return Optional.ofNullable(userRepo.findByEmail("errorpages@gmail.com"));
-    }
+	public Optional<Organization> byID(@ModelAttribute("user") User user) {
 
- 
-	@GetMapping("/authenticate")
-	public String auth() {
-		
-		return "login";
+		return Optional.ofNullable(orgRepo.findByDomain("http://www.springboot.com"));
+
 	}
-	
-	@PostMapping("/logout")
-	public String logouts(HttpSession session) {
-		System.out.println("User logged out");
-		if (session != null) {
-			session.invalidate();
-		}
-		return "login";
+
+	// Endpoint for SignUp Page
+	@RequestMapping(value = "/registration", method = RequestMethod.GET)
+	public String userRegistrationPage() {
+		return "signup";
 	}
-	
-	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		System.out.println("User logged out");
-		if (session != null) {
-			session.invalidate();
-		}
-		return "login";
+
+	// Signup Page Submit Call
+	@RequestMapping(value = "/registration", method = RequestMethod.POST)
+	public ModelAndView registerUser(SignupFormDTO signupFormDTO, HttpSession session) throws IOException {
+		ModelAndView modelAndView = userControllerImpl.registerUser(signupFormDTO, session);
+		return modelAndView;
 	}
+
 }

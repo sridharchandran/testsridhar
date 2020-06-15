@@ -6,7 +6,7 @@
 	<head>
 
 		<!--begin::Base Path (base relative path for assets of this page) -->
-		<base href="../../../">
+		<base href="/">
 
 		<!--end::Base Path -->
 		<meta charset="utf-8" />
@@ -27,7 +27,6 @@
 				}
 			});
 		</script>
-		
 
 		<!--end::Fonts -->
 
@@ -55,7 +54,7 @@
 	<!-- end::Head -->
 
 	<!-- begin::Body -->
-	<body style="background-image: url(/wem/assets/misc/bg_1.jpg)" class="kt-login-v1--enabled kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
+	<body style="background-image: url(/wem/assets/media/misc/bg_1.jpg)" class="kt-login-v1--enabled kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading">
 
 		<!-- begin:: Page -->
 		<div class="kt-grid kt-grid--ver kt-grid--root">
@@ -73,7 +72,7 @@
 						</div>
 						<div class="kt-login-v1__signup">
 							<h4 class="kt-login-v1__heading">Don't have an account?</h4>
-							<a href="/wem/signup">Sign Up</a>
+							<a href="/wem/registration">Sign Up</a>
 						</div>
 					</div>
 
@@ -124,7 +123,7 @@
 								}								
 								%>
 								<!--begin::Form-->
-								<form class="kt-login-v1__form kt-form" action="wem/login"  method="post" autocomplete="off" enctype="multipart/form-data">								
+								<form class="kt-login-v1__form kt-form" action="wem/login" modelAttribute="user" method="post" autocomplete="off" enctype="multipart/form-data">								
 									<input type="hidden" name="pageName" value="login">
 									<div class="form-group">
 										<input class="form-control" type="text" placeholder="Username" name="userName" autocomplete="off">

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
- <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html lang="en" >
     <!-- begin::Head test commitd basdysd sremugaan-->
     <head>
@@ -12,8 +11,7 @@
         <!--begin::Fonts -->
         <script src="/wem/assets/js/jscolor.js"></script> 
          <script src="https://code.jquery.com/jquery-3.3.1.js" type="text/javascript"></script>
-          
-
+             
         <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>        
         <script>
         WebFont.load({
@@ -60,18 +58,18 @@
   <%
 		if (null == session.getAttribute("authenticated") || session.getAttribute("authenticated").equals("") || !session.getAttribute("authenticated").equals("true")) { 			
 			response.sendRedirect("/wem/login");
-			
 		    return;
-		} else { 
-			System.out.println("session=="+session.getAttribute("authenticated")); %>			
+		} else {%>
+		<h1>User profile Page</h1>
+  <table>
+    <tr>
+      <td>First Name</td>
+      <td>${user.email}</td>
+    </tr>
+  </table>			
 			<jsp:include page="_layout.jsp" />			
-		<%}%>  
-                           
-            
-           
-            
-
-                        
+		<%}%>
+                                
         <!-- begin::GlobalConfig(global config for global JS sciprts) -->
         <script>            
         var KTAppOptions = {
