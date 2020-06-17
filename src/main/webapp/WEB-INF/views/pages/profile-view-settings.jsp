@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="com.onwardpath.wem.model.*"%>
+<%@ page import="com.onwardpath.wem.entity.User"%>
+<%@ page import="com.onwardpath.wem.entity.Organization"%>
 <!-- begin:: Content -->
 
 <script>
@@ -17,8 +19,9 @@
 	id="kt_content">
 	<%
 		int org_id = (Integer) session.getAttribute("org_id");
-		int site_id = (Integer) session.getAttribute("site_id");
+		int site_id = Integer.parseInt(session.getAttribute("site_id").toString());
 		User user = (User) session.getAttribute("user");
+		Organization org = (Organization) session.getAttribute("org");
 	%>
 	<%
 		String message = (String) session.getAttribute("message");
@@ -69,7 +72,7 @@
 					<div class="col-lg-4 col-md-9 col-sm-12">
 						<input type="text" class="form-control" name="org"
 							aria-describedby="emailHelp"
-							value="<%=user.getOrganization_name()%>">
+							value="<%=org.getName()%>">
 					</div>
 				</div>
 
@@ -78,7 +81,7 @@
 					<div class="col-lg-4 col-md-9 col-sm-12">
 						<input type="text" class="form-control" name="domain"
 							aria-describedby="emailHelp"
-							value="<%=user.getOrganization_domain()%>">
+							value="<%=org.getDomain()%>">
 					</div>
 				</div>
 
