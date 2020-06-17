@@ -3,10 +3,10 @@ function logout() {
 	document.getElementById("logout").submit();
 }
 </script> 
-<%-- <%
+<%
 String view = request.getParameter("view");
 session.setAttribute("view", view); 
-%> --%>
+%>  
 <jsp:include page="partials/_header-base-mobile.jsp" />
 <!-- begin:: Root -->
 <div class="kt-grid kt-grid--hor kt-grid--root">
@@ -18,12 +18,18 @@ session.setAttribute("view", view);
            <jsp:include page="partials/_header-base.jsp" />
             <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
             	<jsp:include page="partials/_subheader-subheader-v1.jsp" />  
-            	<jsp:include page="partials/_content-base.jsp" />                	                                                          
+            	<%-- <jsp:include page="partials/_content-base.jsp" />  --%>               	                                                          
                <%--  <%if(view != null && !view.equals("index")) {%>        	                	     
                 	<jsp:include page="<%=view%>" />   
                 <%} else {%>                	
                 	
                 <%}%>  --%>
+                
+                <%if(view != null && !view.equals("index")) {%>        	                	     
+                	<jsp:include page="<%=view%>" />   
+                <%} else {%>                	
+                	<jsp:include page="partials/_content-base.jsp" />
+                <%}%> 
                 
                 <!-- Begin::Session Timeout -->
                 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display: none;">

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.Map, com.onwardpath.wem.model.Experience, com.onwardpath.wem.repository.ExperienceRepository" %>
+<%@ page import="java.util.Map, com.onwardpath.wem.model.Experience,com.onwardpath.wem.repository.SegmentRepository" %>
 
 <script src="https://cdn.ckeditor.com/ckeditor5/12.3.0/classic/ckeditor.js"></script>
 <script type="text/javascript">

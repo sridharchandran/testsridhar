@@ -49,6 +49,8 @@ public class UserController {
 	}
 	
 	
+	  
+	
 	@GetMapping("/DisplayImageController/{id}")
 	public ResponseEntity<byte[]>  DisplayImage(@PathVariable("id") int id) throws IOException {
 		
@@ -73,7 +75,7 @@ public class UserController {
     	if(user != null)
     	{
     		session.setAttribute("authenticated", "true");
-    		session.setAttribute("org_name", user1.getOrg_id());
+    		session.setAttribute("org_id", user1.getOrg_id());
     		session.setAttribute("firstname", user1.getFirstname());
     		session.setAttribute("lastname", user1.getLastname());
     		session.setAttribute("profile_pic", user1.getProfile_pic());

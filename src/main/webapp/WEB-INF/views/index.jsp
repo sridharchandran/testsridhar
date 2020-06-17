@@ -63,7 +63,10 @@
 			
 		    return;
 		} else { 
-			System.out.println("session=="+session.getAttribute("authenticated")); %>			
+			System.out.println("session=="+session.getAttribute("authenticated")); 
+			System.out.println("going to call layout");
+			%>
+					
 			<jsp:include page="_layout.jsp" />			
 		<%}%>  
                            

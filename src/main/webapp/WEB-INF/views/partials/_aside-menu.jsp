@@ -111,10 +111,10 @@
 									<span class="kt-menu__arrow"></span>
 									<ul class="kt-menu__subnav">
 										<li class="kt-menu__item " aria-haspopup="true" id="experience-create-content">
-											<a href="/wem?view=pages/experience-create-content.jsp" class="kt-menu__link ">
+											<a href="/wem/content" class="kt-menu__link ">
 											<i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Content</span>
-											</a>
-										</li>
+											</a> 
+										</li>    
 										<li class="kt-menu__item " aria-haspopup="true" id="experience-create-image">
 											<a href="/wem?view=pages/experience-create-image.jsp" class="kt-menu__link ">
 											<i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Image</span>

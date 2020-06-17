@@ -10,13 +10,15 @@ imageThumb {
 }
 </style>
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">	
-	<%//TODO: Resolve DataTable issue -- https://datatables.net/forums/discussion/32575/uncaught-typeerror-cannot-set-property-dt-cellindex-of-undefined
-	ExperienceRepository experienceRepository = new ExperienceRepository();
-	UserRepository userRepository = new UserRepository();
-	int org_id = (Integer)session.getAttribute("org_id");
-	Map<Integer,Experience> orgImageExperiences = experienceRepository.getOrgImageExperiences(org_id);
-	
-	if (orgImageExperiences.size() == 0) {%>
+	<%
+			//TODO: Resolve DataTable issue -- https://datatables.net/forums/discussion/32575/uncaught-typeerror-cannot-set-property-dt-cellindex-of-undefined
+			SegmentRepository experienceRepository = new SegmentRepository();
+			UserRepository userRepository = new UserRepository();
+			int org_id = (Integer)session.getAttribute("org_id");
+			Map<Integer,Experience> orgImageExperiences = experienceRepository.getOrgImageExperiences(org_id);
+			
+			if (orgImageExperiences.size() == 0) {
+		%>
 		<div class="alert alert-light alert-elevate" role="alert">
 			<div class="alert-icon"><i class="flaticon-warning kt-font-brand"></i></div>
 				<div class="alert-text">
