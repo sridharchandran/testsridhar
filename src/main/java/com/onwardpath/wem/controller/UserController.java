@@ -95,7 +95,7 @@ public class UserController {
 		session.setAttribute("org", org);
 		session.setAttribute("user_id", user.getId());
 		session.setAttribute("org_id", user.getOrgid());
-		session.setAttribute("site_id", "0");
+		session.setAttribute("site_id", user.getAnalytics_id());
 		return "redirect:/home";
 	}
 

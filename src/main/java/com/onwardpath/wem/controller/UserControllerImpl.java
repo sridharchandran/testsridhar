@@ -24,6 +24,8 @@ public class UserControllerImpl {
 	private AnalyticsService analyticsService;
 	
 	
+	
+	
 	public ModelAndView registerUser(SignupFormDTO signupFormDTO,HttpSession session) throws IOException {
 		ModelAndView modelAndView = new ModelAndView();
 		User userExists = userService.findByEmail(signupFormDTO.getEmail());
@@ -43,21 +45,28 @@ public class UserControllerImpl {
         	{
         	System.out.println("Organization already exists");
           	user.setOrg_id(orgExists.getId());
+			String root_domain = analyticsService.getRootDomain(orgExists.getDomain());
+			int analytics_id = analyticsService.getRowIdbyRootDomain(root_domain);
+			user.setAnalytics_id(analytics_id);
         	}
         	else
         	{
-            	org.setName(signupFormDTO.getOrgName());
-    			org.setDomain(signupFormDTO.getDomain()); 
+        		String orgName = signupFormDTO.getOrgName();
+        		String domainURL = signupFormDTO.getDomain();
+            	org.setName(orgName);
+    			org.setDomain(domainURL); 
     			org.setLogo("logourl"); 
     			int getOrgID = userService.saveOrg(org).getId();
+    			int analytics_id = analyticsService.registerWebsite(orgName, domainURL);
     			user.setOrg_id(getOrgID);
+    			user.setAnalytics_id(analytics_id);
+    			
         	}
         	org.setName(signupFormDTO.getOrgName());
 			org.setDomain(signupFormDTO.getDomain()); 
 			org.setLogo("logourl"); 
 			int getOrgID = userService.saveOrg(org).getId();
-			user.setAnalytics_id(1);
-          	user.setEmail(signupFormDTO.getEmail());
+			user.setEmail(signupFormDTO.getEmail());
           	user.setFirstname(signupFormDTO.getFirstName());
           	user.setLastname(signupFormDTO.getLastName());
           	user.setUserName(signupFormDTO.getEmail());
@@ -69,7 +78,6 @@ public class UserControllerImpl {
 			session.setAttribute("message","User Registration succesfully completed for user:' " +user.getFirstname()+"'");
 			modelAndView.setViewName("redirect:/login");
         }
-
   		return modelAndView;
 		
 	}
