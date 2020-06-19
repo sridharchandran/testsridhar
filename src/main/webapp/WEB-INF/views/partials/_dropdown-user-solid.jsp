@@ -75,7 +75,7 @@ function logout() {
         </a>
     </li>
     <li class="kt-nav__item kt-nav__item--custom kt-margin-t-15">    	    
-    	<form id="logout" action="UserController" method="post" enctype="multipart/form-data">
+    	<form id="logout" action="/wem/logout" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="pageName" value="logout">  
 		</form>   
     	<a href="javascript:logout();" class="btn btn-label-brand btn-upper btn-sm btn-bold">Sign Out</a>     	

@@ -13,7 +13,8 @@ public class User {
     @Column(name = "id")
     private int id;
 	
-	private int org_id;
+    @Column(name = "org_id")
+	private int orgid;
 	
 	private String firstname;
 	
@@ -45,12 +46,12 @@ public class User {
 		this.id = id;
 	}
 
-	public int getOrg_id() {
-		return org_id;
+	public int getOrgid() {
+		return orgid;
 	}
 
 	public void setOrg_id(int org_id) {
-		this.org_id = org_id;
+		this.orgid = org_id;
 	}
 
 	public String getFirstname() {
@@ -137,9 +138,5 @@ public class User {
 	public void setRole_id(int role_id) {
 		this.role_id = role_id;
 	}
-
- 
-	
-    
 	
 }
