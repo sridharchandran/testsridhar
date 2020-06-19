@@ -17,6 +17,7 @@ import com.onwardpath.wem.entity.User;
 import com.onwardpath.wem.model.SignupFormDTO;
 import com.onwardpath.wem.repository.OrgRepository;
 import com.onwardpath.wem.repository.UserRepository;
+import com.onwardpath.wem.service.AnalyticsService;
 import com.onwardpath.wem.service.UserService;
 
 @Service
@@ -103,87 +104,89 @@ public class UserControllerImpl {
 		
 		ModelAndView modelAndView = new ModelAndView();
 		
-		User userexists =  userService.findByEmail(signupFormDTO.getEmail());
+//		User userexists =  userService.findByEmail(signupFormDTO.getEmail());
 		User user = new User();
-		InputStream targetStream  = null;
+//		InputStream targetStream  = null;
 		  byte[] photo = signupFormDTO.getPhoto().getBytes();
-		  System.out.println("getPhoto"+signupFormDTO.getPhoto().isEmpty());
-		  System.out.println("getPhotosize"+signupFormDTO.getPhoto().getSize());
-		  System.out.println("photo"+photo);
-		  System.out.println("userid="+userexists);
-		  System.out.println("signupdto="+signupFormDTO.getFirstName());
-		  targetStream = new ByteArrayInputStream(photo);
-		  System.out.println("image="+targetStream);
+		/*
+		 * System.out.println("getPhoto"+signupFormDTO.getPhoto().isEmpty());
+		 * System.out.println("getPhotosize"+signupFormDTO.getPhoto().getSize());
+		 * System.out.println("photo"+photo); System.out.println("userid="+userexists);
+		 * System.out.println("signupdto="+signupFormDTO.getFirstName()); targetStream =
+		 * new ByteArrayInputStream(photo); System.out.println("image="+targetStream);
+		 */
 		 
+		  System.out.println("signupdtofirst="+signupFormDTO.getFirstName());
+		  System.out.println("signupdtolast="+signupFormDTO.getLastName());
+		  System.out.println("getPhoto"+signupFormDTO.getPhoto().isEmpty());
+		  System.out.println("mobile="+signupFormDTO.getPhone());
+		  System.out.println("pass="+signupFormDTO.getPassword().isEmpty());
+		  
 		  int ids =  ((User) session.getAttribute("user")).getId();
-			System.out.println("ids"+ids);
- 	
+		
+			user = userRepository.findByid(ids);
 			if(signupFormDTO.getFirstName() != null)
 		 	{
 				
-				
-				user = userRepository.findByid(ids);
+		
 				user.setFirstname(signupFormDTO.getFirstName());
-				userService.saveUsers(user);
-				session.setAttribute("user", user);
-				session.setAttribute("message","Update Success:' " +user.getFirstname()+"'");
-				modelAndView.setViewName("/index.jsp?view=pages/profile-view-myprofile");
-	          	
+		
 		 	}
 		
 		  if(signupFormDTO.getLastName() != null) {
 		  
-			user = userRepository.findByid(ids);
+	
 			user.setLastname(signupFormDTO.getLastName());
-			userService.saveUsers(user);
-			session.setAttribute("user", user);
-			
-			modelAndView.setViewName("/index.jsp?view=pages/profile-view-myprofile");
+		
 		  }
 		  if(signupFormDTO.getPhone() != null) {
 			  
-				user = userRepository.findByid(ids);
+		
 				user.setPhone1(signupFormDTO.getPhone());
-				userService.saveUsers(user);
-				session.setAttribute("user", user);
-				
-				modelAndView.setViewName("/index.jsp?view=pages/profile-view-myprofile");
+		
 			  }
 		  
 		  if(signupFormDTO.getPhoto().isEmpty() == false) {
 			  
-				user = userRepository.findByid(ids);
+		
 				photo = signupFormDTO.getPhoto().getBytes();
 				user.setProfile_pic(photo);
-				userService.saveUsers(user);
-				session.setAttribute("user", user);
-				
-				modelAndView.setViewName("/index.jsp?view=pages/profile-view-myprofile");
+			
 			  }
 		  
-		  if(signupFormDTO.getPassword() != null) {
+		  if(signupFormDTO.getPassword().isEmpty() == false){
 			  
-				user = userRepository.findByid(ids);
-				System.out.println("user_pass="+user.getPassword());
-				System.out.println("signdto_pass="+signupFormDTO.getPassword());
-				System.out.println("signdto_pass="+signupFormDTO.getNewpassword());
-				System.out.println("boolena_pass="+bCryptPasswordEncoder.matches(signupFormDTO.getPassword(), user.getPassword()));
-				System.out.println("user_typepass="+(bCryptPasswordEncoder.encode(signupFormDTO.getPassword())));
-				
+			System.out.println("sys pas="+signupFormDTO.getPassword()					);
 			if(	bCryptPasswordEncoder.matches(signupFormDTO.getPassword(), user.getPassword()))
 			{
 				
 				  user.setPassword(bCryptPasswordEncoder.encode(signupFormDTO.getNewpassword()));
-				  userService.saveUsers(user);
-				  session.setAttribute("user", user);
-				  
-				  modelAndView.setViewName("/index.jsp?view=pages/profile-view-myprofile");
+				  userService.saveUpdateUser(user);
+					session.setAttribute("user", user);
+					session.setAttribute("message","Update Success " );  
+					modelAndView.setViewName("/index.jsp?view=pages/profile-view-myprofile");
 				 
 			  }
+			else
+			{
+				System.out.println("coming else");
+				session.setAttribute("user", user);
+				session.setAttribute("message","password entered doesn't match " ); 
+				modelAndView.setViewName("/index.jsp?view=pages/profile-view-myprofile");
+				
+			
+			}
+			
 		  }
-	
-		return modelAndView;
+		  if(signupFormDTO.getPassword().isEmpty() == true) {
+		  userService.saveUpdateUser(user);
+			session.setAttribute("user", user);
+			session.setAttribute("message","Update Success " );  
+			modelAndView.setViewName("/index.jsp?view=pages/profile-view-myprofile");
+			
 		
+		  }
+		  return modelAndView;
 	}
 	
 	

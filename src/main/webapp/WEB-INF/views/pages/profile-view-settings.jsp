@@ -17,7 +17,7 @@
 <div class="kt-content  kt-grid__item kt-grid__item--fluid"
 	id="kt_content">
 	<%
-		int org_id = ((User) session.getAttribute("user")).getOrg_id();
+		int org_id = ((User) session.getAttribute("user")).getOrgid();
 		int site_id = ((User) session.getAttribute("user")).getAnalytics_id();
 		String org_domain = ((Organization) session.getAttribute("org")).getDomain();
 		

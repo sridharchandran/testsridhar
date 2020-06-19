@@ -5,7 +5,7 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <%
-int org_id = ((User) session.getAttribute("user")).getOrg_id();
+int org_id = ((User) session.getAttribute("user")).getOrgid();
 int ids =  ((User) session.getAttribute("user")).getId();
 String firstname = ((User) session.getAttribute("user")).getFirstname();
 String lastname = ((User) session.getAttribute("user")).getLastname();

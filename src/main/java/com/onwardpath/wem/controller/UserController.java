@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.onwardpath.wem.AppProperties;
 import com.onwardpath.wem.entity.Experience;
 import com.onwardpath.wem.entity.Expinterface;
 import com.onwardpath.wem.entity.Organization;
@@ -37,9 +39,11 @@ import com.onwardpath.wem.entity.User;
 import com.onwardpath.wem.model.ExperienceViewDTO;
 import com.onwardpath.wem.model.SignupFormDTO;
 import com.onwardpath.wem.repository.ExpRepository;
+import com.onwardpath.wem.repository.NativeRepository;
 import com.onwardpath.wem.repository.OrgRepository;
 import com.onwardpath.wem.repository.RoleRepository;
 import com.onwardpath.wem.repository.UserRepository;
+import com.onwardpath.wem.service.AnalyticsService;
 import com.onwardpath.wem.service.UserService;
 
 @Controller
@@ -103,14 +107,14 @@ public class UserController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		System.out.println("Authenticated User Name" + auth.getName());
 		User user = userRepo.findByUserName(auth.getName());
-		Organization org = orgRepo.findById(user.getOrg_id());
+		Organization org = orgRepo.findById(user.getOrgid());
 		System.out.println("Authenticated User ID" + user.getId());
 		session.setAttribute("authenticated", "true");
 		session.setAttribute("user", user);
 		session.setAttribute("org", org);
 		session.setAttribute("user_id", user.getId());
-		session.setAttribute("org_id", user.getOrg_id());
-		session.setAttribute("site_id", null);
+		session.setAttribute("org_id", user.getOrgid());
+		session.setAttribute("site_id", user.getAnalytics_id());
 		return "redirect:/home";
 	}
 
