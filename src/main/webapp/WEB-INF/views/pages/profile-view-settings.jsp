@@ -90,7 +90,7 @@
 						<code id="myInput">
 							&lt;script&gt; var _gr = window._gr || {}; _gr.orgID = "<%=org_id%>";
 							_gr.siteID = "<%=site_id%>";
-							_gr.url = "http://demo.onwardpath.com/GeoTargetService/";
+							_gr.url = "http://demo.onwardpath.com/wws/";
 							(function() { var u= _gr.url; var d=document,
 							g=d.createElement('script'),
 							s=d.getElementsByTagName('script')[0]; g.type='text/javascript';

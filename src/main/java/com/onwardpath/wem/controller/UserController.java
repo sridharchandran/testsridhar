@@ -61,6 +61,18 @@ public class UserController {
 	
 	@Autowired
 	UserControllerImpl userControllerImpl;
+		 
+	 @Autowired
+	 AppProperties myAppProperties;
+	 
+	 @Autowired
+		private AnalyticsService analyticsService;
+	 
+		
+		@Autowired
+		private NativeRepository nr;
+	
+	
 
 	HttpSession session;
 
@@ -143,12 +155,13 @@ public class UserController {
 	    }
 	 
 	 
-	@GetMapping("/byid")
+	@GetMapping(value="/byid",produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Optional<Organization> byID(@ModelAttribute("user") User user) {
-
-		return Optional.ofNullable(orgRepo.findByDomain("http://www.springboot.com"));
-
+	public ResponseEntity<Object> byID(@ModelAttribute("user") User user) throws IOException {
+		//return new ResponseEntity<Object>(userRepo.findByOrgidIs(70), HttpStatus.OK);
+		//AnalyticsService analyticsService = new AnalyticsServiceImpl();
+		//return new ResponseEntity<Object>(myAppProperties.getMatomo_url(), HttpStatus.OK);
+		return new ResponseEntity<Object>(nr.getResultSetforExpView(),HttpStatus.OK);
 	}
 	
 	@GetMapping("/byorgid")
