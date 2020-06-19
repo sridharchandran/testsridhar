@@ -23,6 +23,8 @@ public class SignupFormDTO {
 	private MultipartFile photo;
 	
 	private String password;
+	
+	private String newpassword;
 
 	public String getOrgName() {
 		return orgName;
@@ -88,11 +90,20 @@ public class SignupFormDTO {
 		this.password = password;
 	}
 
+	
+	public String getNewpassword() {
+		return newpassword;
+	}
+
+	public void setNewpassword(String newpassword) {
+		this.newpassword = newpassword;
+	}
+
 	@Override
 	public String toString() {
 		return "SignupFormDTO [orgName=" + orgName + ", domain=" + domain + ", firstName=" + firstName + ", lastName="
 				+ lastName + ", phone=" + phone + ", email=" + email + ", photo=" + photo + ", password=" + password
-				+ "]";
+				+ ", newpassword=" + newpassword + "]";
 	}
 
 		

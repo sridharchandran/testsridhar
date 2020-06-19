@@ -43,6 +43,11 @@ public class UserServiceImpl implements UserService {
 	    user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		return userRepository.save(user);
 	}
+	@Override
+	public User saveUsers(User user) {
+	    
+		return userRepository.save(user);
+	}
 
 	@Override
 	public Organization findOrgIDByDomain(String domain) {

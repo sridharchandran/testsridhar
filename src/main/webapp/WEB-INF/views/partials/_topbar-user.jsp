@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import="com.onwardpath.wem.entity.Organization" %>
+
 <%@ page import="com.onwardpath.wem.entity.User" %>
 
 
@@ -8,8 +8,8 @@ String username = "";
 byte[] profilepic = null;	
  
 	
-int ids =  Integer.parseInt(session.getAttribute("org_id").toString());
-
+int ids =  ((User) session.getAttribute("user")).getId();
+System.out.println("id"+ids);
     
    
   
@@ -17,6 +17,7 @@ int ids =  Integer.parseInt(session.getAttribute("org_id").toString());
 if ((User) session.getAttribute("user") != null) {
 	username = ((User) session.getAttribute("user")).getFirstname();
 	profilepic = ((User)session.getAttribute("user")).getProfile_pic();
+	
 }
 %>
 <!--begin: User Bar -->
@@ -39,7 +40,7 @@ if ((User) session.getAttribute("user") != null) {
             	<%	
             } else if(profilepic.length != 0) {
             	%>
-            	<img alt="Pic" src='/wem/DisplayImageController?id=<%=session.getAttribute("user_id")%>'/>
+            	<img alt="Pic" src='/wem/DisplayImageController/<%=ids%>'/>
             	<% 
             }            
             %>                                    

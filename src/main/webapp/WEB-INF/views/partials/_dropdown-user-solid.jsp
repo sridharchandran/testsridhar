@@ -9,19 +9,20 @@
 <%@page import="java.sql.Connection"%>
 <%@page import="java.sql.Blob"%>
 <%@ page import="com.onwardpath.wem.entity.User" %>
+
 <%
 String fname = "";
 String lname = "";
 byte[] pic  = null;
   
 
-	
-int ids = Integer.parseInt(session.getAttribute("org_id").toString());
- 
+int ids =  ((User) session.getAttribute("user")).getId();
+
 if (session.getAttribute("user") != null) {
 	fname = ((User) session.getAttribute("user")).getFirstname();
 	lname = ((User) session.getAttribute("user")).getLastname();
 	pic = ((User) session.getAttribute("user")).getProfile_pic();
+
 	
 }
 %>
@@ -30,12 +31,12 @@ function logout() {
 	document.getElementById("logout").submit();
 }
 </script>            
-<div class="kt-user-card kt-margin-b-40 kt-margin-b-30-tablet-and-mobile" style="background-image: url(./assets/media/misc/head_bg_sm.jpg)">
+<div class="kt-user-card kt-margin-b-40 kt-margin-b-30-tablet-and-mobile" style="background-image: url(./assets/misc/head_bg_sm.jpg)">
     <div class="kt-user-card__wrapper">
         <div class="kt-user-card__pic">
         	<%
         	if (pic.length != 0) {%>
-        		<img alt="Pic" src='/wem/DisplayImageController?id=<%=session.getAttribute("user_id")%>'/> 
+        		<img alt="Pic" src='/wem/DisplayImageController/<%=ids%>'/> 
         	<%}%>            
         </div>
         <div class="kt-user-card__details">
@@ -51,7 +52,7 @@ function logout() {
 </div>
 <ul class="kt-nav kt-margin-b-10">
     <li class="kt-nav__item">
-        <a href="?view=pages/profile-view-myprofile.jsp" class="kt-nav__link">
+        <a href="/wem/userprofilesetting" class="kt-nav__link">
             <span class="kt-nav__link-icon"><i class="flaticon2-calendar-3"></i></span>
             <span class="kt-nav__link-text">My Profile</span> 
         </a>
@@ -69,13 +70,13 @@ function logout() {
         </a>
     </li>
     <li class="kt-nav__item">
-        <a href="/wem?view=pages/profile-view-settings.jsp" class="kt-nav__link">
+        <a href="/wem/profilesetting" class="kt-nav__link">
             <span class="kt-nav__link-icon"><i class="flaticon2-gear"></i></span>
             <span class="kt-nav__link-text">Settings</span> 
         </a>
     </li>
     <li class="kt-nav__item kt-nav__item--custom kt-margin-t-15">    	    
-    	<form id="logout" action="UserController" method="post" enctype="multipart/form-data">
+    	<form id="logout" action="logout" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="pageName" value="logout">  
 		</form>   
     	<a href="javascript:logout();" class="btn btn-label-brand btn-upper btn-sm btn-bold">Sign Out</a>     	
