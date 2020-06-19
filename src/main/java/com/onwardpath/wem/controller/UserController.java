@@ -1,6 +1,7 @@
 package com.onwardpath.wem.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,9 @@ import com.onwardpath.wem.AppProperties;
 import com.onwardpath.wem.entity.Organization;
 import com.onwardpath.wem.entity.Role;
 import com.onwardpath.wem.entity.User;
+import com.onwardpath.wem.model.NativeQueryDTO;
 import com.onwardpath.wem.model.SignupFormDTO;
+import com.onwardpath.wem.repository.NativeRepository;
 import com.onwardpath.wem.repository.OrgRepository;
 import com.onwardpath.wem.repository.RoleRepository;
 import com.onwardpath.wem.repository.UserRepository;
@@ -56,6 +59,10 @@ public class UserController {
 	 
 	 @Autowired
 		private AnalyticsService analyticsService;
+	 
+		
+		@Autowired
+		private NativeRepository nr;
 	
 	
 
@@ -113,8 +120,8 @@ public class UserController {
 	public ResponseEntity<Object> byID(@ModelAttribute("user") User user) throws IOException {
 		//return new ResponseEntity<Object>(userRepo.findByOrgidIs(70), HttpStatus.OK);
 		//AnalyticsService analyticsService = new AnalyticsServiceImpl();
-		return new ResponseEntity<Object>(analyticsService.registerWebsite("Helloworld", "http://www.helloworld.com"), HttpStatus.OK);
 		//return new ResponseEntity<Object>(myAppProperties.getMatomo_url(), HttpStatus.OK);
+		return new ResponseEntity<Object>(nr.getResultSetforExpView(),HttpStatus.OK);
 	}
 	
 	// Endpoint for SignUp Page

@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.onwardpath.wem.entity.Organization;
 import com.onwardpath.wem.entity.User;
 import com.onwardpath.wem.model.SignupFormDTO;
+import com.onwardpath.wem.repository.NativeRepository;
 import com.onwardpath.wem.service.AnalyticsService;
 import com.onwardpath.wem.service.UserService;
 
@@ -22,8 +23,7 @@ public class UserControllerImpl {
 	
 	@Autowired
 	private AnalyticsService analyticsService;
-	
-	
+
 	
 	
 	public ModelAndView registerUser(SignupFormDTO signupFormDTO,HttpSession session) throws IOException {

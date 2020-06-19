@@ -75,7 +75,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
 
 	@Autowired
 	public AnalyticsServiceImpl(AnalyticsRepository analyticsRepository,AppProperties myAppProperties) {
-		System.out.println("matomo_url:" + analyticsRepository.findAll());
+		//System.out.println("matomo_url:" + analyticsRepository.findAll());
 		MATAMO_SERVER_URL = myAppProperties.getMatomo_url();
 		TOKEN_AUTH = myAppProperties.getMatomo_token_auth();
 		this.analyticsRepository = analyticsRepository;
