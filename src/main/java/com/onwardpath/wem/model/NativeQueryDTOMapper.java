@@ -17,8 +17,8 @@ public class NativeQueryDTOMapper implements RowMapper<NativeQueryDTO>{
 		 dto.setSegmentname(rs.getString("segmentname"));
 		 dto.setCreate_time(rs.getString("create_time"));
 		 dto.setName(rs.getString("name"));
-	 
-		return dto;
+	
+		 return dto;
 	}
 	
 
