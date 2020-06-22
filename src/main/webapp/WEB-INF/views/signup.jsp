@@ -123,7 +123,13 @@ function validateEmail() {
 
 function validateEmail() {
 
- 
+	 var domain = document.getElementById("domain").value;
+	 if(document.getElementById("domain").value != "")
+		 {
+	 var person = prompt("Please Confirm Domain Name,cant be updated after signup", domain);
+	 document.getElementById("domain").value =person;
+	 
+		 }
 	 var email1 = document.getElementById("email")
 	var email2 = document.getElementById("confirmemail");
 	if (email1.value != email2.value) {
@@ -297,7 +303,7 @@ class="kt-login-v1--enabled kt-quick-panel--right kt-demo-panel--right kt-offcan
 							Website</label>
 						<div class="col-9">
 							<div class="input-group">
-								<input type="text" class="form-control" name="domain" title="url  should in this pattern https://(www|abc).example.com" 
+								<input id="domain"type="text" class="form-control" name="domain" title="url  should in this pattern https://(www|abc).example.com" 
 								pattern="^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$" 
 									placeholder="Enter Domain" onblur="checkURL(this)"  required>
 								<!-- <div class="input-group-append"><span class="input-group-text">.com</span></div> -->

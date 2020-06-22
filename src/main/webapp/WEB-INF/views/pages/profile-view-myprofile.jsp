@@ -1,11 +1,16 @@
-<%@page import="com.onwardpath.wem.model.User"%>
+<%@ page import="com.onwardpath.wem.entity.User" %>
+<%@ page import="com.onwardpath.wem.entity.Organization" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <%
-	User user = (User) session.getAttribute("user");
-	System.out.println("heyssss:" + user.getOrganization_id());
+int org_id = ((User) session.getAttribute("user")).getOrgid();
+int ids =  ((User) session.getAttribute("user")).getId();
+String firstname = ((User) session.getAttribute("user")).getFirstname();
+String lastname = ((User) session.getAttribute("user")).getLastname();
+String mobile = ((User) session.getAttribute("user")).getPhone1();
+String email = ((User) session.getAttribute("user")).getEmail();
 %>
 
 <style>
@@ -122,12 +127,12 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<!--begin::Portlet-->
-			<form class="kt-form" id="kt_form" action="UserController"
+			<form class="kt-form" id="kt_form" action="profile"
 				method="post" class="needs-validation" enctype="multipart/form-data">
 				<input type="hidden" name="pageName" value="profile"> <input
 					type="hidden" name="role" value="1"> <input id="check"
 					type="hidden" name="cross_pass"> <input type="hidden"
-					name="orgid" value="<%=user.getOrganization_id()%>">
+					name="orgid" value="<%=org_id%>">
 				<div class="kt-portlet__body">
 					<div class="row">
 						<div class="col-xl-2"></div>
@@ -146,7 +151,7 @@
 										<div class="col-9">
 											<input class="form-control" type="text" name="firstName"
 												placeholder="First Name" required
-												value="<%=user.getFirstname()%>">
+												value="<%=firstname%>">
 										</div>
 									</div>
 									<div class="form-group row">
@@ -154,7 +159,7 @@
 										<div class="col-9">
 											<input class="form-control" type="text" name="lastName"
 												placeholder="Last Name" required
-												value="<%=user.getLastname()%>">
+												value="<%=lastname%>">
 										</div>
 									</div>
 
@@ -168,7 +173,7 @@
 												</div>
 												<input type="text" class="form-control" name="phone"
 													placeholder="Phone" aria-describedby="basic-addon1"
-													value="<%=user.getPhone1()%>">
+													value="<%=mobile%>">
 											</div>
 										</div>
 									</div>
@@ -182,7 +187,7 @@
 												</div>
 												<input type="text" class="form-control" name="email"
 													placeholder="Email" aria-describedby="basic-addon1"
-													required value="<%=user.getEmail()%>" disabled="disabled">
+													required value="<%=email%>" disabled="disabled">
 											</div>
 										</div>
 									</div>
@@ -199,7 +204,7 @@
 
 											</div>
 											</br> <img alt="Pic" id="output"
-												src='/wem/DisplayImageController?id=<%=session.getAttribute("user_id")%>'
+												src='/wem/DisplayImageController/<%=ids%>'
 												height="100" width="100" />
 										</div>
 
@@ -226,7 +231,7 @@
 											<div class="col-9">
 												<div class="input-group">
 													<input class="form-control" id="password-field"
-														type="password" name="old_password">
+														type="password" name="password">
 
 												</div>
 

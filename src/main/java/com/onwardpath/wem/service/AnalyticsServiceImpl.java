@@ -8,21 +8,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
-import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -75,7 +66,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
 
 	@Autowired
 	public AnalyticsServiceImpl(AnalyticsRepository analyticsRepository,AppProperties myAppProperties) {
-		System.out.println("matomo_url:" + analyticsRepository.findAll());
+		//System.out.println("matomo_url:" + analyticsRepository.findAll());
 		MATAMO_SERVER_URL = myAppProperties.getMatomo_url();
 		TOKEN_AUTH = myAppProperties.getMatomo_token_auth();
 		this.analyticsRepository = analyticsRepository;

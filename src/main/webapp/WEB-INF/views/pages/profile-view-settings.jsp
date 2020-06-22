@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ page import="com.onwardpath.wem.model.*"%>
-<%@ page import="com.onwardpath.wem.entity.User"%>
-<%@ page import="com.onwardpath.wem.entity.Organization"%>
+<%@ page import="com.onwardpath.wem.entity.User" %>
+<%@ page import="com.onwardpath.wem.entity.Organization" %>
 <!-- begin:: Content -->
 
 <script>
@@ -18,10 +17,11 @@
 <div class="kt-content  kt-grid__item kt-grid__item--fluid"
 	id="kt_content">
 	<%
-		int org_id = (Integer) session.getAttribute("org_id");
-		int site_id = Integer.parseInt(session.getAttribute("site_id").toString());
-		User user = (User) session.getAttribute("user");
-		Organization org = (Organization) session.getAttribute("org");
+		int org_id = ((User) session.getAttribute("user")).getOrgid();
+		int site_id = ((User) session.getAttribute("user")).getAnalytics_id();
+		String org_domain = ((Organization) session.getAttribute("org")).getDomain();
+		
+		String Org_name	  =	((Organization) session.getAttribute("org")).getName();
 	%>
 	<%
 		String message = (String) session.getAttribute("message");
@@ -60,9 +60,7 @@
 		<div class="kt-portlet__body">
 			<!-- begin::portlet-body -->
 
-			<form class="kt-form kt-form--label-right" id="kt_form" method="post"
-				class="needs-validation" action="UserController"
-				enctype="multipart/form-data">
+			
 				<input type="hidden" name="pageName" value="profilesetting">
 				<input type="hidden" name="role" value="1"> <input
 					type="hidden" name="orgId" value='<%=org_id%>'>
@@ -72,7 +70,7 @@
 					<div class="col-lg-4 col-md-9 col-sm-12">
 						<input type="text" class="form-control" name="org"
 							aria-describedby="emailHelp"
-							value="<%=org.getName()%>">
+							value="<%=Org_name%>" disabled>
 					</div>
 				</div>
 
@@ -81,7 +79,7 @@
 					<div class="col-lg-4 col-md-9 col-sm-12">
 						<input type="text" class="form-control" name="domain"
 							aria-describedby="emailHelp"
-							value="<%=org.getDomain()%>">
+							value="<%=org_domain%>" disabled>
 					</div>
 				</div>
 
@@ -92,7 +90,7 @@
 						<code id="myInput">
 							&lt;script&gt; var _gr = window._gr || {}; _gr.orgID = "<%=org_id%>";
 							_gr.siteID = "<%=site_id%>";
-							_gr.url = "http://demo.onwardpath.com/GeoTargetService/";
+							_gr.url = "http://demo.onwardpath.com/wws/";
 							(function() { var u= _gr.url; var d=document,
 							g=d.createElement('script'),
 							s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
@@ -106,15 +104,15 @@
 
 				</div>
 
-				<div class="form-group row">
+			<!-- 	<div class="form-group row">
 					<label class="col-for m-label col-lg-3 col-sm-12"></label>
 					<div class="col-lg-4 col-md-9 col-sm-12">
 						<button type="submit" class="btn btn-primary">Update</button>
 						&nbsp;
 
 					</div>
-				</div>
-			</form>
+				</div> -->
+			
 
 		</div>
 		<!-- end::portlet-body -->
