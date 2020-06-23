@@ -1,7 +1,7 @@
 <%@page import="java.sql.SQLException"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
-<%@page import="com.onwardpath.wem.util.Database"%>
+
 <%@page import="java.sql.Connection"%>
 <%@page import="java.util.LinkedList"%>
 <%@page import="java.util.TimeZone"%>
@@ -9,9 +9,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.Map, com.onwardpath.wem.repository.SegmentRepository" %>    
+   
 
-<%!
+<%-- <%!
 
 LinkedList<String> timezoneLst = new LinkedList<String>();
 private Connection dbConnection;
@@ -39,7 +39,7 @@ String exp_type=(String)session.getAttribute("exp_type");
 System.out.println("block_url="+block_url);
 System.out.println("exp_type="+exp_type);
 		 
-		 %>
+		 %> --%>
 <style>
 .mr20{
 	margin-right :20px;
@@ -54,7 +54,7 @@ System.out.println("exp_type="+exp_type);
 display:none;
 }
 </style>
-<script type="text/javascript">
+ <script type="text/javascript">
 
 var cfgDetailsObj = {};
 var index = 0;
@@ -85,7 +85,7 @@ function remove(element, index){
 function saveConfig(){
 	console.log(cfgDetailsObj)
 	var exp_type = localStorage.getItem("exp_type");
-	alert("exp_type"+exp_type)
+	//alert("exp_type"+exp_type)
 	var passStatus = true
 	var startDate = document.getElementById("kt_datepicker_1").value
 	var endDate = document.getElementById("kt_datepicker_2").value
@@ -110,7 +110,7 @@ function saveConfig(){
 		}
 	} 
 	if(passStatus){
-		console.log("TimeZone value is ::"+document.getElementById("Timezonelist").value)
+		//console.log("TimeZone value is ::"+document.getElementById("Timezonelist").value)
 		//console.log("inside passtatus check ::"+jQuery.isEmptyObject(cfgDetailsObj))
 		
 		if(exp_type == "block")
@@ -120,7 +120,7 @@ function saveConfig(){
 			console.log("cfgDetailsObj Value is ::"+JSON.stringify(cfgDetailsObj));
 			document.getElementById("config-form").urlList.value=JSON.stringify(cfgDetailsObj);	
 			document.getElementById("config-form").method = "post";
-			document.getElementById("config-form").action = "ConfigController";
+			document.getElementById("config-form").action = "configsave";
 			document.getElementById("config-form").submit();
 		}
 		else{
@@ -135,7 +135,7 @@ function saveConfig(){
 			console.log("cfgDetailsObj Value is ::"+JSON.stringify(cfgDetailsObj));
 			document.getElementById("config-form").urlList.value=JSON.stringify(cfgDetailsObj);	
 			document.getElementById("config-form").method = "post";
-			document.getElementById("config-form").action = "ConfigController";
+			document.getElementById("config-form").action = "configsave";
 			document.getElementById("config-form").submit();
 		}
 		}
@@ -152,7 +152,7 @@ function toggleCheckbox(){
     	$("#dateformation").hide();
     }
 } 
-
+ 
  document.addEventListener("DOMContentLoaded", () => {
 	var exp_type = localStorage.getItem("exp_type");
 	if(exp_type == "block")
@@ -170,19 +170,14 @@ function toggleCheckbox(){
 
 <!--begin::Content-->
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">	
-	<%	
+- <%
 	String message = (String) session.getAttribute("message");		
 	int org_id = (Integer)session.getAttribute("org_id");
 	String name = "";
 	String experience = "";
 	String organization = "";
 	String types ="";
-	
-	SegmentRepository segmentRepository = new SegmentRepository();
-	Map<Integer,String> segments = segmentRepository.getOrgSegments(org_id);
-	if (segments.size() == 0) {
-		message = "Error: No Segments are configured. Create a Segment <a class='kt-link kt-font-bold' href='?view=pages/segment-create-geo.jsp'>here</a>";	
-	}
+	 
 	
 	if (message != null && !message.equals("")) {
 		String icon = "fa fa-cocktail"; 
@@ -211,15 +206,15 @@ function toggleCheckbox(){
 		%>
 	
 		
-		
+		  
 		
 		<div class="row">
 		    <div class="col">
 		        <div class="alert alert-light alert-elevate fade show" role="alert">
-		            <div class="alert-icon"><i class="<%=icon%> kt-font-brand"></i></div>		            		           
+		            <div class="alert-icon"><i class="fa fa-cocktail kt-font-brand"></i></div>		            		           
 		            <div class="alert-text">
-		                <%=message%>
-		                <%
+		               <%=message%>
+		               <%
 		                if (displayCode) {
 		                	%>
 		                	<!-- Button trigger modal -->		                	
@@ -230,7 +225,7 @@ function toggleCheckbox(){
 							</button>
 		                	<%		                		
 		                }
-		                %>		            			            
+		                %>	 	            			            
 					</div>
 		        </div>
 		    </div>
@@ -251,7 +246,7 @@ function toggleCheckbox(){
 							</button>
 						</div>
 						<div class="modal-body">														 							 							
-							<code>&lt;div id="G-<%=name%>-<%=experience%>"&gt;&lt;/div&gt;</code>
+							<code>&lt;div id="webpersonify-<%=experience%>"&gt;&lt;/div&gt;</code>
 						</div>
 						<div class="modal-footer">							
 							<button type="button" class="btn btn-outline-brand">Copy</button>
@@ -260,12 +255,12 @@ function toggleCheckbox(){
 					</div>
 				</div>
 			</div>
-		</div>	
+		</div>	 
 		<!-- end::modal -->						
 		<%
 		session.setAttribute("message", "");
 	}																
-	%>			
+	%>	
 	<!--begin::Portlet-->
 	<div class="kt-portlet">
 		<div class="kt-portlet__head">
@@ -277,7 +272,7 @@ function toggleCheckbox(){
 		<!--begin::Form-->
 		<form class="kt-form kt-form--label-right" id="dummy-form"> 
 			<div class="kt-portlet__body">
-				<div id="show_block" style="display:none;">											 																
+				<div id="show_block">											 																
 				<div class="form-group row">
 					<label class="col-form-label col-lg-3 col-sm-12">Page Address</label>
 						<div class="col-lg-4 col-md-9 col-sm-12">															
@@ -286,7 +281,7 @@ function toggleCheckbox(){
 						</div>
 				</div>
 		
-				
+				  
 				<div class="form-group row">
 				<label class="col-form-label col-lg-3 col-sm-12"></label>
 					<div class="col-lg-4 col-md-9 col-sm-12">																					
@@ -337,12 +332,16 @@ function toggleCheckbox(){
 					<div class="col-lg-3 col-md-9 col-sm-12" id="exampleSelect2">
 						<select class="form-control" placeholder="Select Your favourite" data-search="true" id="Timezonelist">
 							<option value="">--Select--</option>
-							<c:forEach items="<%=getTimeZone()%>" var="timezoneVal">
+							<%-- <c:forEach items="<%=getTimeZone()%>" var="timezoneVal">
 								<option value='${fn:split(timezoneVal,"@")[0]}'>${fn:split(timezoneVal,"@")[1]}</option>
+							</c:forEach> --%>
+							
+							<c:forEach items="${zonelist}" var="zonevalue">
+							<option value='${zonevalue.zone_id}'>(${zonevalue.utcoffset}) ${zonevalue.displayname} (${zonevalue.zone_id})</option>
 							</c:forEach>
-						</select>
+						</select>     
 					</div>
-				</div>
+				</div> 
 			</div>
 				<div class="kt-separator kt-separator--border-dashed"></div>
 				<div class="kt-separator kt-separator--height-sm"></div>
@@ -364,9 +363,9 @@ function toggleCheckbox(){
 						<div class="col-lg-4 col-md-9 col-sm-12">
 							<div id="hidden-form" style="display: none;">																	
 								<input type="hidden" name="pageName" value="experience-create-enable.jsp">								
-								<input type="hidden" name="experience_id" value="<%=experience%>">
+								 <input type="hidden" name="experience_id" value="<%=experience%>">
 								<input type="hidden" name="experience_name" value="<%=name%>">	
-								<input type="hidden" name="experience_type" value="<%=types%>">
+								<input type="hidden" name="experience_type" value="<%=types%>"> 
 								
 						<%-- 		<input type="hidden" name="experience_url" value="<%=url%>"> --%>								
 								<input type="hidden" name="urlList">

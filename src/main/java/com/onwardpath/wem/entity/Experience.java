@@ -1,6 +1,8 @@
 package com.onwardpath.wem.entity;
 
-import java.util.Date;
+
+
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,10 +29,10 @@ public class Experience {
 	private String status;
 	
 	@Column(name = "schedule_start")
-	private String scheduleStart; 
+	private Date scheduleStart; 
 	
 	@Column(name = "schedule_end")
-	private String scheduleEnd;
+	private Date scheduleEnd;
 	
 	@Column(name = "org_id")
 	private int orgId;	
@@ -84,19 +86,19 @@ public class Experience {
 		this.status = status;
 	}
 
-	public String getScheduleStart() {
+	public Date getScheduleStart() {
 		return scheduleStart;
 	}
 
-	public void setScheduleStart(String scheduleStart) {
+	public void setScheduleStart(Date scheduleStart) {
 		this.scheduleStart = scheduleStart;
 	}
 
-	public String getScheduleEnd() {
+	public Date getScheduleEnd() {
 		return scheduleEnd;
 	}
 
-	public void setScheduleEnd(String scheduleEnd) {
+	public void setScheduleEnd(Date scheduleEnd) {
 		this.scheduleEnd = scheduleEnd;
 	}
 
