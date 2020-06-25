@@ -42,6 +42,7 @@ import com.onwardpath.wem.repository.ExpRepository;
 import com.onwardpath.wem.repository.NativeRepository;
 import com.onwardpath.wem.repository.OrgRepository;
 import com.onwardpath.wem.repository.RoleRepository;
+import com.onwardpath.wem.repository.SegmentRepository;
 import com.onwardpath.wem.repository.UserRepository;
 import com.onwardpath.wem.service.AnalyticsService;
 import com.onwardpath.wem.service.UserService;
@@ -59,6 +60,9 @@ public class UserController {
 	
 	@Autowired
 	ExpRepository expRepo;
+	
+	@Autowired
+	SegmentRepository segRepo;
 
 	@Autowired
 	private UserService userService;
@@ -152,8 +156,6 @@ public class UserController {
 	 
 	    public ModelAndView myprofile(SignupFormDTO signupFormDTO, HttpSession session) throws IOException
 	    {
-
- 	
 		 	ModelAndView modelAndView = userControllerImpl.profile(signupFormDTO, session);
 	    	return modelAndView;
 	    }
@@ -165,7 +167,7 @@ public class UserController {
 		//return new ResponseEntity<Object>(userRepo.findByOrgidIs(70), HttpStatus.OK);
 		//AnalyticsService analyticsService = new AnalyticsServiceImpl();
 		//return new ResponseEntity<Object>(myAppProperties.getMatomo_url(), HttpStatus.OK);
-		return new ResponseEntity<Object>(nr.getResultSetforExpView(),HttpStatus.OK);
+		return new ResponseEntity<Object>(segRepo.findAllByOrgIdIs(1),HttpStatus.OK);
 	}
 	
 	@GetMapping("/byorgid")
