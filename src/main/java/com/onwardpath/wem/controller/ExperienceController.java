@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onwardpath.wem.entity.Config;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
+import com.onwardpath.wem.model.PopupExpCreateFormDTO;
 import com.onwardpath.wem.model.SignupFormDTO;
 import com.onwardpath.wem.repository.ExperienceRepository;
 import com.onwardpath.wem.service.ExperienceServiceImpl;
@@ -201,12 +203,22 @@ public class ExperienceController {
 	}
 	
 	/**
-	 * Endpoint for Create --> Popup Experience
+	 * Popup Experience --> Create
 	 */
 	@RequestMapping(value = "/create-popup", method = RequestMethod.GET)
-	public ModelAndView createPopupView(HttpSession session) throws IOException {
-		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList(session);
+	public ModelAndView createPopupView() throws IOException {
+		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
 		modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
+		return modelAndView;
+	}
+	
+	/**
+	 * Popup Experience --> Save
+	 */
+	@RequestMapping(value = "/create-popup", method = RequestMethod.POST)
+	public ModelAndView savePopupExperience(PopupExpCreateFormDTO popupExCreateFormDTO) throws IOException {
+		ModelAndView modelAndView = expControllerImpl.savePopupExp(popupExCreateFormDTO);
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");
 		return modelAndView;
 	}
 

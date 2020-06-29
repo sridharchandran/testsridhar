@@ -53,6 +53,9 @@ public class Experience {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Column(name = "mod_time")
     private Date modTime;
+    
+    @Column(name = "user_id")
+    private int userid;
 
 	public int getId() {
 		return id;
@@ -150,5 +153,14 @@ public class Experience {
 		this.modTime = modTime;
 	}
 
+	public int getUserid() {
+		return userid;
+	}
+
+	public void setUserid(int userid) {
+		this.userid = userid;
+	}
+
+	
     
 }

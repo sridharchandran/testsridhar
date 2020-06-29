@@ -38,7 +38,7 @@ import com.onwardpath.wem.entity.Role;
 import com.onwardpath.wem.entity.User;
 import com.onwardpath.wem.model.ExperienceViewDTO;
 import com.onwardpath.wem.model.SignupFormDTO;
-import com.onwardpath.wem.repository.ExpRepository;
+import com.onwardpath.wem.repository.ExperienceRepository;
 import com.onwardpath.wem.repository.NativeRepository;
 import com.onwardpath.wem.repository.OrgRepository;
 import com.onwardpath.wem.repository.RoleRepository;
@@ -59,7 +59,7 @@ public class UserController {
 	OrgRepository orgRepo;
 	
 	@Autowired
-	ExpRepository expRepo;
+	ExperienceRepository expRepo;
 	
 	@Autowired
 	SegmentRepository segRepo;
@@ -124,11 +124,10 @@ public class UserController {
 
 	@GetMapping("/DisplayImageController/{id}")
 	public ResponseEntity<byte[]>  DisplayImage(@PathVariable("id") int id) throws IOException {
-		
-		User image  = userRepo.findByid(id);
-		
+		User image  = userRepo.findById(id);
 		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image.getProfile_pic());
 	}
+	
 //    @RequestMapping(value = "/login", method = RequestMethod.POST)
 //    @ResponseBody
 //    public Optional<User> authenticateUser(User user) {
@@ -163,20 +162,20 @@ public class UserController {
 	 
 	@GetMapping(value="/byid",produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<Object> byID(@ModelAttribute("user") User user) throws IOException {
+	public ResponseEntity<Object> byID(@ModelAttribute("user") User user,HttpSession session) throws IOException {
 		//return new ResponseEntity<Object>(userRepo.findByOrgidIs(70), HttpStatus.OK);
 		//AnalyticsService analyticsService = new AnalyticsServiceImpl();
 		//return new ResponseEntity<Object>(myAppProperties.getMatomo_url(), HttpStatus.OK);
-		return new ResponseEntity<Object>(segRepo.findAllByOrgIdIs(1),HttpStatus.OK);
+		return new ResponseEntity<Object>(session.getAttribute("user_id"),HttpStatus.OK);
 	}
 	
-	@GetMapping("/byorgid")
-	@ResponseBody
-    public List<ExperienceViewDTO> experience(@ModelAttribute("experience") Experience exp) {
-		 int org_id=1;
-		// int limit =10;
-    	return expRepo.findbyorgID(86);
-    }
+	/*
+	 * @GetMapping("/byorgid")
+	 * 
+	 * @ResponseBody public List<ExperienceViewDTO>
+	 * experience(@ModelAttribute("experience") Experience exp) { int org_id=1; //
+	 * int limit =10; return expRepo.findbyorgID(86); }
+	 */
 
 	// Endpoint for SignUp Page
 	@RequestMapping(value = "/registration", method = RequestMethod.GET)

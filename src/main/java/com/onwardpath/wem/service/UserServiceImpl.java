@@ -1,5 +1,7 @@
 package com.onwardpath.wem.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -57,6 +59,13 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Organization saveOrg(Organization org) {
 		return orgRepository.save(org);
+	}
+
+
+	@Override
+	public User findById(int user_id) {
+		// TODO Auto-generated method stub
+		return userRepository.findById(user_id);
 	}
 
 }
