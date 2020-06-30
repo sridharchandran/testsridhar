@@ -9,12 +9,9 @@ import com.onwardpath.wem.repository.ExperienceRepository;
 
 
 public interface  ExperienceService {
-
 	public static final ExperienceRepository expRepos = null;
-	
 	public Experience saveExperience(Experience exp);
     public Content  savecontent(Content con);
     public Config  saveconfig(Config config);
-
-
+    public boolean expExists(int orgId, String exp_name);
 }

@@ -77,8 +77,4 @@ public class ExperienceViewDTO {
 		this.segmentName = segmentName;
 	}
 	
-	
-	
-	
-
 }

@@ -70,8 +70,10 @@ public class ExperienceServiceImpl implements  ExperienceService {
 		return configRepos.save(config);
 	}
 
-	
-	
-	
+
+	@Override
+	public boolean expExists(int orgId, String exp_name) {
+		return expRepos.findByOrgIdAndName(orgId, exp_name) != null;
+	}
 	
 }

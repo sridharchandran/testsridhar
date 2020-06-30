@@ -22,7 +22,7 @@ public class SegmentServiceImpl implements SegmentService {
 	@Override
 	public List<SegmentNames> getSegmentNamesByOrgId(int orgId) {
 		// TODO Auto-generated method stub
-		return segmentRepository.findAllByOrgIdIs(orgId);
+		return segmentRepository.findAllByOrgIdIsOrderByName(orgId);
 	}
 
 }

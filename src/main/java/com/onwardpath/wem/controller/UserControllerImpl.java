@@ -124,7 +124,7 @@ public class UserControllerImpl {
 		  
 		  int ids =  ((User) session.getAttribute("user")).getId();
 		
-			user = userRepository.findByid(ids);
+			user = userRepository.findById(ids);
 			if(signupFormDTO.getFirstName() != null)
 		 	{
 				

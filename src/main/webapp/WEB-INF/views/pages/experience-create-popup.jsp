@@ -97,12 +97,11 @@
 		if (Object.entries(expDetailsObj).length <= 0) {
 			swal.fire("Please add atleast one content by Clicking ADD Button");
 		} else {
-			document.getElementById("experience-form").action = "ExperienceController";
+			document.getElementById("experience-form").action = "/wem/create-popup";
 			document.getElementById("experience-form").submit();
 		}
 
 	}
-
 	function getCheckedEvents() {
 		var checkedValue = "";
 		var inputElements = document.getElementById('page_events')
