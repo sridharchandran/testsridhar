@@ -166,17 +166,9 @@ public class UserController {
 		//return new ResponseEntity<Object>(userRepo.findByOrgidIs(70), HttpStatus.OK);
 		//AnalyticsService analyticsService = new AnalyticsServiceImpl();
 		//return new ResponseEntity<Object>(myAppProperties.getMatomo_url(), HttpStatus.OK);
-		return new ResponseEntity<Object>(session.getAttribute("user_id"),HttpStatus.OK);
+		return new ResponseEntity<Object>(segRepo.findAllByOrgIdIsOrderByName(1),HttpStatus.OK);
 	}
 	
-	/*
-	 * @GetMapping("/byorgid")
-	 * 
-	 * @ResponseBody public List<ExperienceViewDTO>
-	 * experience(@ModelAttribute("experience") Experience exp) { int org_id=1; //
-	 * int limit =10; return expRepo.findbyorgID(86); }
-	 */
-
 	// Endpoint for SignUp Page
 	@RequestMapping(value = "/registration", method = RequestMethod.GET)
 	public String userRegistrationPage() {
