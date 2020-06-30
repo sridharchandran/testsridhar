@@ -13,6 +13,6 @@ public interface  SegmentRepository  extends JpaRepository<Segment, Long>  {
 	
 	@Query(value="select * from segment where org_id  = :orgId order by name", nativeQuery=true)
 	public List<Segment> getSegmentByCustomQuery(int orgId);
-	List<SegmentNames> findAllByOrgIdIs(int orgId);
+	List<SegmentNames> findAllByOrgIdIsOrderByName(int orgId);
 }
  
