@@ -41,8 +41,8 @@ public class Experience {
 	private String createdBy;
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	@Column(name = "create_time")
-	private Date createTime;
+	@Column(name = "created_time")
+	private Date createdTime;
 	
 	@Column(name = "timezone_id")
 	private String timezoneId;
@@ -121,12 +121,12 @@ public class Experience {
 		this.createdBy = createdBy;
 	}
 
-	public Date getCreateTime() {
-		return createTime;
+	public Date getCreatedTime() {
+		return createdTime;
 	}
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
+	public void setCreatedTime(Date createTime) {
+		this.createdTime = createTime;
 	}
 
 	public String getTimezoneId() {
