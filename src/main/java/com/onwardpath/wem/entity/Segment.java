@@ -109,7 +109,7 @@ public class Segment {
 	
 	public LocalDateTime getModTime() {
 		return modTime;
-	}
+	} 
 
 	public void setModTime(LocalDateTime modTime) {
 		this.modTime = modTime;

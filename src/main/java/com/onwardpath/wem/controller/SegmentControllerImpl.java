@@ -86,7 +86,7 @@ public class SegmentControllerImpl {
 			seg.setCreatedBy(username);
 			seg.setOrgId(org_Id);
 			seg.setCreatedTime(now);
-			seg.setModBy(username);
+			seg.setModBy(username); 
 			seg.setModTime(now);
 			seg.setUserid(user_id);
 			seg = segService.saveSegment(seg);
