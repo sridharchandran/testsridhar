@@ -85,9 +85,9 @@ public class SegmentControllerImpl {
 			seg.setRule(segrules);
 			seg.setCreatedBy(username);
 			seg.setOrgId(org_Id);
-			seg.setCreatedTime(dtf.format(now));
+			seg.setCreatedTime(now);
 			seg.setModBy(username);
-			seg.setModTime(dtf.format(now));
+			seg.setModTime(now);
 			seg.setUserid(user_id);
 			seg = segService.saveSegment(seg);
 			seg_id = seg.getId();

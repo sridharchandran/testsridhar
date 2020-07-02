@@ -3,6 +3,7 @@ package com.onwardpath.wem.entity;
 
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,14 +35,14 @@ public class Segment {
     
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_time")
-    private String createdTime;
+    private LocalDateTime createdTime;
     
     @Column(name = "mod_by")
     private String modBy;
     
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Column(name = "mod_time")
-    private String modTime;
+    private LocalDateTime modTime;
        
     private String assignedmachine;
     
@@ -88,11 +89,12 @@ public class Segment {
 		this.orgId = orgId;
 	}
 
-	public String getCreatedTime() {
+	
+	public LocalDateTime getCreatedTime() {
 		return createdTime;
 	}
 
-	public void setCreatedTime(String createdTime) {
+	public void setCreatedTime(LocalDateTime createdTime) {
 		this.createdTime = createdTime;
 	}
 
@@ -104,12 +106,13 @@ public class Segment {
 		this.modBy = modBy;
 	}
 
-	public String getModTime() {
+	
+	public LocalDateTime getModTime() {
 		return modTime;
 	}
 
-	public void setModTime(String string) {
-		this.modTime = string;
+	public void setModTime(LocalDateTime modTime) {
+		this.modTime = modTime;
 	}
 
 	public String getAssignedmachine() {
