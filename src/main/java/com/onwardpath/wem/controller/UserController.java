@@ -32,12 +32,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.onwardpath.wem.AppProperties;
 import com.onwardpath.wem.entity.Experience;
-import com.onwardpath.wem.entity.Expinterface;
 import com.onwardpath.wem.entity.Organization;
 import com.onwardpath.wem.entity.Role;
 import com.onwardpath.wem.entity.User;
 import com.onwardpath.wem.model.ExperienceViewDTO;
 import com.onwardpath.wem.model.SignupFormDTO;
+import com.onwardpath.wem.projections.Expinterface;
 import com.onwardpath.wem.repository.ExperienceRepository;
 import com.onwardpath.wem.repository.NativeRepository;
 import com.onwardpath.wem.repository.OrgRepository;

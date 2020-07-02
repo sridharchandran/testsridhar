@@ -26,6 +26,7 @@ public interface  ExperienceRepository  extends JpaRepository<Experience, Long> 
     public void updateexperience(@Param("timezone_id") String timezone_id, @Param("schedule_start") Date schedule_start,@Param("schedule_end") Date schedule_end,@Param("status") String status,@Param("id") int id);
 	
 	Experience findByOrgIdAndName(int orgId,String exp_name);
+	Experience findByOrgIdAndNameIgnoreCase(int orgId,String exp_name);
 	
 }
 	 	

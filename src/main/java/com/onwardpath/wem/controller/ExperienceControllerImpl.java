@@ -57,23 +57,21 @@ public class ExperienceControllerImpl {
 		int exp_id = 0;
 		System.out.print("null"+user_id);
 		User user = userService.findById(user_id);
-		String UserFirstname = user.getFirstname();
-		String lastname = user.getLastname();
-		String username = UserFirstname + " " + lastname;
+		String fullname = getFullName(user.getFirstname(), user.getLastname());
 		String name = exp_name;
 		int org_Id = user.getOrgid();
 		String type = exp_type;
 		Date date = new Date(System.currentTimeMillis());
 
 		Experience newExp = new Experience();
-		newExp.setCreatedBy(username);
+		newExp.setCreatedBy(fullname);
 		newExp.setName(name);
 		newExp.setStatus(status);
 		newExp.setType(type);
 		newExp.setScheduleStart(date);
 		newExp.setOrgId(org_Id);
-		newExp.setModBy(username);
-		newExp.setCreateTime(date);
+		newExp.setModBy(fullname);
+		newExp.setCreatedTime(date);
 		newExp.setUserid(user_id);
 		newExp = expService.saveExperience(newExp);
 
@@ -92,14 +90,37 @@ public class ExperienceControllerImpl {
 
 		boolean expExists = expService.expExists(org_id, exp_name);
 		if (expExists) {
-			session.setAttribute("message", "Error: Experience with name <b>" + exp_name + "</b> is already exist");
-			modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
+			session.setAttribute("message", expCreateSetErrorMessage(exp_name));
+			modelAndView.addObject("expExists", expExists);
 		} else {
+			expExists = false;
 			int exp_id = saveExperience(exp_name, type, status, user_id);
-			session.setAttribute("message", "Experience <b>"+exp_name+"</b> saved. You can now configure the pages for this experience");
+			String pop_events = popupExpCreateFormDTO.getPage_events();
+			String pop_cookie = popupExpCreateFormDTO.getPopup_cookie();
+  		  	String pop_delay = popupExpCreateFormDTO.getPopup_delay();
+			session.setAttribute("message",expCreateSetSuccessMessage(exp_name));
 			modelAndView.addObject("exp_id", exp_id);
+			modelAndView.addObject("expExists", expExists);
 		}
 		return modelAndView;
+	}
+	
+	public String expCreateSetErrorMessage(String exp_name)
+	{
+		String message = "Error: Experience with name <b>" + exp_name + "</b> is already exist";
+		return message;
+	}
+	
+	public String expCreateSetSuccessMessage(String exp_name)
+	{
+		String message ="Experience <b>"+exp_name+"</b> saved. You can now configure the pages for this experience";
+		return message;
+	}
+
+	public String getFullName(String firstname, String lastname)
+	{
+		String fullname = firstname + " " + lastname;
+		return fullname;
 	}
 
 }

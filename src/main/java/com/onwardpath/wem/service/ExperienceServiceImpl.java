@@ -73,7 +73,7 @@ public class ExperienceServiceImpl implements  ExperienceService {
 
 	@Override
 	public boolean expExists(int orgId, String exp_name) {
-		return expRepos.findByOrgIdAndName(orgId, exp_name) != null;
+		return expRepos.findByOrgIdAndNameIgnoreCase(orgId, exp_name) != null;
 	}
 	
 }

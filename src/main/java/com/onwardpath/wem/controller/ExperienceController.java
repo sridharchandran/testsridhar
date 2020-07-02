@@ -99,7 +99,7 @@ public class ExperienceController {
 		newcontentexp.setScheduleStart(date);
 		newcontentexp.setOrgId(org_Id);
 		newcontentexp.setModBy(username);
-		newcontentexp.setCreateTime(date);
+		newcontentexp.setCreatedTime(date);
 
 		expseg.saveExperience(newcontentexp);
 
@@ -257,8 +257,17 @@ public class ExperienceController {
 	@RequestMapping(value = "/create-popup", method = RequestMethod.POST)
 	public ModelAndView savePopupExperience(PopupExpCreateFormDTO popupExCreateFormDTO) throws IOException {
 		ModelAndView modelAndView = expControllerImpl.savePopupExp(popupExCreateFormDTO);
-		modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");
+		Map<String, Object> model = modelAndView.getModel();
+		boolean expNameExists = (boolean) model.get("expExists");
+		
+		if(expNameExists)
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
+		else
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");	
+			
 		return modelAndView;
 	}
+	
+	
 
 }
