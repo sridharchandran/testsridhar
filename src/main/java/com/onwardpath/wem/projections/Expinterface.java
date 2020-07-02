@@ -1,4 +1,4 @@
-package com.onwardpath.wem.entity;
+package com.onwardpath.wem.projections;
 
 public interface Expinterface {
 
