@@ -44,6 +44,9 @@ public class Segment {
     private Date modTime;
        
     private String assignedmachine;
+    
+    @Column(name = "user_id")
+    private int userid;
 
 	public int getId() {
 		return id;
@@ -115,6 +118,14 @@ public class Segment {
 
 	public void setAssignedmachine(String assignedmachine) {
 		this.assignedmachine = assignedmachine;
+	}
+
+	public int getUserid() {
+		return userid;
+	}
+
+	public void setUserid(int userid) {
+		this.userid = userid;
 	}
     
     

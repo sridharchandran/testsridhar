@@ -122,10 +122,13 @@ public class UserController {
 		return "redirect:/home";
 	}
 
-	@GetMapping("/DisplayImageController/{id}")
-	public ResponseEntity<byte[]>  DisplayImage(@PathVariable("id") int id) throws IOException {
-		User image  = userRepo.findById(id);
-		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image.getProfile_pic());
+	@GetMapping("/DisplayImageController")
+	public ResponseEntity<byte[]> DisplayImage(HttpSession session) throws IOException {
+
+		byte[] pic  = ((User) session.getAttribute("user")).getProfile_pic();
+		
+
+		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(pic);
 	}
 	
 //    @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -166,7 +169,7 @@ public class UserController {
 		//return new ResponseEntity<Object>(userRepo.findByOrgidIs(70), HttpStatus.OK);
 		//AnalyticsService analyticsService = new AnalyticsServiceImpl();
 		//return new ResponseEntity<Object>(myAppProperties.getMatomo_url(), HttpStatus.OK);
-		return new ResponseEntity<Object>(segRepo.findAllByOrgIdIsOrderByName(1),HttpStatus.OK);
+		return new ResponseEntity<Object>(segRepo.findAllByOrgIdIsOrderByName(99),HttpStatus.OK);
 	}
 	
 	// Endpoint for SignUp Page

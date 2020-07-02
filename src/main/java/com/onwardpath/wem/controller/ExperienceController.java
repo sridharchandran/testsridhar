@@ -12,12 +12,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,10 +30,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onwardpath.wem.entity.Config;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
+import com.onwardpath.wem.model.ExperienceViewPostDTO;
 import com.onwardpath.wem.model.PopupExpCreateFormDTO;
 import com.onwardpath.wem.model.SignupFormDTO;
 import com.onwardpath.wem.repository.ExperienceRepository;
+import com.onwardpath.wem.repository.NativeRepository;
 import com.onwardpath.wem.service.ExperienceServiceImpl;
+import com.onwardpath.wem.service.NativeService;
 import com.onwardpath.wem.projections.SegmentNames;
 
 import javassist.compiler.ast.NewExpr;
@@ -44,6 +51,12 @@ public class ExperienceController {
 	
 	@Autowired
 	ExperienceControllerImpl expControllerImpl;
+	
+	@Autowired
+	private NativeRepository nr;
+	
+	@Autowired
+	NativeService nativeService;
 	
 	/**
 	 * Link formation and get segment dropdown Value for Experience Create Content
@@ -201,6 +214,32 @@ public class ExperienceController {
 		return "index.jsp?view=pages/experience-create-enable";
 
 	}
+	 @GetMapping("/experienceviewpage")
+	    public String userprofilesetting()
+	    {
+ 	
+	    	return "/index.jsp?view=pages/experience-view";
+	    }
+	
+	
+		// Endpoint for Experience View Page
+		@GetMapping(value = "/AjaxExpController", produces = MediaType.APPLICATION_JSON_VALUE)
+		@ResponseBody
+		public String ajaxExperience(@RequestParam("offset") int offset,@RequestParam("limit") int limit) throws IOException {
+		
+			String search = null;
+
+			return nativeService.getResultSetforExpView(1, offset, limit, search);
+		}
+		
+		// Endpoint for Search/Status/Modal_popup
+		@PostMapping(value = "/AjaxExpController", produces = MediaType.APPLICATION_JSON_VALUE)
+		@ResponseBody
+		public String ajaxPostExperience(ExperienceViewPostDTO experienceViewPostDTO) throws IOException {
+		
+			return nativeService.getResultSetforExpViewPost(experienceViewPostDTO);
+		}
+	
 	
 	/**
 	 * Popup Experience --> Create
