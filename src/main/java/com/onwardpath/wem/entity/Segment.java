@@ -34,14 +34,14 @@ public class Segment {
     
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Column(name = "created_time")
-    private Date createdTime;
+    private String createdTime;
     
     @Column(name = "mod_by")
     private String modBy;
     
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Column(name = "mod_time")
-    private Date modTime;
+    private String modTime;
        
     private String assignedmachine;
     
@@ -88,11 +88,11 @@ public class Segment {
 		this.orgId = orgId;
 	}
 
-	public Date getCreatedTime() {
+	public String getCreatedTime() {
 		return createdTime;
 	}
 
-	public void setCreatedTime(Date createdTime) {
+	public void setCreatedTime(String createdTime) {
 		this.createdTime = createdTime;
 	}
 
@@ -104,12 +104,12 @@ public class Segment {
 		this.modBy = modBy;
 	}
 
-	public Date getModTime() {
+	public String getModTime() {
 		return modTime;
 	}
 
-	public void setModTime(Date modTime) {
-		this.modTime = modTime;
+	public void setModTime(String string) {
+		this.modTime = string;
 	}
 
 	public String getAssignedmachine() {

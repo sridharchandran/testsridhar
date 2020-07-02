@@ -1,6 +1,8 @@
 package com.onwardpath.wem.controller;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.servlet.http.HttpSession;
 
@@ -50,11 +52,11 @@ public class SegmentControllerImpl {
 		}
 		else
 		{
-			System.out.println("coming="+seg_name);
+			
 			int seg_id = saveSegment(seg_name, rules, org_id, user_id);
-			System.out.println("org_id="+org_id);
+		
 			System.out.println("seg_id="+seg_id);
-			System.out.println("user_id="+user_id);
+			
 			session.setAttribute("message", "Segment <b>"+seg_name+"</b> Saved.");
 			
 		}
@@ -73,16 +75,19 @@ public class SegmentControllerImpl {
 			String lastname = user.getLastname();
 			String username = UserFirstname + " " + lastname;
 			int org_Id = user.getOrgid();
-			Date date = new Date(System.currentTimeMillis());
-			System.out.println("method calling");
+			
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+	    	LocalDateTime now = LocalDateTime.now();  
+	    	System.out.println(dtf.format(now));  
+			
 			Segment seg = new Segment();
 			seg.setName(name);
 			seg.setRule(segrules);
 			seg.setCreatedBy(username);
 			seg.setOrgId(org_Id);
-			seg.setCreatedTime(date);
+			seg.setCreatedTime(dtf.format(now));
 			seg.setModBy(username);
-			seg.setModTime(date);
+			seg.setModTime(dtf.format(now));
 			seg.setUserid(user_id);
 			seg = segService.saveSegment(seg);
 			seg_id = seg.getId();

@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -90,16 +92,18 @@ public class ExperienceController {
 		String type = "content";
 		String status = "on";
 
-		Date date = new Date(System.currentTimeMillis());
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+    	LocalDateTime now = LocalDateTime.now();  
+    	System.out.println(dtf.format(now)); 
 		Experience newcontentexp = new Experience();
 		newcontentexp.setCreatedBy(username);
 		newcontentexp.setName(name);
 		newcontentexp.setStatus(status);
 		newcontentexp.setType(type);
-		newcontentexp.setScheduleStart(date);
+		newcontentexp.setScheduleStart(dtf.format(now));
 		newcontentexp.setOrgId(org_Id);
 		newcontentexp.setModBy(username);
-		newcontentexp.setCreatedTime(date);
+		newcontentexp.setCreatedTime(dtf.format(now));
 
 		expseg.saveExperience(newcontentexp);
 
@@ -116,7 +120,7 @@ public class ExperienceController {
 			content.setExperience_id(experience_id);
 			content.setSegment_id(segment_id);
 			content.setContent(contentvalue);
-			content.setCreate_time(date);
+			content.setCreate_time(dtf.format(now));
 			expseg.savecontent(content);
 		}
 		mp.put("zonelist", expseg.gettimezone());
@@ -164,7 +168,9 @@ public class ExperienceController {
 		int user_Id = (Integer) session.getAttribute("user_id");
 		int org_id = (Integer) session.getAttribute("org_id");
 		String configDetails = request.getParameter("urlList");
-		Date date = new Date(System.currentTimeMillis());
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+    	LocalDateTime now = LocalDateTime.now();  
+    	System.out.println(dtf.format(now));
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
 		Map<String, String> map = mapper.readValue(configDetails, Map.class);
@@ -176,7 +182,7 @@ public class ExperienceController {
 			config.setExperience_id(experience_id);
 			config.setUrl(url);
 			config.setUser_id(user_Id);
-			config.setCreate_time(date);
+			config.setCreate_time(dtf.format(now));
 			expseg.saveconfig(config);
 		}
 
@@ -189,13 +195,14 @@ public class ExperienceController {
 
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 			java.util.Date dates = sdf1.parse(startdate);
-			java.sql.Date sqlStartDate = new java.sql.Date(dates.getTime());
+			String sqlStartDate = sdf1.format(dates);
 
 			String enddate = request.getParameter("enddate");
 
 			SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 			java.util.Date datess = sdf1.parse(enddate);
-			java.sql.Date sqlendDate = new java.sql.Date(datess.getTime());
+			String sqlendDate = sdf2.format(datess);
+			System.out.println(sdf2.format(datess)); 
 
 			newexp.setScheduleStart(sqlStartDate);
 			newexp.setScheduleEnd(sqlendDate);
@@ -214,7 +221,8 @@ public class ExperienceController {
 		return "index.jsp?view=pages/experience-create-enable";
 
 	}
-	 @GetMapping("/experienceviewpage")
+		// Endpoint for Experience View Page
+	 	@GetMapping("/experienceview")
 	    public String userprofilesetting()
 	    {
  	
@@ -222,7 +230,7 @@ public class ExperienceController {
 	    }
 	
 	
-		// Endpoint for Experience View Page
+		// Endpoint for Experience custom Pagination 
 		@GetMapping(value = "/AjaxExpController", produces = MediaType.APPLICATION_JSON_VALUE)
 		@ResponseBody
 		public String ajaxExperience(@RequestParam("offset") int offset,@RequestParam("limit") int limit) throws IOException {
