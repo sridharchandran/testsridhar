@@ -3,6 +3,8 @@ package com.onwardpath.wem.entity;
 
 
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +31,7 @@ public class Experience {
 	private String status;
 	
 	@Column(name = "schedule_start")
-	private Date scheduleStart; 
+	private LocalDateTime scheduleStart; 
 	
 	@Column(name = "schedule_end")
 	private Date scheduleEnd;
@@ -42,7 +44,7 @@ public class Experience {
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(name = "created_time")
-	private Date createdTime;
+	private LocalDateTime createdTime;
 	
 	@Column(name = "timezone_id")
 	private String timezoneId;
@@ -89,12 +91,12 @@ public class Experience {
 		this.status = status;
 	}
 
-	public Date getScheduleStart() {
+	public LocalDateTime getScheduleStart() {
 		return scheduleStart;
 	}
 
-	public void setScheduleStart(Date scheduleStart) {
-		this.scheduleStart = scheduleStart;
+	public void setScheduleStart(LocalDateTime now) {
+		this.scheduleStart = now;
 	}
 
 	public Date getScheduleEnd() {
@@ -121,12 +123,12 @@ public class Experience {
 		this.createdBy = createdBy;
 	}
 
-	public Date getCreatedTime() {
+	public LocalDateTime getCreatedTime() {
 		return createdTime;
 	}
 
-	public void setCreatedTime(Date createTime) {
-		this.createdTime = createTime;
+	public void setCreatedTime(LocalDateTime localDateTime) {
+		this.createdTime = localDateTime;
 	}
 
 	public String getTimezoneId() {

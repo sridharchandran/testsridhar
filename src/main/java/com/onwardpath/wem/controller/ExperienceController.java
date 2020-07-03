@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onwardpath.wem.entity.Config;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
+import com.onwardpath.wem.exception.DbInsertException;
 import com.onwardpath.wem.model.PopupExpCreateFormDTO;
 import com.onwardpath.wem.model.SignupFormDTO;
 import com.onwardpath.wem.repository.ExperienceRepository;
@@ -83,10 +86,10 @@ public class ExperienceController {
 		newcontentexp.setName(name);
 		newcontentexp.setStatus(status);
 		newcontentexp.setType(type);
-		newcontentexp.setScheduleStart(date);
+		newcontentexp.setScheduleStart(LocalDateTime.now());
 		newcontentexp.setOrgId(org_Id);
 		newcontentexp.setModBy(username);
-		newcontentexp.setCreatedTime(date);
+		newcontentexp.setCreatedTime(LocalDateTime.now());
 
 		expseg.saveExperience(newcontentexp);
 
@@ -103,7 +106,7 @@ public class ExperienceController {
 			content.setExperience_id(experience_id);
 			content.setSegment_id(segment_id);
 			content.setContent(contentvalue);
-			content.setCreate_time(date);
+			content.setCreate_time(LocalDateTime.now());
 			expseg.savecontent(content);
 		}
 		mp.put("zonelist", expseg.gettimezone());
@@ -184,7 +187,7 @@ public class ExperienceController {
 			java.util.Date datess = sdf1.parse(enddate);
 			java.sql.Date sqlendDate = new java.sql.Date(datess.getTime());
 
-			newexp.setScheduleStart(sqlStartDate);
+			newexp.setScheduleStart(LocalDateTime.now());
 			newexp.setScheduleEnd(sqlendDate);
 			newexp.setStatus(request.getParameter("status"));
 			newexp.setTimezoneId(request.getParameter("timezoneval"));
@@ -214,9 +217,10 @@ public class ExperienceController {
 	
 	/**
 	 * Popup Experience --> Save
+	 * @throws DbInsertException 
 	 */
 	@RequestMapping(value = "/create-popup", method = RequestMethod.POST)
-	public ModelAndView savePopupExperience(PopupExpCreateFormDTO popupExCreateFormDTO) throws IOException {
+	public ModelAndView savePopupExperience(PopupExpCreateFormDTO popupExCreateFormDTO) throws IOException, DbInsertException {
 		ModelAndView modelAndView = expControllerImpl.savePopupExp(popupExCreateFormDTO);
 		Map<String, Object> model = modelAndView.getModel();
 		boolean expNameExists = (boolean) model.get("expExists");
@@ -225,10 +229,18 @@ public class ExperienceController {
 		modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
 		else
 		modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");	
-			
+		
 		return modelAndView;
 	}
 	
-	
+	 @ExceptionHandler(DbInsertException.class)
+	  public ModelAndView handleError(HttpServletRequest req, Exception ex,HttpSession session) {
+	    ModelAndView mav = new ModelAndView();
+		session.setAttribute("message","Unresolved Error: Please contact administrator");
+	    mav.addObject("exception", ex);
+	    mav.setViewName("index.jsp?view=pages/experience-create-popup");
+	    return mav;
+	  }
+	 
 
 }

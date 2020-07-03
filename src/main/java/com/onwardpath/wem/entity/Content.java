@@ -1,5 +1,6 @@
 package com.onwardpath.wem.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -29,8 +30,8 @@ public class Content {
 	private String content;
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	@Column(name = "create_time")
-	private Date create_time;
+	@Column(name = "created_time")
+	private LocalDateTime create_time;
 
 	public int getId() {
 		return id;
@@ -64,12 +65,12 @@ public class Content {
 		this.content = content;
 	}
 
-	public Date getCreate_time() {
+	public LocalDateTime getCreate_time() {
 		return create_time;
 	}
 
-	public void setCreate_time(Date create_time) {
-		this.create_time = create_time;
+	public void setCreate_time(LocalDateTime localDateTime) {
+		this.create_time = localDateTime;
 	}
 	
 	

@@ -8,35 +8,40 @@ import org.springframework.stereotype.Service;
 import com.onwardpath.wem.entity.Config;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
+import com.onwardpath.wem.entity.Popup;
+import com.onwardpath.wem.entity.PopupAttributes;
 import com.onwardpath.wem.entity.Segment;
 import com.onwardpath.wem.entity.TimeZone;
 import com.onwardpath.wem.repository.ConfigRepository;
 import com.onwardpath.wem.repository.ContentRepository;
 import com.onwardpath.wem.repository.ExperienceRepository;
+import com.onwardpath.wem.repository.PopupAttrRepository;
+import com.onwardpath.wem.repository.PopupRepository;
 import com.onwardpath.wem.repository.SegmentRepository;
 import com.onwardpath.wem.repository.TimeZoneRepository;
 
 @Service
 public class ExperienceServiceImpl implements  ExperienceService {
-
+	
+	private SegmentRepository sepRepos;
+	private ExperienceRepository expRepos;
+	private ContentRepository conRepos;
+	private ConfigRepository configRepos;
+	private TimeZoneRepository timezoneRepos;
+	private PopupRepository popupRepos;
+	private PopupAttrRepository popupAttrRepos;
+	
 	@Autowired
-	SegmentRepository sepRepos;
-	
-	
-	@Autowired
-	ExperienceRepository expRepos;
-	
-	
-	@Autowired
-	ContentRepository conRepos;
-	
-	 
-	@Autowired
-	ConfigRepository configRepos;
-	
-	 
-	@Autowired
-	TimeZoneRepository timezoneRepos;
+	public ExperienceServiceImpl(SegmentRepository sepRepos,ExperienceRepository expRepos,ContentRepository conRepos,TimeZoneRepository timezoneRepos,PopupRepository popupRepos,ConfigRepository configRepos,PopupAttrRepository popupAttrRepos)
+	{
+		this.sepRepos = sepRepos;
+		this.expRepos  = expRepos;
+		this.conRepos = conRepos;
+		this.configRepos = configRepos;
+		this.timezoneRepos = timezoneRepos;
+		this.popupRepos = popupRepos;
+		this.popupAttrRepos = popupAttrRepos;
+	}
 	
 	
 	public List<Segment> findSegmentByOrgId(int orgId) {
@@ -47,7 +52,6 @@ public class ExperienceServiceImpl implements  ExperienceService {
 	
 	public List<TimeZone> gettimezone() {
 		return timezoneRepos.findAll();
-		
 	}
 
 	@Override
@@ -74,6 +78,34 @@ public class ExperienceServiceImpl implements  ExperienceService {
 	@Override
 	public boolean expExists(int orgId, String exp_name) {
 		return expRepos.findByOrgIdAndNameIgnoreCase(orgId, exp_name) != null;
+	}
+
+
+	@Override
+	public Popup savePopupContents(Popup popup) {
+		// TODO Auto-generated method stub
+		return popupRepos.save(popup);
+	}
+
+
+	@Override
+	public PopupAttributes savePopupAttributes(PopupAttributes popupAttributes) {
+		// TODO Auto-generated method stub
+		return popupAttrRepos.save(popupAttributes);
+	}
+
+
+	@Override
+	public List<Popup> saveAllPopupEntites(List<Popup> entities) {
+		// TODO Auto-generated method stub
+		return popupRepos.saveAll(entities);
+	}
+
+
+	@Override
+	public List<Content> saveAllContentEntites(List<Content> entities) {
+		// TODO Auto-generated method stub
+		return conRepos.saveAll(entities);
 	}
 	
 }
