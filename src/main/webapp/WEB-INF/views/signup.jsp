@@ -32,13 +32,65 @@ WebFont.load({
 
 function ValidateSize(file) {
     var FileSize = file.files[0].size/1024/1024; // in MB
-    if (FileSize > 2) {
-        alert('File size exceeds 2 MB');
+    if (FileSize > 2 ) {
+        swal.fire('File size exceeds 2 MB');
         $(file).val(''); //for clearing with Jquery
     } else {
 
     }
 }
+
+function checkDomain(domain) {
+	
+	if (domain.length === 0) {
+		document.getElementById("divCheckPasswordMatch").innerHTML = "";
+		return;
+	}
+	
+	if (document.getElementById('domain').value ==
+	    document.getElementById('confirmdomain').value) {
+		var url=  /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+		if((document.getElementById('domain').value.match(url) ) &&(document.getElementById('confirmdomain').value.match(url))){
+	    document.getElementById('domainmatches').style.color = 'green';
+	    document.getElementById('domainmatches').innerHTML = 'matching';
+		}
+		else
+			{
+			document.getElementById('domainmatches').style.color = 'red';
+		    document.getElementById('domainmatches').innerHTML = 'domain pattern doesnot match';
+			}
+	  } else {
+	    document.getElementById('domainmatches').style.color = 'red';
+	    document.getElementById('domainmatches').innerHTML = 'domain does not match';
+	  }
+	
+}
+
+function checkEmail(email) {
+	
+	if (email.length === 0) {
+		document.getElementById("divCheckPasswordMatch").innerHTML = "";
+		return;
+	}
+	if (document.getElementById('email').value ==
+	    document.getElementById('confirmemail').value) {
+		var emailtype=  /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+		if((document.getElementById('email').value.match(emailtype) ) &&(document.getElementById('confirmemail').value.match(emailtype))){
+	    document.getElementById('divCheckPasswordMatch').style.color = 'green';
+	    document.getElementById('divCheckPasswordMatch').innerHTML = 'matching';
+		}
+		else
+			{
+			document.getElementById('divCheckPasswordMatch').style.color = 'red';
+		    document.getElementById('divCheckPasswordMatch').innerHTML = 'Email pattern does not match';
+			}
+	  } else {
+	    document.getElementById('divCheckPasswordMatch').style.color = 'red';
+	    document.getElementById('divCheckPasswordMatch').innerHTML = 'email does not match';
+	  }
+}
+
+
 
 function checkURL(abc) {
 	  var string = abc.value;
@@ -52,84 +104,54 @@ function checkURL(abc) {
 	}
 
 
+
+
+
 function validatePassword(password) {
 
 	// Do not show anything when the length of password is zero.
 
 	if (password.length === 0) {
-		document.getElementById("msg").innerHTML = "";
+		document.getElementById("message").innerHTML = "";
 		return;
 	}
-	// Create an array and push all possible values that you want in password
-	var matchedCase = new Array();
-	matchedCase.push("[$@$!%*#?&]"); // Special Charector
-	matchedCase.push("[A-Z]"); // Uppercase Alpabates
-	matchedCase.push("[0-9]"); // Numbers
-	matchedCase.push("[a-z]"); // Lowercase Alphabates
-
-	// Check the conditions
-	var ctr = 0;
-	for (var i = 0; i < matchedCase.length; i++) {
-		if (new RegExp(matchedCase[i]).test(password)) {
-			ctr++;
-		}
-	}
-	// Display it
-	var color = "";
-	var strength = "";
-	switch (ctr) {
-	case 0:
-	case 1:
-	case 2:
-		strength = "Weak";
-		color = "red";
-		break;
-	case 3:
-		strength = "Medium";
-		color = "orange";
-		break;
-	case 4:
-		strength = "Strong";
-		color = "green";
-		break;
-	}
-	document.getElementById("msg").innerHTML = strength;
-	document.getElementById("msg").style.color = color;
 	
-	var pass1 = document.getElementById("n_password")
-	var pass2 = document.getElementById("c_password");
-	if (pass1.value != pass2.value) {
-		pass2.setCustomValidity("Password Don't Match");
-	} else {
-		pass2.setCustomValidity('');
-	}
+	if (document.getElementById('n_password').value ==
+	    document.getElementById('c_password').value) {
+		var paswd=  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
+		if((document.getElementById('n_password').value.match(paswd) ) &&(document.getElementById('c_password').value.match(paswd))){
+	    document.getElementById('message').style.color = 'green';
+	    document.getElementById('message').innerHTML = 'matching';
+		}
+		else
+			{
+			document.getElementById('message').style.color = 'red';
+		    document.getElementById('message').innerHTML = 'password pattern doesnot match';
+			}
+	  } else {
+	    document.getElementById('message').style.color = 'red';
+	    document.getElementById('message').innerHTML = 'passowrd doesnot match';
+	  }
+	
+	
+	
 }
 
-function validateEmail() {
-	alert("comindfdfg")
-}
+
 </script>
 
 <script type="text/javascript">
-/*  $(document).ready(function(){
- $('#email, #confirmemail').on('keyup', function () {
-  if ($('#eamil').val() == $('#confirmemail').val()) {
-    $('#message').html('Matching').css('color', 'green');
-  } else 
-    $('#message').html('Not Matching').css('color', 'red'); 
-});
- });
- */
+
 
 function validateEmail() {
 
-	 var domain = document.getElementById("domain").value;
+	/*  var domain = document.getElementById("domain").value;
 	 if(document.getElementById("domain").value != "")
 		 {
 	 var person = prompt("Please Confirm Domain Name,cant be updated after signup", domain);
 	 document.getElementById("domain").value =person;
 	 
-		 }
+		 } */
 	 var email1 = document.getElementById("email")
 	var email2 = document.getElementById("confirmemail");
 	if (email1.value != email2.value) {
@@ -148,16 +170,7 @@ function validateEmail() {
 		pass2.setCustomValidity('');
 	}
 	 
-	var fileUpload = document.getElementById("fileUpload");
-    if (typeof (fileUpload.files) != "undefined") {
-        var size = parseFloat(fileUpload.files[0].size / 1024).toFixed(2);
-        if(size >= 2)
-        	{
-        	size.setCustomValidity("Image size more than 2mb'.");
-    } else {
-    	size.setCustomValidity("");
-    }
-}
+	
     }
 
 
@@ -305,12 +318,29 @@ class="kt-login-v1--enabled kt-quick-panel--right kt-demo-panel--right kt-offcan
 							<div class="input-group">
 								<input id="domain"type="text" class="form-control" name="domain" title="url  should in this pattern https://(www|abc).example.com" 
 								pattern="^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$" 
-									placeholder="Enter Domain" onblur="checkURL(this)"  required>
+									placeholder="Enter Domain" onblur="checkURL(this)"onkeyup="checkDomain(this.value);"   required>
 								<!-- <div class="input-group-append"><span class="input-group-text">.com</span></div> -->
 							</div>
 						</div>
 					</div>
 
+					<div class="form-group row">
+						<label class="col-3 col-form-label">Confirm Company
+							Website</label>
+						<div class="col-9">
+							<div class="input-group">
+								<input id="confirmdomain"type="text" class="form-control" name="domain" title="url  should in this pattern https://(www|abc).example.com" 
+								pattern="^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$" 
+									placeholder="Enter Domain"  onkeyup="checkDomain(this.value);" required>
+								<!-- <div class="input-group-append"><span class="input-group-text">.com</span></div> -->
+							</div>
+						</div>
+					</div>
+					
+					</div>
+   						 <div class="registrationFormAlert" id="domainmatches">
+					</div>
+					
 					<!-- <div class="form-group form-group-last row">
 								<label class="col-3 col-form-label">Company Logo</label>
 								<div class="col-9">
@@ -366,7 +396,7 @@ class="kt-login-v1--enabled kt-quick-panel--right kt-demo-panel--right kt-offcan
 								<input type="text" class="form-control" id="email"
 									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"
 									title="xyz@something.com" name="email"
-									placeholder="Email" aria-describedby="basic-addon1"
+									placeholder="Email" onkeyup="checkEmail(this.value);" aria-describedby="basic-addon1"
 									required>
 							</div>
 						</div>
@@ -385,10 +415,14 @@ class="kt-login-v1--enabled kt-quick-panel--right kt-demo-panel--right kt-offcan
 									id="confirmemail" name="confirmemail"
 									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"
 									title="xyz@something.com" placeholder="Email"
-									aria-describedby="basic-addon1" required>
-								<span id='message'></span> 
+									aria-describedby="basic-addon1" onkeyup="checkEmail(this.value);" required>
+								
 							</div>
 						</div>
+					</div>
+					
+					</div>
+   						 <div class="registrationFormAlert" id="divCheckPasswordMatch">
 					</div>
 
 					<div class="form-group row">
@@ -425,8 +459,9 @@ class="kt-login-v1--enabled kt-quick-panel--right kt-demo-panel--right kt-offcan
 											<input id="c_password" class="form-control"
 												title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
 												pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
-												type="password" name="password-repeat" required>
+												type="password" name="password-repeat" onkeyup="validatePassword(this.value);" required>
 										</div>
+										<span id='message'></span>
 									</div>
 								</div>
 							</div>
