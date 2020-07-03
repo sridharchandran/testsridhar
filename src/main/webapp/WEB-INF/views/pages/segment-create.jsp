@@ -5,7 +5,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<script src="/wem/js/unified_segment.js" type="text/javascript"></script> 
+<script src="/wem/assets/js/custom/unified_segment.js" type="text/javascript"></script> 
 </head>
 <body>
 
@@ -131,7 +131,7 @@
 				<div class="form-group row">
 					<label class="col-form-label col-lg-3 col-sm-12"></label>
 					<div class="col-lg-4 col-md-9 col-sm-12">
-						<button type="reset" class="btn btn-accent"
+						<button id="geobutton" type="reset" class="btn btn-accent"
 							onclick="javascript:geoadd()">Add</button>
 					</div>
 				</div>
@@ -411,7 +411,7 @@
 					
 						<div id="hidden-form" style="display: none;">
 							<input type="hidden" name="pageName" value="segment-create.jsp">
-							<!-- input type="hidden" id = "segmentName" name="segmentName"  -->
+							<!-- <input type="hidden" id = "segmentName" name="segmentName"> --> 
 							<input type="hidden" id="segmentRules" name="segmentRules">
 							<select id="dynamic-select" size="2"></select>
 						</div>

@@ -1,6 +1,8 @@
 package com.onwardpath.wem.controller;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -61,17 +63,19 @@ public class ExperienceControllerImpl {
 		String name = exp_name;
 		int org_Id = user.getOrgid();
 		String type = exp_type;
-		Date date = new Date(System.currentTimeMillis());
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+    	LocalDateTime now = LocalDateTime.now();  
+    	System.out.println(dtf.format(now)); 
 
 		Experience newExp = new Experience();
 		newExp.setCreatedBy(fullname);
 		newExp.setName(name);
 		newExp.setStatus(status);
 		newExp.setType(type);
-		newExp.setScheduleStart(date);
+		newExp.setScheduleStart(dtf.format(now));
 		newExp.setOrgId(org_Id);
 		newExp.setModBy(fullname);
-		newExp.setCreatedTime(date);
+		newExp.setCreatedTime(dtf.format(now));
 		newExp.setUserid(user_id);
 		newExp = expService.saveExperience(newExp);
 

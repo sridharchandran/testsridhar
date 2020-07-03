@@ -110,7 +110,7 @@ function saveSegment() {
 			document.getElementById("segmentRules").value = attrstr;
 			if (segmentName.replace(" ", "").length > 0) {
 				document.getElementById("segment-form").method = "post";
-				document.getElementById("segment-form").action = "SegmentController";
+				document.getElementById("segment-form").action = "Segment_Save";
 				document.getElementById("segment-form").submit();
 			} else {
 				swal.fire("Segment Name value should not be empty.")
@@ -122,46 +122,92 @@ function saveSegment() {
 		}
 	}
 
-
-
-//Geo_location save segment javscript code
-
 var buttonlabelgeoArr = new Array();
 var geoTypeArr = new Array();
 var f_location = null;
 var locations = null;
-
-	function suggestArea(obj) {
+var timer;
+//Geo_location save segment javscript code
+function suggestArea(obj) {
 	
-		var geoloc = document.getElementById("geoloc").value;
-		var suggest_list = document.getElementById("suggest_list");
-		var frag = document.createDocumentFragment();
-		var serviceName = document.getElementById("geotype").options[document.getElementById("geotype").selectedIndex].value
-		if (geoloc.length >= 3) {
-			var xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200
-						&& this.response != "null") {
+	$('#geobutton').attr("disabled", true);
+	var geoloc = document.getElementById("geoloc").value;
+	var suggest_list = document.getElementById("suggest_list");
+	var frag = document.createDocumentFragment();
+	var serviceName = document.getElementById("geotype").options[document.getElementById("geotype").selectedIndex].value
+	clearTimeout(timer) // clear the request from the previous event
+    timer = setTimeout(function() {
+	if (geoloc.length >= 3) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200
+					&& this.response != "null" ) {
+				
+				var response = JSON.parse(this.response);
+				suggest_list.innerHTML = "";
+				var dataToStore = JSON.stringify(response);
+				localStorage.setItem('someData', response);
+				localStorage.setItem('jsonstring', dataToStore);
+				response.forEach(function(item) {
+					var option = document.createElement('option');
+					//option.value = item.substring(0,item.indexOf(","));
+					//option.textContent = item.substring(item.indexOf(",")+1,item.length).trim();
+					option.value = item;
+					frag.appendChild(option);
+					$('#geobutton').attr("disabled", true);
 					
-					var response = JSON.parse(this.response);
-					suggest_list.innerHTML = "";
-					response.forEach(function(item) {
-						var option = document.createElement('option');
-						//option.value = item.substring(0,item.indexOf(","));
-						//option.textContent = item.substring(item.indexOf(",")+1,item.length).trim();
-						option.value = item;
-						frag.appendChild(option);
-						
-					});
+				});
 					
-					suggest_list.appendChild(frag);
-				}
-			};
-			xhttp.open("GET", "AjaxController?service="+serviceName+"_suggestions&geoloc="
-					+ geoloc);
-			xhttp.send();
-		}
+				
+				suggest_list.appendChild(frag);
+				$('#geobutton').attr("disabled", false);
+			}
+		};
+		xhttp.open("GET", "/wem/AjaxController?service="+serviceName+"_suggestions&geoloc="
+				+ geoloc);
+		xhttp.send();
 	}
+    }, 500)
+}
+
+
+/*
+$(document).ready(function() {
+
+    $("input#geoloc").autocomplete({
+
+        width: 300,
+        max: 10,
+        delay: 100,
+        minLength: 1,
+        autoFocus: true,
+        cacheLength: 1,
+        scroll: true,
+        highlight: false,
+        source: function(request, response) {
+            $.ajax({
+                url: "/wem/AjaxController",
+               contentType: "application/json; charset=utf-8", 
+				data: { 
+            	service: document.getElementById("geotype").options[document.getElementById("geotype").selectedIndex].value+"_suggestions", 
+            	geoloc:document.getElementById("geoloc").value
+            	
+              },
+          
+            async: true,
+                success: function( data, textStatus, jqXHR) {
+                    console.log( data);
+                    var items = data;
+                    response(items);
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                     console.log( textStatus);
+                }
+            });
+        }
+ 
+    });
+    });*/
 
 function geoadd() {
 	var georule = document.getElementById("georule").value;

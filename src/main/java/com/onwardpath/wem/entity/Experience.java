@@ -29,10 +29,10 @@ public class Experience {
 	private String status;
 	
 	@Column(name = "schedule_start")
-	private Date scheduleStart; 
+	private String scheduleStart; 
 	
 	@Column(name = "schedule_end")
-	private Date scheduleEnd;
+	private String scheduleEnd;
 	
 	@Column(name = "org_id")
 	private int orgId;	
@@ -42,7 +42,7 @@ public class Experience {
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(name = "created_time")
-	private Date createdTime;
+	private String createdTime;
 	
 	@Column(name = "timezone_id")
 	private String timezoneId;
@@ -89,19 +89,21 @@ public class Experience {
 		this.status = status;
 	}
 
-	public Date getScheduleStart() {
+	public String getScheduleStart() {
 		return scheduleStart;
 	}
 
-	public void setScheduleStart(Date scheduleStart) {
+	public void setScheduleStart(String scheduleStart) {
 		this.scheduleStart = scheduleStart;
 	}
 
-	public Date getScheduleEnd() {
+	
+
+	public String getScheduleEnd() {
 		return scheduleEnd;
 	}
 
-	public void setScheduleEnd(Date scheduleEnd) {
+	public void setScheduleEnd(String scheduleEnd) {
 		this.scheduleEnd = scheduleEnd;
 	}
 
@@ -121,12 +123,13 @@ public class Experience {
 		this.createdBy = createdBy;
 	}
 
-	public Date getCreatedTime() {
+	
+	public String getCreatedTime() {
 		return createdTime;
 	}
 
-	public void setCreatedTime(Date createTime) {
-		this.createdTime = createTime;
+	public void setCreatedTime(String createdTime) {
+		this.createdTime = createdTime;
 	}
 
 	public String getTimezoneId() {
