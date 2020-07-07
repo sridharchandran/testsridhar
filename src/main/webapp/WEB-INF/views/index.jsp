@@ -10,8 +10,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <!--begin::Fonts -->
         <script src="/wem/assets/js/jscolor.js"></script> 
-         <script src="https://code.jquery.com/jquery-3.3.1.js" type="text/javascript"></script>
-             
+       
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+ <!--    <link  href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script -->
+    
+    <!-- <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+     -->         
         <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>        
         <script>
         WebFont.load({
@@ -106,7 +113,7 @@
         <!-- end::Global Config -->
         <!--begin::Global Theme Bundle(used by all pages) -->
         
-        <script src="https://code.jquery.com/jquery-3.3.1.js" type="text/javascript"></script>
+       <!--  <script src="https://code.jquery.com/jquery-3.3.1.js" type="text/javascript"></script> -->
         <script src="/wem/assets/vendors/global/vendors.bundle.js" type="text/javascript"></script>
         <script src="/wem/assets/js/demo1/scripts.bundle.js" type="text/javascript"></script>
         <!-- <script src="/wem/assets/vendors/custom/datatables/datatables.bundle.js"></script>

@@ -24,9 +24,9 @@ public interface  ExperienceRepository  extends JpaRepository<Experience, Long> 
 	@Modifying
 	@Transactional
     @Query(value="update experience e set e.timezone_id =:timezone_id,e.schedule_start=:schedule_start,e.schedule_end =:schedule_end,e.status =:status where e.id= :id",nativeQuery=true)
-    public void updateexperience(@Param("timezone_id") String timezone_id, @Param("schedule_start") LocalDateTime localDateTime,@Param("schedule_end") Date schedule_end,@Param("status") String status,@Param("id") int id);
-	
-	Experience findByOrgIdAndName(int orgId,String exp_name);
+    public void updateexperience(@Param("timezone_id") String timezone_id, @Param("schedule_start") LocalDateTime schd_start,@Param("schedule_end") LocalDateTime schd_end,@Param("status") String status,@Param("id") int id);
+
+    Experience findByOrgIdAndName(int orgId,String exp_name);
 	Experience findByOrgIdAndNameIgnoreCase(int orgId,String exp_name);
 	Experience findById(int exp_id);
 	

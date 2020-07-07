@@ -34,7 +34,7 @@ public class Experience {
 	private LocalDateTime scheduleStart; 
 	
 	@Column(name = "schedule_end")
-	private Date scheduleEnd;
+	private LocalDateTime scheduleEnd;
 	
 	@Column(name = "org_id")
 	private int orgId;	
@@ -95,16 +95,16 @@ public class Experience {
 		return scheduleStart;
 	}
 
-	public void setScheduleStart(LocalDateTime now) {
-		this.scheduleStart = now;
+	public void setScheduleStart(LocalDateTime sqlStartDate) {
+		this.scheduleStart = sqlStartDate;
 	}
 
-	public Date getScheduleEnd() {
+	public LocalDateTime getScheduleEnd() {
 		return scheduleEnd;
 	}
 
-	public void setScheduleEnd(Date scheduleEnd) {
-		this.scheduleEnd = scheduleEnd;
+	public void setScheduleEnd(LocalDateTime sqlendDate) {
+		this.scheduleEnd = sqlendDate;
 	}
 
 	public int getOrgId() {

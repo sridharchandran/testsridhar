@@ -36,7 +36,7 @@ function logout() {
         <div class="kt-user-card__pic">
         	<%
         	if (pic.length != 0) {%>
-        		<img alt="Pic" src='/wem/DisplayImageController/<%=ids%>'/> 
+        		<img alt="Pic" src='/wem/DisplayImageController'/> 
         	<%}%>            
         </div>
         <div class="kt-user-card__details">

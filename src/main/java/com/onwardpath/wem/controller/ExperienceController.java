@@ -13,13 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -34,7 +38,9 @@ import com.onwardpath.wem.model.PopupExpCreateFormDTO;
 import com.onwardpath.wem.model.SignupFormDTO;
 import com.onwardpath.wem.repository.ExperienceRepository;
 import com.onwardpath.wem.service.ExperienceService;
+import com.onwardpath.wem.repository.NativeRepository;
 import com.onwardpath.wem.service.ExperienceServiceImpl;
+import com.onwardpath.wem.service.NativeService;
 import com.onwardpath.wem.projections.SegmentNames;
 
 import javassist.compiler.ast.NewExpr;
@@ -52,6 +58,12 @@ public class ExperienceController {
 	
 	@Autowired
 	ExperienceService expService;
+	
+	@Autowired
+	private NativeRepository nr;
+	
+	@Autowired
+	NativeService nativeService;
 	
 	/**
 	 * Link formation and get segment dropdown Value for Experience Create Content
@@ -85,16 +97,16 @@ public class ExperienceController {
 		String type = "content";
 		String status = "on";
 
-		Date date = new Date(System.currentTimeMillis());
+		LocalDateTime now = LocalDateTime.now();  
 		Experience newcontentexp = new Experience();
 		newcontentexp.setCreatedBy(username);
 		newcontentexp.setName(name);
 		newcontentexp.setStatus(status);
 		newcontentexp.setType(type);
-		newcontentexp.setScheduleStart(LocalDateTime.now());
+		newcontentexp.setScheduleStart(now);
 		newcontentexp.setOrgId(org_Id);
 		newcontentexp.setModBy(username);
-		newcontentexp.setCreatedTime(LocalDateTime.now());
+		newcontentexp.setCreatedTime(now);
 
 		expseg.saveExperience(newcontentexp);
 
@@ -191,15 +203,16 @@ public class ExperienceController {
 
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 			java.util.Date dates = sdf1.parse(startdate);
-			java.sql.Date sqlStartDate = new java.sql.Date(dates.getTime());
+			LocalDateTime sqlStartDate = LocalDateTime.parse(sdf1.format(dates));
 
 			String enddate = request.getParameter("enddate");
 
 			SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 			java.util.Date datess = sdf1.parse(enddate);
-			java.sql.Date sqlendDate = new java.sql.Date(datess.getTime());
+			LocalDateTime sqlendDate = LocalDateTime.parse(sdf2.format(datess));
+			System.out.println(sdf2.format(datess)); 
 
-			newexp.setScheduleStart(LocalDateTime.now());
+			newexp.setScheduleStart(sqlStartDate);
 			newexp.setScheduleEnd(sqlendDate);
 			newexp.setStatus(request.getParameter("status"));
 			newexp.setTimezoneId(request.getParameter("timezoneval"));

@@ -121,7 +121,7 @@ $(document).on("change","#mySelect", function() {
 	                
 	                response = this.response; 
 					
-					dataJSONArray = JSON.parse(data);
+					dataJSONArray = data;
 					var table = $('.kt_datatable');
 					c = table.KTDatatable();
 
@@ -854,7 +854,7 @@ function myFunction() {
         	
 		
 		   		 var url	 = "/wem/AjaxExpController"
-	   			 var params = "service="+status+"&expid="+exp_id+"&exper=status";
+	   			 var params = "toggle="+status+"&expid="+exp_id+"&exper=status";
 	   			  var response = "";
 	   		 
 	   				
@@ -986,8 +986,8 @@ function test(offset,limit,record)
             	document.getElementById("mySelect").style.display = "unset";
             	document.getElementById("search").style.display = "block";
             	console.log("string data="+JSON.stringify(data));
-            	console.log("parse data="+JSON.parse(data));
-                dataJSONArray = JSON.parse(data) ;
+            	/*console.log("parse data="+JSON.parse(data));*/
+                dataJSONArray = data ;
                 console.log("data="+JSON.stringify(data));
                 ktDATA();
                 var expcount = dataJSONArray[0];
@@ -1066,54 +1066,54 @@ function ktDATA()
     					selector: {class: 'kt-checkbox--solid'},
     					textAlign: 'center',
     				},{
-    					field: 'status', 
+    					field: 'type', 
     					title: 'Type',
     					// callback function support for column rendering
     					template:function(exp)
     					{
-    						if((exp.status == 'content')) 
+    						if((exp.type == 'content')) 
 							{
 							return '\
 							  <i class="flaticon2-paper" style="vertical-align: middle;font-size: 2.5rem!important;margin-left: 2px;"></i>\
 							  ';
 							}
-    						if((exp.status == 'image') || ((exp.status == 'Image')))
+    						if((exp.type == 'image') || ((exp.type == 'Image')))
 							{
 							return '\
 							  <i class="fa fa-file-image" style="vertical-align: middle;font-size: 2.5rem!important;margin-left: 5px;"></i>\
 							  ';
 							}
-    						if((exp.status == 'popup'))
+    						if((exp.type == 'popup'))
 							{
 							return '\
 							  <i class="fas fa-external-link-alt" style="vertical-align: middle;font-size: 2.5rem!important;margin-left: 5px;"></i>\
 							  ';
 							}
-    						if((exp.status == 'link'))
+    						if((exp.type == 'link'))
 							{
 							return '\
 							  <i class="fa fa-link" style="vertical-align: middle;font-size: 2.5rem!important;margin-left: 5px;"></i>\
 							  ';
 							}
-    						if((exp.status == 'bar'))
+    						if((exp.type == 'bar'))
 							{
 							return '\
 							  <i class="fa fa-bars" style="vertical-align: middle;font-size: 2.5rem!important;margin-left: 5px;"></i>\
 							  ';
 							}
-    						if((exp.status == 'redirect'))
+    						if((exp.type == 'redirect'))
 							{
 							return '\
 							  <i class="fa fa-mail-forward" style="vertical-align: middle;font-size: 2.5rem!important;margin-left: 5px;"></i>\
 							  ';
 							}
-    						if((exp.status == 'block'))
+    						if((exp.type == 'block'))
 							{
 							return '\
 							  <i class="fa fa-ban" style="vertical-align: middle;font-size: 2.5rem!important;margin-left: 5px;"></i>\
 							  ';
 							}
-    						if((exp.status == 'style'))
+    						if((exp.type == 'style'))
 							{
 							return '\
 							  <i class="fa fa-border-style" style="vertical-align: middle;font-size: 2.5rem!important;margin-left: 5px;"></i>\
@@ -1160,7 +1160,7 @@ function ktDATA()
     						var exp_id = row.id;
     						var pagetype ="";   
     						var exp_name = row.experience;
-    						var exp_type = row.status;
+    						var exp_type = row.type;
     						var segArray = row.segments.split(",");
     						segArray = segArray.slice(0,segArray.lastIndexOf(","));
     					
@@ -1179,7 +1179,7 @@ function ktDATA()
     					
     					},
     				},   {
-    					field: 'type',
+    					field: 'status',
     					title: 'Status',
     					template:function(row)
     					{
@@ -1188,7 +1188,7 @@ function ktDATA()
     						experid = row.id;
     						expname = row.experience;
     					
-    						if ((row.type == 'on') ) 
+    						if ((row.status == 'on') ) 
     						{
     						  return '\
     						  <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">\
@@ -1200,7 +1200,7 @@ function ktDATA()
     						  
     						
     						} 
-    						else if ((row.type == 'off') ) 
+    						else if ((row.status == 'off') ) 
     							{
     							
     							  return '\
@@ -1214,7 +1214,7 @@ function ktDATA()
     							
     							
     							}
-    						else if ((row.type == 'scheduled') ) 
+    						else if ((row.status == 'scheduled') ) 
 							{
 							  return '\
 							  <i class="flaticon-time" style="line-height: 0;vertical-align: middle;font-size: 2.5rem!important;margin-left: 10px;"></i>\

@@ -17,7 +17,7 @@
 							<span class="kt-menu__link"><span class="kt-menu__link-text">Segment</span></span>
 						</li>
 							<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
-								<a href="/wem?view=pages/segment-create.jsp" class="kt-menu__link kt-menu__toggle">
+								<a href="/wem/segment_create" class="kt-menu__link kt-menu__toggle">
 									<i class="kt-menu__link-icon la flaticon2-edit"><span></span></i>
 									<span class="kt-menu__link-text">Create</span>
 									<i class="kt-menu__ver-arrow la la-angle-right"></i>
@@ -155,7 +155,7 @@
 								</div>
 							</li>
 							<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
-								<a href="/wem?view=pages/experience-view.jsp" class="kt-menu__link kt-menu__toggle">
+								<a href="/wem/experienceview" class="kt-menu__link kt-menu__toggle">
 									<i class="kt-menu__link-icon la flaticon-eye"><span></span></i>
 									<span class="kt-menu__link-text">View</span>
 									<i class="kt-menu__ver-arrow la la-angle-right"></i>
