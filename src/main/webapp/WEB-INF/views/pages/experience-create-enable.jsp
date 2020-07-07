@@ -365,7 +365,8 @@ function toggleCheckbox(){
 								<input type="hidden" name="pageName" value="experience-create-enable.jsp">								
 								 <input type="hidden" name="experience_id" value="<%=experience%>">
 								<input type="hidden" name="experience_name" value="<%=name%>">	
-								<input type="hidden" name="experience_type" value="<%=types%>"> 
+								<input type="hidden" name="experience_type" value="<%=types%>">
+								<input type="hidden" name="exp_id" value="${exp_id}"> 
 								
 						<%-- 		<input type="hidden" name="experience_url" value="<%=url%>"> --%>								
 								<input type="hidden" name="urlList">

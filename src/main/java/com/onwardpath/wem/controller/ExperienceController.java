@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -32,6 +33,7 @@ import com.onwardpath.wem.exception.DbInsertException;
 import com.onwardpath.wem.model.PopupExpCreateFormDTO;
 import com.onwardpath.wem.model.SignupFormDTO;
 import com.onwardpath.wem.repository.ExperienceRepository;
+import com.onwardpath.wem.service.ExperienceService;
 import com.onwardpath.wem.service.ExperienceServiceImpl;
 import com.onwardpath.wem.projections.SegmentNames;
 
@@ -47,6 +49,9 @@ public class ExperienceController {
 	
 	@Autowired
 	ExperienceControllerImpl expControllerImpl;
+	
+	@Autowired
+	ExperienceService expService;
 	
 	/**
 	 * Link formation and get segment dropdown Value for Experience Create Content
@@ -146,11 +151,18 @@ public class ExperienceController {
 	public String submitconfig(ModelMap mp, HttpSession session, HttpServletRequest request)
 			throws JsonMappingException, JsonProcessingException, ParseException {
 
-		int experience_id = Integer.parseInt(request.getParameter("experience_id"));
-
-		String expname = request.getParameter("experience_name");
-		// String org_id = request.getParameter("name");
-		String experience_type = request.getParameter("experience_type");
+		System.out.print("getmodelmap"+mp.get("exp_id"));
+//		int experience_id = Integer.parseInt(request.getParameter("experience_id"));
+//
+//		String expname = request.getParameter("experience_name");
+//		// String org_id = request.getParameter("name");
+//		String experience_type = request.getParameter("experience_type");
+		
+		int exp_id = Integer.parseInt(request.getParameter("exp_id"));	
+		Experience e = expService.getExperienceById(exp_id);
+		String exp_name = e.getName();
+		String exp_type = e.getType();
+		
 		int user_Id = (Integer) session.getAttribute("user_id");
 		int org_id = (Integer) session.getAttribute("org_id");
 		String configDetails = request.getParameter("urlList");
@@ -163,7 +175,7 @@ public class ExperienceController {
 			int index = Integer.parseInt(entry.getKey());
 			String url = entry.getValue();
 			Config config = new Config();
-			config.setExperience_id(experience_id);
+			config.setExperience_id(exp_id);
 			config.setUrl(url);
 			config.setUser_id(user_Id);
 			config.setCreate_time(date);
@@ -192,15 +204,15 @@ public class ExperienceController {
 			newexp.setStatus(request.getParameter("status"));
 			newexp.setTimezoneId(request.getParameter("timezoneval"));
 			expRepo.updateexperience(newexp.getTimezoneId(), newexp.getScheduleStart(), newexp.getScheduleEnd(),
-					newexp.getStatus(), experience_id);
+					newexp.getStatus(), exp_id);
 
 		}
 
 		// mp.addAttribute("msg", "Page configuration for <b>"+expname+"</b> saved
 		// succesfully");
 
-		session.setAttribute("message", "Page configuration for <b>" + expname + "</b> saved succesfully.#n=" + expname
-				+ "#e=" + experience_id + "#o=" + org_id + "#t=" + experience_type);
+		session.setAttribute("message", "Page configuration for <b>" + exp_name + "</b> saved succesfully.#n=" + exp_name
+				+ "#e=" + exp_id + "#o=" + org_id + "#t=" + exp_type);
 		return "index.jsp?view=pages/experience-create-enable";
 
 	}
@@ -220,18 +232,36 @@ public class ExperienceController {
 	 * @throws DbInsertException 
 	 */
 	@RequestMapping(value = "/create-popup", method = RequestMethod.POST)
-	public ModelAndView savePopupExperience(PopupExpCreateFormDTO popupExCreateFormDTO) throws IOException, DbInsertException {
+	public ModelAndView savePopupExperience(PopupExpCreateFormDTO popupExCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
 		ModelAndView modelAndView = expControllerImpl.savePopupExp(popupExCreateFormDTO);
 		Map<String, Object> model = modelAndView.getModel();
 		boolean expNameExists = (boolean) model.get("expExists");
 		
+		modelAndView.clear();
+		
 		if(expNameExists)
+		{
 		modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
+		}
 		else
-		modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");	
+		{
+		String exp_id = model.get("exp_id").toString();
+		modelAndView.setViewName("redirect:/experience-config");
+		rdAttr.addAttribute("exp_id",exp_id);
+		}
 		
 		return modelAndView;
 	}
+	
+	@RequestMapping(value = "/experience-config", method = RequestMethod.GET)
+	public ModelAndView saveExperienceConfig(@ModelAttribute("exp_id") String exp_id) throws IOException, DbInsertException {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("zonelist", expseg.gettimezone());
+		modelAndView.addObject("exp_id", exp_id);
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");			
+		return modelAndView;
+	}
+	
 	
 	 @ExceptionHandler(DbInsertException.class)
 	  public ModelAndView handleError(HttpServletRequest req, Exception ex,HttpSession session) {

@@ -22,4 +22,5 @@ public interface  ExperienceService {
     public PopupAttributes savePopupAttributes(PopupAttributes popupAttributes);
     public List<Popup> saveAllPopupEntites(List<Popup> entities);
 	public List<Content> saveAllContentEntites(List<Content> entities);
+	public Experience getExperienceById(int exp_id);
 }

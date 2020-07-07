@@ -156,8 +156,8 @@ public class ExperienceControllerImpl {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, LinkedHashMap> map = mapper.readValue(experienceDetails, Map.class);
 		for (Entry<String, LinkedHashMap> entry : map.entrySet()) {
-			int segment_id = Integer.parseInt(entry.getKey());
-			// int segment_id = 1;
+			//int segment_id = Integer.parseInt(entry.getKey());
+			int segment_id = 1;
 			LinkedHashMap<?, ?> seg_data = entry.getValue();
 			Popup newPopupModel = new Popup();
 			Content newContentModel = new Content();

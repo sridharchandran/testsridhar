@@ -107,5 +107,12 @@ public class ExperienceServiceImpl implements  ExperienceService {
 		// TODO Auto-generated method stub
 		return conRepos.saveAll(entities);
 	}
+
+
+	@Override
+	public Experience getExperienceById(int exp_id) {
+		// TODO Auto-generated method stub
+		return expRepos.findById(exp_id);
+	}
 	
 }

@@ -28,6 +28,7 @@ public interface  ExperienceRepository  extends JpaRepository<Experience, Long> 
 	
 	Experience findByOrgIdAndName(int orgId,String exp_name);
 	Experience findByOrgIdAndNameIgnoreCase(int orgId,String exp_name);
+	Experience findById(int exp_id);
 	
 }
 	 	
