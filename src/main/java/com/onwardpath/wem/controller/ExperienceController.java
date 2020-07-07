@@ -26,8 +26,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onwardpath.wem.entity.Config;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
+import com.onwardpath.wem.model.ImageExpCreateFormDTO;
 import com.onwardpath.wem.model.PopupExpCreateFormDTO;
 import com.onwardpath.wem.model.SignupFormDTO;
+import com.onwardpath.wem.model.StyleExpCreateFormDTO;
 import com.onwardpath.wem.repository.ExperienceRepository;
 import com.onwardpath.wem.service.ExperienceServiceImpl;
 import com.onwardpath.wem.projections.SegmentNames;
@@ -218,6 +220,49 @@ public class ExperienceController {
 	@RequestMapping(value = "/create-popup", method = RequestMethod.POST)
 	public ModelAndView savePopupExperience(PopupExpCreateFormDTO popupExCreateFormDTO) throws IOException {
 		ModelAndView modelAndView = expControllerImpl.savePopupExp(popupExCreateFormDTO);
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");
+		return modelAndView;
+	}
+	
+	/**
+	 * Link formation and get segment dropdown Value for Experience Create Image
+	 */
+	@RequestMapping(value = "/image", method = RequestMethod.GET)
+	public ModelAndView createImage() throws IOException {
+		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-image");
+		return modelAndView;
+	}
+	
+	
+	/**
+	 * Image Experience DB Save
+	 */
+	@RequestMapping(value = "/image", method = RequestMethod.POST)
+	public ModelAndView saveimageexp(ImageExpCreateFormDTO  imageExCreateFormDTO,ModelMap mp) throws IOException {
+		ModelAndView modelAndView = expControllerImpl.saveimageEXP(imageExCreateFormDTO, mp);
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");
+		return modelAndView;
+	}
+ 
+	
+	/**
+	 * Link formation and get segment dropdown Value for Experience Create style
+	 */
+	@RequestMapping(value = "/style", method = RequestMethod.GET)
+	public ModelAndView createstyle() throws IOException {
+		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-style");
+		return modelAndView;
+	}
+	
+	
+	/**
+	 * Style Experience DB Save
+	 */
+	@RequestMapping(value = "/style", method = RequestMethod.POST)
+	public ModelAndView savestyleexp(StyleExpCreateFormDTO  styleExCreateFormDTO,ModelMap mp) throws IOException {
+		ModelAndView modelAndView = expControllerImpl.saveStyleExp(styleExCreateFormDTO, mp);
 		modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");
 		return modelAndView;
 	}
