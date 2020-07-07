@@ -119,7 +119,7 @@ function saveExperience(){
 	//document.getElementById("experience-form").redirecturl.value=redirectURL; 
 	document.getElementById("experience-form").experienceDetails.value=JSON.stringify(expDetailsObj);	
 	document.getElementById("experience-form").method = "post";
-	document.getElementById("experience-form").action = "ExperienceController";
+	document.getElementById("experience-form").action = "style";
 	document.getElementById("experience-form").submit();
 	}else{
 		swal.fire("Please enter Redirect URL for this Experience")
@@ -128,7 +128,7 @@ function saveExperience(){
 		swal.fire("Please enter a value for  Experience Name")
 	}  
 	 
-}
+} 
 window.addEventListener("load", function() {
 
 	localStorage.setItem("exp_type", "style");
@@ -141,12 +141,12 @@ window.addEventListener("load", function() {
 	<%	
 	String message = (String) session.getAttribute("message");
 	
-	SegmentRepository segmentRepository = new SegmentRepository();
+	//SegmentRepository segmentRepository = new SegmentRepository();
 	int org_id = (Integer)session.getAttribute("org_id");
-	Map<Integer,String> segments = segmentRepository.getOrgSegments(org_id);
+	/* Map<Integer,String> segments = segmentRepository.getOrgSegments(org_id);
 	if (segments.size() == 0) {
 		message = "Error: No Segments are configured. Create a Segment <a class='kt-link kt-font-bold' href='?view=pages/segment-create-geo.jsp'>here</a>";	
-	}
+	} */
 				
 	if (message != null && !message.equals("")) {
 		String icon = "fa fa-cocktail"; 
@@ -181,7 +181,7 @@ window.addEventListener("load", function() {
 		</div>	
 		
 		<!-- begin::modal -->		
-		<div class="kt-section__content kt-section__content--border">			
+		<<%-- div class="kt-section__content kt-section__content--border">			
 			<!-- Modal -->
 			<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display: none;">
 				<div class="modal-dialog modal-dialog-centered" role="document">
@@ -237,7 +237,7 @@ window.addEventListener("load", function() {
 					</div>
 				</div>
 			</div>
-		</div>	
+		</div>	 --%>
 		<!-- end::modal -->						
 		<%
 		session.setAttribute("message", "");
@@ -259,13 +259,17 @@ window.addEventListener("load", function() {
 				<label class="col-form-label col-lg-3 col-sm-12">Segment</label>
 					<div class="col-lg-4 col-md-9 col-sm-12">											
 						<select id="segment" class="custom-select form-control" data-width="300" onchange="javascript:selectIndex()">
-						    <%
+						<option value="136">Bala</option>
+							<option value="137">Murugan</option>
+													
+						
+						    <%-- <%
 							for ( Map.Entry<Integer, String> entry : segments.entrySet()) {
 								Integer key = entry.getKey();
 							    String val = entry.getValue();	     	   
 							    out.println("<option value='"+key+"'>"+val+"</option>");
 							}
-							%>													
+							%> --%>													
 						</select>																																							
 					</div>
 				</div>
