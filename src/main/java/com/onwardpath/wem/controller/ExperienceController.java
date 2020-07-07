@@ -166,7 +166,7 @@ public class ExperienceController {
 		int user_Id = (Integer) session.getAttribute("user_id");
 		int org_id = (Integer) session.getAttribute("org_id");
 		String configDetails = request.getParameter("urlList");
-		Date date = new Date(System.currentTimeMillis());
+		LocalDateTime now = LocalDateTime.now();
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
 		Map<String, String> map = mapper.readValue(configDetails, Map.class);
@@ -178,7 +178,7 @@ public class ExperienceController {
 			config.setExperience_id(exp_id);
 			config.setUrl(url);
 			config.setUser_id(user_Id);
-			config.setCreate_time(date);
+			config.setCreate_time(now);
 			expseg.saveconfig(config);
 		}
 
