@@ -3,6 +3,8 @@ package com.onwardpath.wem.entity;
 
 
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,10 +31,10 @@ public class Experience {
 	private String status;
 	
 	@Column(name = "schedule_start")
-	private String scheduleStart; 
+	private LocalDateTime scheduleStart; 
 	
 	@Column(name = "schedule_end")
-	private String scheduleEnd;
+	private LocalDateTime scheduleEnd;
 	
 	@Column(name = "org_id")
 	private int orgId;	
@@ -42,7 +44,7 @@ public class Experience {
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(name = "created_time")
-	private String createdTime;
+	private LocalDateTime createdTime;
 	
 	@Column(name = "timezone_id")
 	private String timezoneId;
@@ -89,22 +91,20 @@ public class Experience {
 		this.status = status;
 	}
 
-	public String getScheduleStart() {
+	public LocalDateTime getScheduleStart() {
 		return scheduleStart;
 	}
 
-	public void setScheduleStart(String scheduleStart) {
-		this.scheduleStart = scheduleStart;
+	public void setScheduleStart(LocalDateTime sqlStartDate) {
+		this.scheduleStart = sqlStartDate;
 	}
 
-	
-
-	public String getScheduleEnd() {
+	public LocalDateTime getScheduleEnd() {
 		return scheduleEnd;
 	}
 
-	public void setScheduleEnd(String scheduleEnd) {
-		this.scheduleEnd = scheduleEnd;
+	public void setScheduleEnd(LocalDateTime sqlendDate) {
+		this.scheduleEnd = sqlendDate;
 	}
 
 	public int getOrgId() {
@@ -123,13 +123,12 @@ public class Experience {
 		this.createdBy = createdBy;
 	}
 
-	
-	public String getCreatedTime() {
+	public LocalDateTime getCreatedTime() {
 		return createdTime;
 	}
 
-	public void setCreatedTime(String createdTime) {
-		this.createdTime = createdTime;
+	public void setCreatedTime(LocalDateTime localDateTime) {
+		this.createdTime = localDateTime;
 	}
 
 	public String getTimezoneId() {

@@ -15,8 +15,8 @@ public class PopupAttributes {
     private int id;
 	private int experience_id;
 	private String events;
-	private int cookie;
-	private int delay;
+	private String cookie;
+	private String delay;
 	
 	public int getId() {
 		return id;
@@ -36,17 +36,18 @@ public class PopupAttributes {
 	public void setEvents(String events) {
 		this.events = events;
 	}
-	public int getCookie() {
+	public String getCookie() {
 		return cookie;
 	}
-	public void setCookie(int cookie) {
+	public void setCookie(String cookie) {
 		this.cookie = cookie;
 	}
-	public int getDelay() {
+	public String getDelay() {
 		return delay;
 	}
-	public void setDelay(int delay) {
+	public void setDelay(String delay) {
 		this.delay = delay;
 	}
+
 
 }
