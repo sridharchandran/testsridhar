@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -199,19 +200,21 @@ public class ExperienceController {
 			System.out.println("sdate:" + request.getParameter("startdate"));
 			System.out.println("edate:" + request.getParameter("enddate"));
 			Experience newexp = new Experience();
-			String startdate = request.getParameter("startdate");
+			
+			//DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-mm-dd hh:mm:ss");
+			
+			DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	        
+	        
+			String startdate = request.getParameter("startdate");	
+			LocalDateTime sqlStartDate = LocalDateTime.parse(startdate,format);
+			
 
-			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-			java.util.Date dates = sdf1.parse(startdate);
-			LocalDateTime sqlStartDate = LocalDateTime.parse(sdf1.format(dates));
-
+			
 			String enddate = request.getParameter("enddate");
+			LocalDateTime sqlendDate = LocalDateTime.parse(enddate,format);
 
-			SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-			java.util.Date datess = sdf1.parse(enddate);
-			LocalDateTime sqlendDate = LocalDateTime.parse(sdf2.format(datess));
-			System.out.println(sdf2.format(datess)); 
-
+	
 			newexp.setScheduleStart(sqlStartDate);
 			newexp.setScheduleEnd(sqlendDate);
 			newexp.setStatus(request.getParameter("status"));
@@ -234,7 +237,7 @@ public class ExperienceController {
 	 * Popup Experience --> Create
 	 */
 	@RequestMapping(value = "/create-popup", method = RequestMethod.GET)
-	public ModelAndView createPopupView() throws IOException {
+	public ModelAndView createPopupView(ModelMap map,HttpSession session) throws IOException {
 		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
 		modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
 		return modelAndView;
@@ -266,6 +269,10 @@ public class ExperienceController {
 		return modelAndView;
 	}
 	
+	
+	/**
+	 * Experience --> Config Page
+	 */
 	@RequestMapping(value = "/experience-config", method = RequestMethod.GET)
 	public ModelAndView saveExperienceConfig(@ModelAttribute("exp_id") String exp_id) throws IOException, DbInsertException {
 		ModelAndView modelAndView = new ModelAndView();
