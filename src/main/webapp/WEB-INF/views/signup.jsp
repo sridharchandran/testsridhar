@@ -40,56 +40,115 @@ function ValidateSize(file) {
     }
 }
 
-function checkDomain(domain) {
+function domaincheck()
+{
 	
-	if (domain.length === 0) {
-		document.getElementById("divCheckPasswordMatch").innerHTML = "";
-		return;
+	var x = document.getElementById("domain");
+	var domainerror =  document.getElementById('domainerror');
+	var URLtype=  /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+	
+	
+	if(!(x.value.match(URLtype)))
+		{
+		
+		document.getElementById("domain").setAttribute("class", "form-control is-invalid");
+		document.getElementById("domainerror").setAttribute("class", "invalid-feedback");
+		domainerror.innerHTML="invalid address format";
+		}
+	else{
+		
+		document.getElementById("domain").setAttribute("class", "form-control is-valid"); 
+		
 	}
 	
-	if (document.getElementById('domain').value ==
-	    document.getElementById('confirmdomain').value) {
-		var url=  /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
-		if((document.getElementById('domain').value.match(url) ) &&(document.getElementById('confirmdomain').value.match(url))){
-	    document.getElementById('domainmatches').style.color = 'green';
-	    document.getElementById('domainmatches').innerHTML = 'matching';
+	}
+	
+function domainchecks()
+{
+	var x = document.getElementById("domain");
+	var xd = document.getElementById("confirmdomain");
+	var domainerrors =  document.getElementById('domainerrors');
+	var URLtype=  /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+	
+	if(x.value == xd.value)
+		{
+		if(!(xd.value.match(URLtype)))
+		{
+		
+		document.getElementById("confirmdomain").setAttribute("class", "form-control is-invalid");
+		document.getElementById("domainerrors").setAttribute("class", "invalid-feedback");
+		domainerrors.innerHTML="invalid address format";
+		}
+	else{
+		
+		document.getElementById("confirmdomain").setAttribute("class", "form-control is-valid"); 
+		
+	}
 		}
 		else
-			{
-			document.getElementById('domainmatches').style.color = 'red';
-		    document.getElementById('domainmatches').innerHTML = 'domain pattern doesnot match';
+		{
+			
+			document.getElementById("confirmdomain").setAttribute("class", "form-control is-invalid");
+			document.getElementById("domainerrors").setAttribute("class", "invalid-feedback");
+			domainerrors.innerHTML="website address doesn't match";
 			}
-	  } else {
-	    document.getElementById('domainmatches').style.color = 'red';
-	    document.getElementById('domainmatches').innerHTML = 'domain does not match';
-	  }
 	
 }
 
-function checkEmail(email) {
+function myFunction() {
 	
-	if (email.length === 0) {
-		document.getElementById("divCheckPasswordMatch").innerHTML = "";
-		return;
-	}
-	if (document.getElementById('email').value ==
-	    document.getElementById('confirmemail').value) {
-		var emailtype=  /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-		if((document.getElementById('email').value.match(emailtype) ) &&(document.getElementById('confirmemail').value.match(emailtype))){
-	    document.getElementById('divCheckPasswordMatch').style.color = 'green';
-	    document.getElementById('divCheckPasswordMatch').innerHTML = 'matching';
+	var x = document.getElementById("email");
+	var error =  document.getElementById('error');
+	var emailtype=  /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	
+	
+	if(!(x.value.match(emailtype)))
+		{
+		
+		document.getElementById("email").setAttribute("class", "form-control is-invalid");
+		document.getElementById("error").setAttribute("class", "invalid-feedback");
+		error.innerHTML="invalid email address";
 		}
-		else
-			{
-			document.getElementById('divCheckPasswordMatch').style.color = 'red';
-		    document.getElementById('divCheckPasswordMatch').innerHTML = 'Email pattern does not match';
-			}
-	  } else {
-	    document.getElementById('divCheckPasswordMatch').style.color = 'red';
-	    document.getElementById('divCheckPasswordMatch').innerHTML = 'email does not match';
-	  }
+	else{
+		
+		document.getElementById("email").setAttribute("class", "form-control is-valid"); 
+		
+	}
 }
 
+function myFunctions() {
+	
+	var x = document.getElementById("email");
+	var xc = document.getElementById("confirmemail");
+	var errors =  document.getElementById('errors');
+	var emailtype=  /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	if(x.value == xc.value)
+		{
+		
+			if(!(xc.value.match(emailtype)))
+			{
+			
+			document.getElementById("confirmemail").setAttribute("class", "form-control is-invalid");
+			document.getElementById("errors").setAttribute("class", "invalid-feedback");
+			errors.innerHTML="invalid email address";
+			}
+			
+		else
+			{
+		document.getElementById("confirmemail").setAttribute("class", "form-control is-valid");
+	
+		}
+		}
+	
+	else
+		{
+		
+		document.getElementById("confirmemail").setAttribute("class", "form-control is-invalid");
+		document.getElementById("errors").setAttribute("class", "invalid-feedback");
+		errors.innerHTML="email address doesn't match";
+		}
+	
+}
 
 
 function checkURL(abc) {
@@ -104,39 +163,62 @@ function checkURL(abc) {
 	}
 
 
+function validatePassword() {
 
-
-
-function validatePassword(password) {
-
-	// Do not show anything when the length of password is zero.
-
-	if (password.length === 0) {
-		document.getElementById("message").innerHTML = "";
-		return;
-	}
+	var x = document.getElementById("n_password");
+	var passerror =  document.getElementById('passerror');
+	var passtype= /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
 	
-	if (document.getElementById('n_password').value ==
-	    document.getElementById('c_password').value) {
-		var paswd=  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
-		if((document.getElementById('n_password').value.match(paswd) ) &&(document.getElementById('c_password').value.match(paswd))){
-	    document.getElementById('message').style.color = 'green';
-	    document.getElementById('message').innerHTML = 'matching';
+	
+	if(!(x.value.match(passtype)))
+		{
+		
+		document.getElementById("n_password").setAttribute("class", "form-control is-invalid");
+		document.getElementById("passerror").setAttribute("class", "invalid-feedback");
+		passerror.innerHTML="invalid password format";
 		}
-		else
-			{
-			document.getElementById('message').style.color = 'red';
-		    document.getElementById('message').innerHTML = 'password pattern doesnot match';
-			}
-	  } else {
-	    document.getElementById('message').style.color = 'red';
-	    document.getElementById('message').innerHTML = 'passowrd doesnot match';
-	  }
-	
+	else{
+		
+		document.getElementById("n_password").setAttribute("class", "form-control is-valid"); 
+		
+	}
+
 	
 	
 }
 
+function validatePasswords() {
+	
+	var x = document.getElementById("n_password");
+	var xs = document.getElementById("c_password");
+	var passerrors =  document.getElementById('passerrors');
+	var passtype= /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
+	
+	if(x.value == xs.value)
+		{
+		
+		if(!(xs.value.match(passtype)))
+		{
+		
+		document.getElementById("c_password").setAttribute("class", "form-control is-invalid");
+		document.getElementById("passerrors").setAttribute("class", "invalid-feedback");
+		passerrors.innerHTML="invalid password format";
+		}
+	else{
+		
+		document.getElementById("c_password").setAttribute("class", "form-control is-valid"); 
+		
+	}
+		}
+	else
+		{
+		document.getElementById("c_password").setAttribute("class", "form-control is-invalid");
+		document.getElementById("passerrors").setAttribute("class", "invalid-feedback");
+		passerrors.innerHTML="password doesn't match";
+		
+		}
+	
+}
 
 </script>
 
@@ -318,8 +400,8 @@ class="kt-login-v1--enabled kt-quick-panel--right kt-demo-panel--right kt-offcan
 							<div class="input-group">
 								<input id="domain"type="text" class="form-control" name="domain" title="url  should in this pattern https://(www|abc).example.com" 
 								pattern="^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$" 
-									placeholder="Enter Domain" onblur="checkURL(this)"onkeyup="checkDomain(this.value);"   required>
-								<!-- <div class="input-group-append"><span class="input-group-text">.com</span></div> -->
+									placeholder="Enter Domain" onfocusout="domaincheck()" onblur="checkURL(this)"  required>
+								<div id="domainerror" class="valid-feedback"></div>
 							</div>
 						</div>
 					</div>
@@ -331,25 +413,13 @@ class="kt-login-v1--enabled kt-quick-panel--right kt-demo-panel--right kt-offcan
 							<div class="input-group">
 								<input id="confirmdomain"type="text" class="form-control" name="domain" title="url  should in this pattern https://(www|abc).example.com" 
 								pattern="^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$" 
-									placeholder="Enter Domain"  onkeyup="checkDomain(this.value);" required>
-								<!-- <div class="input-group-append"><span class="input-group-text">.com</span></div> -->
+									placeholder="Enter Domain" onfocusout="domainchecks()" onblur="checkURL(this)"  required>
+								<div id="domainerrors" class="valid-feedback"></div>
 							</div>
 						</div>
 					</div>
-					
-					</div>
-   						 <div class="registrationFormAlert" id="domainmatches">
-					</div>
-					
-					<!-- <div class="form-group form-group-last row">
-								<label class="col-3 col-form-label">Company Logo</label>
-								<div class="col-9">
-									<input class="form-control" type="text" name="logoUrl" placeholder="Logo URL">																	
-								</div>
-							</div> -->
-
-					<div
-						class="kt-separator kt-separator--border-dashed kt-separator--space-lg"></div>
+	
+					<div style="background-color: antiquewhite;" class="kt-separator kt-separator--border-dashed kt-separator--space-lg"></div>
 
 					
 					<div class="form-group row">
@@ -396,10 +466,12 @@ class="kt-login-v1--enabled kt-quick-panel--right kt-demo-panel--right kt-offcan
 								<input type="text" class="form-control" id="email"
 									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"
 									title="xyz@something.com" name="email"
-									placeholder="Email" onkeyup="checkEmail(this.value);" aria-describedby="basic-addon1"
+									placeholder="Email" onfocusout="myFunction()" aria-describedby="basic-addon1"
 									required>
+									<div id="error" class="valid-feedback"></div>
 							</div>
 						</div>
+						
 					</div>
 
 					<div class="form-group row">
@@ -415,15 +487,13 @@ class="kt-login-v1--enabled kt-quick-panel--right kt-demo-panel--right kt-offcan
 									id="confirmemail" name="confirmemail"
 									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"
 									title="xyz@something.com" placeholder="Email"
-									aria-describedby="basic-addon1" onkeyup="checkEmail(this.value);" required>
-								
+									aria-describedby="basic-addon1" onfocusout="myFunctions()" required>
+								<div id="errors" class="valid-feedback"></div>
 							</div>
 						</div>
 					</div>
 					
-					</div>
-   						 <div class="registrationFormAlert" id="divCheckPasswordMatch">
-					</div>
+				
 
 					<div class="form-group row">
 						<label class="col-3 col-form-label">Profile Photo</label>
@@ -447,23 +517,24 @@ class="kt-login-v1--enabled kt-quick-panel--right kt-demo-panel--right kt-offcan
 								type="password" name="password"
 								title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
 								pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
-								onkeyup="validatePassword(this.value);" required>
-											<span id="msg"></span>
-										</div>
-									</div>
+								onfocusout="validatePassword();" required>
+								<div id="passerror" class="valid-feedback"></div>
+						</div>
+					</div>
 
-									<div class="form-group form-group-last row">
+							<div class="form-group form-group-last row">
 										<label class="col-3 col-form-label">Repeat
 											Password</label>
 										<div class="col-9">
 											<input id="c_password" class="form-control"
 												title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
 												pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
-												type="password" name="password-repeat" onkeyup="validatePassword(this.value);" required>
+												type="password" onfocusout="validatePasswords();" name="password-repeat"  required>
+												<div id="passerrors" class="valid-feedback"></div>
 										</div>
-										<span id='message'></span>
-									</div>
-								</div>
+										
+							</div>
+						</div>
 							</div>
 						</div>
 						<div class="col-xl-2"></div>

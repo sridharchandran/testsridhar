@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +42,9 @@ import com.onwardpath.wem.service.ExperienceServiceImpl;
 import com.onwardpath.wem.service.NativeService;
 import com.onwardpath.wem.projections.SegmentNames;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 import javassist.compiler.ast.NewExpr;
 
 @Controller
@@ -59,6 +63,14 @@ public class ExperienceController {
 	
 	@Autowired
 	NativeService nativeService;
+	
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public class RecordNotFoundException extends RuntimeException 
+	{
+	    public RecordNotFoundException(String exception) {
+	        super(exception);
+	    }
+	}
 	
 	/**
 	 * Link formation and get segment dropdown Value for Experience Create Content
@@ -223,23 +235,54 @@ public class ExperienceController {
 	}
 		// Endpoint for Experience View Page
 	 	@GetMapping("/experienceview")
-	    public String userprofilesetting()
+	    public String experienceView()
 	    {
  	
 	    	return "/index.jsp?view=pages/experience-view";
 	    }
 	
 	
-		// Endpoint for Experience custom Pagination 
-		@GetMapping(value = "/AjaxExpController", produces = MediaType.APPLICATION_JSON_VALUE)
-		@ResponseBody
-		public String ajaxExperience(@RequestParam("offset") int offset,@RequestParam("limit") int limit) throws IOException {
+	
+	  // Endpoint for Experience custom Pagination
+	  
+	  @GetMapping(value = "/AjaxExpController", produces =
+	  MediaType.APPLICATION_JSON_VALUE)
+	  
+	  @ResponseBody 
+	  public String ajaxExperience(@RequestParam("offset") int
+	  offset,@RequestParam("limit") int limit) throws IOException {
+	  
+	  String search = null;
+	  
+	  return nativeService.getResultSetforExpView(1, offset, limit, search); }
+	 
 		
-			String search = null;
-
-			return nativeService.getResultSetforExpView(1, offset, limit, search);
-		}
-		
+	 	
+	/*
+	 * // Endpoint for Experience custom Pagination
+	 * 
+	 * @GetMapping(value = "/AjaxExpController")
+	 * 
+	 * @ResponseBody public ResponseEntity<Object>
+	 * ajaxExperience(@RequestParam("offset") int offset,@RequestParam("limit") int
+	 * limit) throws IOException {
+	 * 
+	 * String search = null;
+	 * 
+	 * String jsonresult = nativeService.getResultSetforExpView(1, offset, limit,
+	 * search);
+	 * 
+	 * System.out.println("jsonresult="+ jsonresult); if(jsonresult.isEmpty()
+	 * ||(jsonresult == "[]") ) { throw new
+	 * RecordNotFoundException(" no experience "); }
+	 * 
+	 * return new ResponseEntity<Object>(nativeService.getResultSetforExpView(1,
+	 * offset, limit, search),HttpStatus.OK);
+	 * 
+	 * }
+	 */
+	 	
+	 	
 		// Endpoint for Search/Status/Modal_popup
 		@PostMapping(value = "/AjaxExpController", produces = MediaType.APPLICATION_JSON_VALUE)
 		@ResponseBody

@@ -51,7 +51,7 @@ $(document).on("change","#mySelect", function() {
 		$.ajax({
             type : "GET", 
            
-            url : "/wem/AjaxSegController",
+            url : "/wem/segmentlist",
             contentType: "application/json; charset=utf-8", 
             data: { 
             	'segtype':seg_geo, 
@@ -76,7 +76,7 @@ $(document).on("change","#mySelect", function() {
 	                
 	                response = this.response; 
 					
-					dataJSONArray = JSON.parse(data);
+					dataJSONArray = data;
 					var table = $('.kt_datatable');
 					c = table.KTDatatable();
 
@@ -540,7 +540,7 @@ page_end = limit;
 }
 
 
- 		var url	 = "/wem/AjaxSegController"
+ 		var url	 = "/wem/segmentlist"
  		var params = "offset="+offset+"&limit="+limit+"&load=next&segtype=loc&segbev=beh&segtech=tech&segint=int&segref=ref";
  		var response = "";
  		document.getElementById("spin").style.display= "block";
@@ -616,7 +616,7 @@ function search() {
 			  </span>\
  			  ';
       
-		var url	 = "/wem/AjaxSegController"
+		var url	 = "/wem/segmentlist"
  		var params = "search="+values+"&limit=10"+"&segtype=loc&segbev=beh&segtech=tech&segint=int&segref=ref";
   		var response = "";
 	   		 
@@ -842,7 +842,7 @@ var seg_ref = "ref";
 		$.ajax({
             type : "GET", 
            
-            url : "/wem/AjaxSegController",
+            url : "/wem/segmentlist",
             contentType: "application/json; charset=utf-8", 
             data: { 
             	'segtype':seg_geo, 
@@ -864,7 +864,7 @@ var seg_ref = "ref";
             	document.getElementById("mySelect").style.display = "unset";
             	document.getElementById("search").style.display = "block";
             	
-                dataJSONArray = JSON.parse(data) ;
+                dataJSONArray = data ;
                 ktDATA();
                 var count = dataJSONArray[0];
             	var tot_segment = count.SegCount;
