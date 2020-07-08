@@ -394,7 +394,15 @@ public class ExperienceController {
 			return modelAndView;
 		}
 		
-	 
+		/**
+		 * Link Experience --> Create	
+		 */
+		@RequestMapping(value = "/create-link", method = RequestMethod.GET)
+		public ModelAndView createLinkExpereinceView() throws IOException {
+			ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-link");
+			return modelAndView;
+		}
 	
 
 }
