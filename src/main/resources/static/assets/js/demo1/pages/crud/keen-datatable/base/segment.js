@@ -466,82 +466,92 @@ function page(id)
 	var limit =  localStorage.getItem("total_seg_limit");
 	var offset_l = "";
 
-//page_id  = page_id-1 ;
+	//page_id  = page_id-1 ;
 
-if(limit == 20){
+	if(limit == 20){
+		page_id  = page_id-1 ;
+		if(page_id != '0'){
+
+		offset = (page_id * 20) + 1;
+		offset_l = (page_id * 20) ;
+		page_end = offset+19;
+		limit = limit;
+		}
+ 
+		else
+			{
+		offset = 0; 
+		offset_l = 0;
+		limit =  limit;
+		page_end = limit;
+			}
+		}
+
+
+	else if(limit == 50){
+	page_id  = page_id-1 ;
+	if(page_id != '0'){
+
+	offset = (page_id * 50) + 1;
+	offset_l = (page_id * 50) ;
+
+	page_end = offset+49;
+	limit = limit;
+	}
+
+	else
+		{
+	offset = 0;  
+	offset_l = 0;
+	limit =  limit; 
+	page_end = limit;
+		}
+	}
+
+	else if(limit == 100){
+	page_id  = page_id-1 ;
+	if(page_id != '0'){
+
+	offset = (page_id * 100) + 1;
+	offset_l = (page_id * 100) ;
+
+	page_end = offset+99;
+	limit = limit;
+	}
+
+	else
+	{
+		offset = 0; 
+		offset_l = 0;
+		limit =  limit;
+		page_end = limit;
+	}
+	}
+	else if(limit == 10)
+	{
+	page_id  = page_id-1 ;
+	if(page_id != '0'){
 	
-if(page_id != '1'){
-
-offset = (page_id * 20) - 19;
-
-page_end = offset+19;
-limit = limit;
-}
-
-else
-	{
-offset = 0; 
-limit =  limit;
-page_end = limit;
-	}
-}
-
-else if(limit == 50){
+	offset = (page_id * 10) + 1;
+	offset_l = (page_id * 10) ;
 	
-if(page_id != '0'){
-
-offset = (page_id * 50) - 49;
-
-page_end = offset+49;
-limit = limit;
-}
-
-else
-	{
-offset = 0;  
-limit =  limit; 
-page_end = limit;
+	page_end = offset+9;
+	limit = limit;
 	}
-}
-else if(limit == 100){
 	
-if(page_id != '0'){
-
-offset = (page_id * 100) - 99;
-
-page_end = offset+99;
-limit = limit;
-}
-
-else
-	{
-offset = 0; 
-limit =  limit;
-page_end = limit;
+	else
+		{
+	offset = 0; 
+	offset_l = 0;
+	limit =  limit;
+	page_end = limit;
+		}
 	}
-}
-else if(limit == 10)
-{
-page_id  = page_id-1 ;
-if(page_id != '0'){
 
-offset = (page_id * 10) + 1;
-
-page_end = offset+9;
-limit = limit;
-}
-
-else
-	{
-offset = 0; 
-limit =  limit;
-page_end = limit;
-	}
-}
 
 
  		var url	 = "/wem/segmentlist"
- 		var params = "offset="+offset+"&limit="+limit+"&load=next&segtype=loc&segbev=beh&segtech=tech&segint=int&segref=ref";
+ 		var params = "offset="+offset_l+"&limit="+limit+"&load=next&segtype=loc&segbev=beh&segtech=tech&segint=int&segref=ref";
  		var response = "";
  		document.getElementById("spin").style.display= "block";
  		document.getElementById("spin").style.position= "relative";

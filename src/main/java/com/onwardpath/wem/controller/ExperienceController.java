@@ -263,11 +263,13 @@ public class ExperienceController {
 	  
 	  @ResponseBody 
 	  public String ajaxExperience(@RequestParam("offset") int
-	  offset,@RequestParam("limit") int limit) throws IOException {
+	  offset,@RequestParam("limit") int limit,HttpSession session) throws IOException {
 	  
 	  String search = null;
+	  int org_Id = (Integer) session.getAttribute("org_id");
 	  
-	  return nativeService.getResultSetforExpView(1, offset, limit, search); }
+	  
+	  return nativeService.getResultSetforExpView( org_Id, offset, limit, search); }
 	 
 	
 	 	
