@@ -54,7 +54,7 @@
 								</div> -->
 							</li>
 							<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
-								<a href="/wem?view=pages/segment-view.jsp" class="kt-menu__link kt-menu__toggle">
+								<a href="/wem/segmentview" class="kt-menu__link kt-menu__toggle">
 									<i class="kt-menu__link-icon la flaticon-eye"><span></span></i>
 									<span class="kt-menu__link-text">View</span>
 									<i class="kt-menu__ver-arrow la la-angle-right"></i>
@@ -137,7 +137,7 @@
 											</a>
 										</li>
 										<li class="kt-menu__item " aria-haspopup="true" id="experience-create-bar">
-											<a href="/wem?view=pages/experience-create-bar.jsp" class="kt-menu__link ">
+											<a href="/wem/create-bar" class="kt-menu__link ">
 											<i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Bar</span>
 											</a>
 										</li>

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onwardpath.wem.entity.Config;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
+import com.onwardpath.wem.model.ExperienceViewPostDTO;
 import com.onwardpath.wem.exception.DbInsertException;
 import com.onwardpath.wem.model.ImageExpCreateFormDTO;
 import com.onwardpath.wem.model.PopupExpCreateFormDTO;
@@ -45,6 +47,9 @@ import com.onwardpath.wem.repository.NativeRepository;
 import com.onwardpath.wem.service.ExperienceServiceImpl;
 import com.onwardpath.wem.service.NativeService;
 import com.onwardpath.wem.projections.SegmentNames;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javassist.compiler.ast.NewExpr;
 
@@ -67,6 +72,14 @@ public class ExperienceController {
 	
 	@Autowired
 	NativeService nativeService;
+	
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public class RecordNotFoundException extends RuntimeException 
+	{
+	    public RecordNotFoundException(String exception) {
+	        super(exception);
+	    }
+	}
 	
 	/**
 	 * Link formation and get segment dropdown Value for Experience Create Content
@@ -234,12 +247,56 @@ public class ExperienceController {
 		return "index.jsp?view=pages/experience-create-enable";
 
 	}
+	  // Endpoint for Experience View Page
+	  @GetMapping("/experienceview")
+	  public String experienceView()
+	  {
+ 	
+	    return "/index.jsp?view=pages/experience-view";
+	  }
+	
+	
+	  // Endpoint for Experience custom Pagination
+	  
+	  @GetMapping(value = "/AjaxExpController", produces =
+	  MediaType.APPLICATION_JSON_VALUE)
+	  
+	  @ResponseBody 
+	  public String ajaxExperience(@RequestParam("offset") int
+	  offset,@RequestParam("limit") int limit,HttpSession session) throws IOException {
+	  
+	  String search = null;
+	  int org_Id = (Integer) session.getAttribute("org_id");
+	  
+	  
+	  return nativeService.getResultSetforExpView( org_Id, offset, limit, search); }
+	 
+	
+	 	
+	// Endpoint for Search/Status/Modal_popup
+	@PostMapping(value = "/AjaxExpController", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public String ajaxPostExperience(ExperienceViewPostDTO experienceViewPostDTO) throws IOException {
+	
+		return nativeService.getResultSetforExpViewPost(experienceViewPostDTO);
+	}
+	
+	/**
+	 * Bar Experience --> Create
+	 */
+	@RequestMapping(value = "/create-bar", method = RequestMethod.GET)
+	public ModelAndView createBarView() throws IOException {
+		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-bar");
+		return modelAndView;
+	}
+	
 	
 	/**
 	 * Popup Experience --> Create
 	 */
 	@RequestMapping(value = "/create-popup", method = RequestMethod.GET)
-	public ModelAndView createPopupView(ModelMap map,HttpSession session) throws IOException {
+	public ModelAndView createPopupView() throws IOException {
 		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
 		modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
 		return modelAndView;
@@ -284,7 +341,7 @@ public class ExperienceController {
 		return modelAndView;
 	}
 	
-	
+
 	 @ExceptionHandler(DbInsertException.class)
 	  public ModelAndView handleError(HttpServletRequest req, Exception ex,HttpSession session) {
 	    ModelAndView mav = new ModelAndView();
@@ -338,5 +395,6 @@ public class ExperienceController {
 		}
 		
 	 
+	
 
 }

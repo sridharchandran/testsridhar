@@ -67,7 +67,7 @@ public class ExperienceControllerImpl {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("seglist", seglist);
 		if (seglist.size() == 0) {
-			String message = "Error: No Segments are configured. Create a Segment <a class='kt-link kt-font-bold' href='?view=pages/segment-create-geo.jsp'>here</a>";
+			String message = "Error: No Segments are configured. Create a Segment <a class='kt-link kt-font-bold' href='?view=pages/segment-create.jsp'>here</a>";
 			session.setAttribute("message", message);
 		}
 		return modelAndView;
