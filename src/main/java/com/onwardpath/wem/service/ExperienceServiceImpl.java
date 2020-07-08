@@ -8,16 +8,20 @@ import org.springframework.stereotype.Service;
 import com.onwardpath.wem.entity.Config;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
+import com.onwardpath.wem.entity.Image;
 import com.onwardpath.wem.entity.Popup;
 import com.onwardpath.wem.entity.PopupAttributes;
 import com.onwardpath.wem.entity.Segment;
+import com.onwardpath.wem.entity.Style;
 import com.onwardpath.wem.entity.TimeZone;
 import com.onwardpath.wem.repository.ConfigRepository;
 import com.onwardpath.wem.repository.ContentRepository;
 import com.onwardpath.wem.repository.ExperienceRepository;
+import com.onwardpath.wem.repository.ImageRepository;
 import com.onwardpath.wem.repository.PopupAttrRepository;
 import com.onwardpath.wem.repository.PopupRepository;
 import com.onwardpath.wem.repository.SegmentRepository;
+import com.onwardpath.wem.repository.StyleRepository;
 import com.onwardpath.wem.repository.TimeZoneRepository;
 
 @Service
@@ -30,9 +34,12 @@ public class ExperienceServiceImpl implements  ExperienceService {
 	private TimeZoneRepository timezoneRepos;
 	private PopupRepository popupRepos;
 	private PopupAttrRepository popupAttrRepos;
+	private ImageRepository imageRepos;
+	private StyleRepository styleRepos;
+
 	
 	@Autowired
-	public ExperienceServiceImpl(SegmentRepository sepRepos,ExperienceRepository expRepos,ContentRepository conRepos,TimeZoneRepository timezoneRepos,PopupRepository popupRepos,ConfigRepository configRepos,PopupAttrRepository popupAttrRepos)
+	public ExperienceServiceImpl(SegmentRepository sepRepos,ExperienceRepository expRepos,ContentRepository conRepos,TimeZoneRepository timezoneRepos,PopupRepository popupRepos,ConfigRepository configRepos,PopupAttrRepository popupAttrRepos,ImageRepository imageRepos,StyleRepository styleRepos)
 	{
 		this.sepRepos = sepRepos;
 		this.expRepos  = expRepos;
@@ -41,6 +48,9 @@ public class ExperienceServiceImpl implements  ExperienceService {
 		this.timezoneRepos = timezoneRepos;
 		this.popupRepos = popupRepos;
 		this.popupAttrRepos = popupAttrRepos;
+		this.imageRepos = imageRepos;
+		this.styleRepos = styleRepos;
+
 	}
 	
 	
@@ -113,6 +123,20 @@ public class ExperienceServiceImpl implements  ExperienceService {
 	public Experience getExperienceById(int exp_id) {
 		// TODO Auto-generated method stub
 		return expRepos.findById(exp_id);
+	}
+
+
+	@Override
+	public Image saveimage(Image image) {
+		// TODO Auto-generated method stub
+		return imageRepos.save(image);
+	}
+
+
+	@Override
+	public Style savestyle(Style style) {
+		// TODO Auto-generated method stub
+		return styleRepos.save(style);
 	}
 	
 }
