@@ -233,14 +233,13 @@ public class ExperienceController {
 		return "index.jsp?view=pages/experience-create-enable";
 
 	}
-		// Endpoint for Experience View Page
-	 	@GetMapping("/experienceview")
-	    public String experienceView()
-	    {
+	  // Endpoint for Experience View Page
+	  @GetMapping("/experienceview")
+	  public String experienceView()
+	  {
  	
-	    	return "/index.jsp?view=pages/experience-view";
-	    }
-	
+	    return "/index.jsp?view=pages/experience-view";
+	  }
 	
 	
 	  // Endpoint for Experience custom Pagination
@@ -256,40 +255,25 @@ public class ExperienceController {
 	  
 	  return nativeService.getResultSetforExpView(1, offset, limit, search); }
 	 
-		
+	
 	 	
-	/*
-	 * // Endpoint for Experience custom Pagination
-	 * 
-	 * @GetMapping(value = "/AjaxExpController")
-	 * 
-	 * @ResponseBody public ResponseEntity<Object>
-	 * ajaxExperience(@RequestParam("offset") int offset,@RequestParam("limit") int
-	 * limit) throws IOException {
-	 * 
-	 * String search = null;
-	 * 
-	 * String jsonresult = nativeService.getResultSetforExpView(1, offset, limit,
-	 * search);
-	 * 
-	 * System.out.println("jsonresult="+ jsonresult); if(jsonresult.isEmpty()
-	 * ||(jsonresult == "[]") ) { throw new
-	 * RecordNotFoundException(" no experience "); }
-	 * 
-	 * return new ResponseEntity<Object>(nativeService.getResultSetforExpView(1,
-	 * offset, limit, search),HttpStatus.OK);
-	 * 
-	 * }
+	// Endpoint for Search/Status/Modal_popup
+	@PostMapping(value = "/AjaxExpController", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public String ajaxPostExperience(ExperienceViewPostDTO experienceViewPostDTO) throws IOException {
+	
+		return nativeService.getResultSetforExpViewPost(experienceViewPostDTO);
+	}
+	
+	/**
+	 * Bar Experience --> Create
 	 */
-	 	
-	 	
-		// Endpoint for Search/Status/Modal_popup
-		@PostMapping(value = "/AjaxExpController", produces = MediaType.APPLICATION_JSON_VALUE)
-		@ResponseBody
-		public String ajaxPostExperience(ExperienceViewPostDTO experienceViewPostDTO) throws IOException {
-		
-			return nativeService.getResultSetforExpViewPost(experienceViewPostDTO);
-		}
+	@RequestMapping(value = "/create-bar", method = RequestMethod.GET)
+	public ModelAndView createBarView() throws IOException {
+		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-bar");
+		return modelAndView;
+	}
 	
 	
 	/**
