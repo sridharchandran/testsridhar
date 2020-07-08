@@ -1,7 +1,9 @@
 package com.onwardpath.wem.entity;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,7 +20,9 @@ public class Config {
 	private int experience_id;
 	private String url;
 	private int user_id;
-	private String create_time;
+	
+	@Column(name = "created_time")
+	private LocalDateTime create_time;
 	
 	public int getId() {
 		return id;
@@ -44,12 +48,11 @@ public class Config {
 	public void setUser_id(int user_id) {
 		this.user_id = user_id;
 	}
-	public String getCreate_time() {
+	public LocalDateTime getCreate_time() {
 		return create_time;
 	}
-	public void setCreate_time(String create_time) {
-		this.create_time = create_time;
+	public void setCreate_time(LocalDateTime now) {
+		this.create_time = now;
 	}
-	
 	
 }

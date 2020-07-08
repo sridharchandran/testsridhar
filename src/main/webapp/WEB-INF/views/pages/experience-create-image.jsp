@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ page
-	import="java.util.Map, com.onwardpath.wem.repository.SegmentRepository"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
+
 <script type="text/javascript">
 
 	var expDetailsObj = {};
@@ -70,7 +70,7 @@
 				document.getElementById("experience-form").type.value = type;
 				document.getElementById("experience-form").experienceDetails.value = JSON.stringify(expDetailsObj);
 				document.getElementById("experience-form").method = "post";
-				document.getElementById("experience-form").action = "ExperienceController";
+				document.getElementById("experience-form").action = "image";
 				document.getElementById("experience-form").submit();
 			}
 			else{
@@ -93,17 +93,13 @@
 <!--begin::Content-->
 <div class="kt-content  kt-grid__item kt-grid__item--fluid"
 	id="kt_content">
-	<%
+	 <% 
 		String message = (String) session.getAttribute("message");
 
-		SegmentRepository segmentRepository = new SegmentRepository();
+		//SegmentRepository segmentRepository = new SegmentRepository();
 		int org_id = (Integer) session.getAttribute("org_id");
-		Map<Integer, String> segments = segmentRepository.getOrgSegments(org_id);
-		if (segments.size() == 0) {
-			message = "Error: No Segments are configured. Create a Segment <a class='kt-link kt-font-bold' href='?view=pages/segment-create-geo.jsp'>here</a>";
-		}
-
-		if (message != null && !message.equals("")) {
+		
+				if (message != null && !message.equals("")) {
 			String icon = "flaticon-paper-plane";
 			if (message.startsWith("Error"))
 				icon = "flaticon-warning";
@@ -120,7 +116,7 @@
 				organization = decoder[2].substring(decoder[0].indexOf("=") + 1);
 			}
 	%>
-	<div class="row">
+ --	<%-- <div class="row">
 		<div class="col">
 			<div class="alert alert-light alert-elevate fade show" role="alert">
 				<div class="alert-icon">
@@ -136,10 +132,10 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> --%>
 
 	<!-- begin::modal -->
-	<div class="kt-section__content kt-section__content--border">
+	<%-- <div class="kt-section__content kt-section__content--border">
 		<!-- Modal -->
 		<div class="modal fade" id="exampleModalCenter" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -188,11 +184,12 @@
 		</div>
 	</div>
 	<!-- end::modal -->
-	<%
+	--%>
+	<% 
 		session.setAttribute("message", "");
 		}
 	%>
-	<!--begin::Portlet-->
+ 	<!--begin::Portlet-->
 	<div class="kt-portlet">
 		<div class="kt-portlet__head">
 			<div class="kt-portlet__head-label">
@@ -209,14 +206,13 @@
 					<div class="col-lg-4 col-md-9 col-sm-12">
 						<select id="segment" class="custom-select form-control"
 							data-width="300" onchange="javascript:selectIndex()">
-							<%
-								for (Map.Entry<Integer, String> entry : segments.entrySet()) {
-									Integer key = entry.getKey();
-									String val = entry.getValue();
-									out.println("<option value='" + key + "'>" + val + "</option>");
-								}
-							%>
-						</select>
+							
+														<c:forEach items="${seglist}" var="segment">
+							 
+							<option value="${segment.id}">${segment.name}</option>
+														</c:forEach>												
+							
+													</select>
 					</div>
 				</div>
 

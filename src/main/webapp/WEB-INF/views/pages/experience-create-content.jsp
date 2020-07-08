@@ -201,8 +201,7 @@ window.addEventListener("load", function(){
 							    out.println("<option value='"+key+"'>"+val+"</option>");
 							}
 							%>	 --%>
-						<option value="136">Bala</option>
-							<option value="137">Murugan</option>
+						
 						 
 							<c:forEach items="${seglist}" var="segment">
 							 

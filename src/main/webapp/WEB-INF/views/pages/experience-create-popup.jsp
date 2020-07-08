@@ -1,8 +1,7 @@
 <!-- Owner:Gurujegan --Implementing this page for Popup functionality-->
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ page
-	import="java.util.Map, com.onwardpath.wem.repository.SegmentRepository"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%> 
 
 <script type="text/javascript">
 	var expDetailsObj = {};
