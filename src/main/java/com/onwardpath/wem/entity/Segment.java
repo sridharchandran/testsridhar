@@ -33,14 +33,14 @@ public class Segment {
     @Column(name = "org_id")
     private int orgId;
     
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+   
     @Column(name = "created_time")
     private LocalDateTime createdTime;
     
     @Column(name = "mod_by")
     private String modBy;
     
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    
     @Column(name = "mod_time")
     private LocalDateTime modTime;
        
