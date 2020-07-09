@@ -108,7 +108,7 @@ function saveExperience(){
 	//var popuptime = document.getElementById('popuptime').value;
 	//var allsubpagetext = document.getElementById('subpages').value; 
 	   
-    alert("hi");
+   
    
 	 if(name){  	    
 	var type = "style"; 

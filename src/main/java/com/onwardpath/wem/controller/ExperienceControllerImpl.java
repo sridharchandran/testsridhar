@@ -205,8 +205,8 @@ public class ExperienceControllerImpl {
 		return fullname;
 	}
 	
-	
-	public ModelAndView saveimageEXP(ImageExpCreateFormDTO imgExpCreateFormDTO,ModelMap mp) throws JsonMappingException, JsonProcessingException {
+	@Transactional(rollbackFor = DbInsertException.class)
+	public ModelAndView saveimageEXP(ImageExpCreateFormDTO imgExpCreateFormDTO) throws JsonMappingException, JsonProcessingException,DbInsertException {
 		ModelAndView modelAndView = new ModelAndView();
 		String exp_name = imgExpCreateFormDTO.getName();
 		String type = imgExpCreateFormDTO.getType();
@@ -215,42 +215,50 @@ public class ExperienceControllerImpl {
 		int org_id = (int) session.getAttribute("org_id");
 		Date date = new Date(System.currentTimeMillis());
 		boolean expExists = expService.expExists(org_id, exp_name);
-		if (expExists) {
-			session.setAttribute("message", "Error: Experience with name <b>" + exp_name + "</b> is already exist");
-			modelAndView.setViewName("index.jsp?view=pages/experience-create-image");
-		} else {
-			int exp_id = saveExperience(exp_name, type, status, user_id);
-			String experienceDetails = imgExpCreateFormDTO.getExperienceDetails();
-			ObjectMapper mapper = new ObjectMapper();
-			Map<String, String> map = mapper.readValue(experienceDetails, Map.class);
-			System.out.println(map);
-			for (Map.Entry<String, String> entry : map.entrySet()) {
-				int segment_id = Integer.parseInt(entry.getKey());
-				String urlvalue = entry.getValue();
-				Image image = new Image();
-				image.setExperience_id(exp_id);
-				image.setSegment_id(segment_id);
-				image.setCreate_time(date);
-				image.setUrl(urlvalue);
-				expService.saveimage(image);
+		
+		try {
+			expExists = expService.expExists(org_id, exp_name);
+			if (expExists) {
+				session.setAttribute("message", expCreateSetErrorMessage(exp_name));
+				modelAndView.addObject("expExists", expExists);
+				//modelAndView.setViewName("index.jsp?view=pages/experience-create-image");
+			} else {
+				expExists = false;
+				int exp_id = saveExperience(exp_name, type, status, user_id);
+				String experienceDetails = imgExpCreateFormDTO.getExperienceDetails();
+				ObjectMapper mapper = new ObjectMapper();
+				Map<String, String> map = mapper.readValue(experienceDetails, Map.class);
+				System.out.println(map);
+				for (Map.Entry<String, String> entry : map.entrySet()) {
+					int segment_id = Integer.parseInt(entry.getKey());
+					String urlvalue = entry.getValue();
+					Image image = new Image();
+					image.setExperience_id(exp_id);
+					image.setSegment_id(segment_id);
+					image.setCreate_time(date);
+					image.setUrl(urlvalue);
+					expService.saveimage(image);
+				}
+				session.setAttribute("message", expCreateSetSuccessMessage(exp_name));
+				modelAndView.addObject("exp_id", exp_id);
+				modelAndView.addObject("expExists", expExists);
 			}
-			mp.put("zonelist", expService.gettimezone());
-
-			session.setAttribute("message",
-					"Experience <b>" + exp_name + "</b> saved. You can now configure the pages for this experience. #n=" + exp_name
-							+ "#e=" + exp_id + "#o=" + org_id + "#t=" + type);
-			//modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");
-		 
-			//session.setAttribute("message", "Experience <b>"+exp_name+"</b> saved. You can now configure the pages for this experience");
-			//modelAndView.addObject("exp_id", exp_id);
+		} catch (Exception e) {
+			/*
+			 * expExists = true; modelAndView.addObject("error", "true");
+			 * session.setAttribute(
+			 * "message","Unresolved Error: Please contact administrator");
+			 */
+			throw new DbInsertException("Exception is thrown");
 		}
-		return modelAndView;
+		
+				return modelAndView;
 	}
 	
 	
 	
-	
-	public ModelAndView saveStyleExp(StyleExpCreateFormDTO styelExpCreateFormDTO,ModelMap mp) throws JsonMappingException, JsonProcessingException {
+	@Transactional(rollbackFor = DbInsertException.class)
+	public ModelAndView saveStyleExp(StyleExpCreateFormDTO styelExpCreateFormDTO) throws JsonMappingException, JsonProcessingException,DbInsertException {
 		ModelAndView modelAndView = new ModelAndView();
 		String exp_name = styelExpCreateFormDTO.getName();
 		String type = styelExpCreateFormDTO.getType();
@@ -258,11 +266,14 @@ public class ExperienceControllerImpl {
 		int user_id = (int) session.getAttribute("user_id");
 		int org_id = (int) session.getAttribute("org_id");
 		Date date = new Date(System.currentTimeMillis());
+		try {
 		boolean expExists = expService.expExists(org_id, exp_name);
 		if (expExists) {
-			session.setAttribute("message", "Error: Experience with name <b>" + exp_name + "</b> is already exist");
+			session.setAttribute("message", expCreateSetErrorMessage(exp_name));
+			modelAndView.addObject("expExists", expExists);
 			modelAndView.setViewName("index.jsp?view=pages/experience-create-style");
 		} else {
+			expExists = false;
 			int exp_id = saveExperience(exp_name, type, status, user_id);
 			String experienceDetails = styelExpCreateFormDTO.getExperienceDetails();
 			ObjectMapper mapper = new ObjectMapper();
@@ -278,18 +289,78 @@ public class ExperienceControllerImpl {
 				style.setAllsubpage(contentvalue.split("#")[1]);
 				expService.savestyle(style);
 			}
-			mp.put("zonelist", expService.gettimezone());
-
-			session.setAttribute("message",
-					"Experience <b>" + exp_name + "</b> saved. You can now configure the pages for this experience. #n=" + exp_name
-							+ "#e=" + exp_id + "#o=" + org_id + "#t=" + type);
-			//modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");
+			session.setAttribute("message", expCreateSetSuccessMessage(exp_name));
+			modelAndView.addObject("exp_id", exp_id);
+			modelAndView.addObject("expExists", expExists);
+		}
+		}
+		catch (Exception e) {
+			/*
+			 * expExists = true; modelAndView.addObject("error", "true");
+			 * session.setAttribute(
+			 * "message","Unresolved Error: Please contact administrator");
+			 */
+			throw new DbInsertException("Exception is thrown");
+		}
+						//modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");
 		 
 			//session.setAttribute("message", "Experience <b>"+exp_name+"</b> saved. You can now configure the pages for this experience");
 			//modelAndView.addObject("exp_id", exp_id);
-		}
+		
 		return modelAndView;
 	}
+	
+	
+	@Transactional(rollbackFor = DbInsertException.class)
+	public ModelAndView savecontentEXP(ImageExpCreateFormDTO imgExpCreateFormDTO) throws JsonMappingException, JsonProcessingException,DbInsertException {
+		ModelAndView modelAndView = new ModelAndView();
+		String exp_name = imgExpCreateFormDTO.getName();
+		String type = imgExpCreateFormDTO.getType();
+		String status = "on";
+		int user_id = (int) session.getAttribute("user_id");
+		int org_id = (int) session.getAttribute("org_id");
+		Date date = new Date(System.currentTimeMillis());
+		boolean expExists = expService.expExists(org_id, exp_name);
+		
+		try {
+			expExists = expService.expExists(org_id, exp_name);
+			if (expExists) {
+				session.setAttribute("message", expCreateSetErrorMessage(exp_name));
+				modelAndView.addObject("expExists", expExists);
+				//modelAndView.setViewName("index.jsp?view=pages/experience-create-image");
+			} else {
+				expExists = false;
+				int exp_id = saveExperience(exp_name, type, status, user_id);
+				String experienceDetails = imgExpCreateFormDTO.getExperienceDetails();
+				ObjectMapper mapper = new ObjectMapper();
+				Map<String, String> map = mapper.readValue(experienceDetails, Map.class);
+				System.out.println(map);
+				for (Map.Entry<String, String> entry : map.entrySet()) {
+					int segment_id = Integer.parseInt(entry.getKey());
+					String urlvalue = entry.getValue();
+					Content content = new Content();
+					content.setExperience_id(exp_id);
+					content.setSegment_id(segment_id);
+					content.setContent(urlvalue);
+					content.setCreate_time(LocalDateTime.now());
+					expService.savecontent(content);
+				}
+				session.setAttribute("message", expCreateSetSuccessMessage(exp_name));
+				modelAndView.addObject("exp_id", exp_id);
+				modelAndView.addObject("expExists", expExists);
+			}
+		} catch (Exception e) {
+			/*
+			 * expExists = true; modelAndView.addObject("error", "true");
+			 * session.setAttribute(
+			 * "message","Unresolved Error: Please contact administrator");
+			 */
+			throw new DbInsertException("Exception is thrown");
+		}
+		
+				return modelAndView;
+	}
+	
 
 
 }

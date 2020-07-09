@@ -47,7 +47,7 @@ function saveExperience(){
 	document.getElementById("experience-form").type.value=type;	
 	document.getElementById("experience-form").experienceDetails.value=JSON.stringify(expDetailsObj);	
 	document.getElementById("experience-form").method = "post";
-	document.getElementById("experience-form").action = "experiencesave";
+	document.getElementById("experience-form").action = "content";
 	document.getElementById("experience-form").submit();
 	}else{
 		swal.fire("Please enter atleast one content for this Experience")
