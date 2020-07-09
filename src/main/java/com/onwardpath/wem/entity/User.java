@@ -1,8 +1,14 @@
 package com.onwardpath.wem.entity;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name="user")
@@ -28,6 +34,12 @@ public class User {
 	
 	@Column(name = "login")
 	private String userName;
+	
+	@Column(name = "created_time",updatable = false)
+	private LocalDateTime createdTime;
+	
+	@Column(name = "modified_time")
+	private LocalDateTime modifiedTime;
 	
 	private String phone1;
 
@@ -137,6 +149,26 @@ public class User {
 
 	public void setRole_id(int role_id) {
 		this.role_id = role_id;
+	}
+
+	public LocalDateTime getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(LocalDateTime createdTime) {
+		this.createdTime = createdTime;
+	}
+
+	public LocalDateTime getModifiedTime() {
+		return modifiedTime;
+	}
+
+	public void setModifiedTime(LocalDateTime modifiedTime) {
+		this.modifiedTime = modifiedTime;
+	}
+
+	public void setOrgid(int orgid) {
+		this.orgid = orgid;
 	}
 	
 }
