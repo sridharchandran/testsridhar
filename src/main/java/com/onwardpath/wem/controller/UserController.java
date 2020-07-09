@@ -57,30 +57,27 @@ public class UserController {
 
 	@Autowired
 	OrgRepository orgRepo;
-	
+
 	@Autowired
 	ExperienceRepository expRepo;
-	
+
 	@Autowired
 	SegmentRepository segRepo;
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	UserControllerImpl userControllerImpl;
-		 
-	 @Autowired
-	 AppProperties myAppProperties;
-	 
-	 @Autowired
-		private AnalyticsService analyticsService;
-	 
-		
-		@Autowired
-		private NativeRepository nr;
-	
-	
+
+	@Autowired
+	AppProperties myAppProperties;
+
+	@Autowired
+	private AnalyticsService analyticsService;
+
+	@Autowired
+	private NativeRepository nr;
 
 	HttpSession session;
 
@@ -125,12 +122,11 @@ public class UserController {
 	@GetMapping("/DisplayImageController")
 	public ResponseEntity<byte[]> DisplayImage(HttpSession session) throws IOException {
 
-		byte[] pic  = ((User) session.getAttribute("user")).getProfile_pic();
-		
+		byte[] pic = ((User) session.getAttribute("user")).getProfile_pic();
 
 		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(pic);
 	}
-	
+
 //    @RequestMapping(value = "/login", method = RequestMethod.POST)
 //    @ResponseBody
 //    public Optional<User> authenticateUser(User user) {
@@ -140,38 +136,35 @@ public class UserController {
 //    	return Optional.of(userRepo.findByEmail(user.getUserName()));
 //    }
 
-	 @GetMapping("/profilesetting")
-	    public String profile_setting()
-	    {
-	    	
-	    	return "/index.jsp?view=pages/profile-view-settings";
-	    }
-	 
-	 @GetMapping("/userprofilesetting")
-	    public String userprofilesetting()
-	    {
-    	
-	    	return "/index.jsp?view=pages/profile-view-myprofile";
-	    }
-	 
-	 @PostMapping("/profile")
-	 
-	    public ModelAndView myprofile(SignupFormDTO signupFormDTO, HttpSession session) throws IOException
-	    {
-		 	ModelAndView modelAndView = userControllerImpl.profile(signupFormDTO, session);
-	    	return modelAndView;
-	    }
-	 
-	 
-	@GetMapping(value="/byid",produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public ResponseEntity<Object> byID(@ModelAttribute("user") User user,HttpSession session) throws IOException {
-		//return new ResponseEntity<Object>(userRepo.findByOrgidIs(70), HttpStatus.OK);
-		//AnalyticsService analyticsService = new AnalyticsServiceImpl();
-		//return new ResponseEntity<Object>(myAppProperties.getMatomo_url(), HttpStatus.OK);
-		return new ResponseEntity<Object>(segRepo.findAllByOrgIdIsOrderByName(99),HttpStatus.OK);
+	@GetMapping("/profilesetting")
+	public String profile_setting() {
+
+		return "/index.jsp?view=pages/profile-view-settings";
 	}
-	
+
+	@GetMapping("/userprofilesetting")
+	public String userprofilesetting() {
+
+		return "/index.jsp?view=pages/profile-view-myprofile";
+	}
+
+	@PostMapping("/profile")
+
+	public ModelAndView myprofile(SignupFormDTO signupFormDTO, HttpSession session) throws IOException {
+		ModelAndView modelAndView = userControllerImpl.profile(signupFormDTO, session);
+		return modelAndView;
+	}
+
+	@GetMapping(value = "/byid", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<Object> byID(@ModelAttribute("user") User user, HttpSession session) throws IOException {
+		// return new ResponseEntity<Object>(userRepo.findByOrgidIs(70), HttpStatus.OK);
+		// AnalyticsService analyticsService = new AnalyticsServiceImpl();
+		// return new ResponseEntity<Object>(myAppProperties.getMatomo_url(),
+		// HttpStatus.OK);
+		return new ResponseEntity<Object>(userRepo.findById(5), HttpStatus.OK);
+	}
+
 	// Endpoint for SignUp Page
 	@RequestMapping(value = "/registration", method = RequestMethod.GET)
 	public String userRegistrationPage() {

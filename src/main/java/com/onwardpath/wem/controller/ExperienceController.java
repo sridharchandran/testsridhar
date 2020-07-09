@@ -84,13 +84,12 @@ public class ExperienceController {
 	/**
 	 * Link formation and get segment dropdown Value for Experience Create Content
 	 */
-	@GetMapping("/content")
-	public String createContent(ModelMap mp, HttpSession session) {
-		int org_Id = (Integer) session.getAttribute("org_id");
-		System.out.println("myordid" + org_Id);
-		mp.put("seglist", expseg.findSegmentByOrgId(org_Id));
-
-		return "index.jsp?view=pages/experience-create-content";
+	
+	@RequestMapping(value = "/content", method = RequestMethod.GET)
+	public ModelAndView createContent() throws IOException {
+		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-content");
+		return modelAndView;
 	}
 
 	/**

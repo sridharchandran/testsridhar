@@ -42,7 +42,6 @@ public class Experience {
 	@Column(name = "created_by")
 	private String createdBy;
 	
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(name = "created_time")
 	private LocalDateTime createdTime;
 	
@@ -52,7 +51,7 @@ public class Experience {
 	@Column(name = "mod_by")
 	private String modBy;
     
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    //@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Column(name = "mod_time")
     private Date modTime;
     
