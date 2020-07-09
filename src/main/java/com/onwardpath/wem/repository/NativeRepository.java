@@ -76,4 +76,8 @@ public class NativeRepository {
 	public static final String stateSuggSQL = "select st.name,ctry.code from state st,country ctry where st.name like :geovalues and st.country_id = ctry.id";
 	
 	public static final String countrySuggSQL = "select code,name from country where name like :geovalues";
+	
+	public final static String segmentviewSQL = "select segment.id as segmentid,segment.name as segmentname,segment.rule as segrule,CONCAT(user.firstname, ' ', user.lastname) as name from user,segment where user.org_id = segment.org_id AND USER.org_id = :org_id and (segment.rule like :loc or segment.rule like :beh or segment.rule like :tech or segment.rule like :int or segment.rule like :ref ) GROUP BY segment.id ORDER BY segment.created_time DESC limit :offset,:limit ";
+	
+	public final static String segSearchSQL = "select segment.id as segmentid,segment.name as segmentname,segment.rule as segrule,CONCAT(user.firstname, ' ', user.lastname) as name from user,segment where user.org_id = segment.org_id AND USER.org_id = :org_id and (segment.rule like :loc or segment.rule like :beh or segment.rule like :tech or segment.rule like :int or segment.rule like :ref ) and (segment.name like :search ) GROUP BY segment.id ORDER BY segment.created_time DESC limit :limit ";
 }

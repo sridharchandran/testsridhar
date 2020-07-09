@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +36,9 @@ import com.onwardpath.wem.model.ExperienceContentDTOMapper;
 import com.onwardpath.wem.model.ExperienceViewPostDTO;
 import com.onwardpath.wem.model.NativeQueryDTO;
 import com.onwardpath.wem.model.NativeQueryDTOMapper;
+import com.onwardpath.wem.model.SegmentGetResultDTO;
+import com.onwardpath.wem.model.SegmentGetResultDTOMapper;
+import com.onwardpath.wem.model.SegmentViewDTO;
 import com.onwardpath.wem.model.SignupFormDTO;
 import com.onwardpath.wem.model.SuggeslistCityDTOMapper;
 import com.onwardpath.wem.model.SuggeslistDTO;
@@ -47,6 +52,8 @@ public class NativeServiceImpl implements NativeService {
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
+	
+
 	
 	// Custom Query for Experience View Page GET Request
 	public String getResultSetforExpView(int id, int offset, int limit, String search) {
@@ -73,6 +80,7 @@ public class NativeServiceImpl implements NativeService {
 			System.out.println("search not cmoing");
 		 sql = NativeRepository.experienceviewSQL;
 		}
+		System.out.println("sql="+sql);
 		List<NativeQueryDTO> nativeQueryDTO = jdbcTemplate.query(sql, parameters, new NativeQueryDTOMapper());
 		System.out.println("native result=" + nativeQueryDTO);
 		for (NativeQueryDTO e : nativeQueryDTO) {
@@ -333,6 +341,66 @@ public class NativeServiceImpl implements NativeService {
 			System.out.println(sw.toString());
 			return sw.toString();
 			
+			
+		}
+		
+		public String getResultSetforSegView(SegmentViewDTO segmentViewDTO,HttpSession session)
+		{
+			String search = segmentViewDTO.getSearch();
+			System.out.println("search-"+segmentViewDTO.getSearch());
+			System.out.println("org_id-"+(int) session.getAttribute("org_id"));
+			MapSqlParameterSource parameters = new MapSqlParameterSource();
+			parameters.addValue("loc", segmentViewDTO.getSegtype()+ "%");
+			parameters.addValue("beh", segmentViewDTO.getSegbev()+ "%");
+			parameters.addValue("tech", segmentViewDTO.getSegtech()+ "%");
+			parameters.addValue("int", segmentViewDTO.getSegint()+ "%");
+			parameters.addValue("ref", segmentViewDTO.getSegref()+ "%");
+			parameters.addValue("offset", segmentViewDTO.getOffset());
+			parameters.addValue("limit", segmentViewDTO.getLimit());
+			parameters.addValue("org_id", (int) session.getAttribute("org_id"));
+			
+			JSONObject Exp_obj = new JSONObject();
+			JSONObject cnt_obj = new JSONObject();
+			JSONArray jarray = new JSONArray();
+			String sql = null;
+			
+			if(search != null)
+			{
+				System.out.println("search cmoing");
+				parameters.addValue("search", "%"+ search+ "%");
+				sql = NativeRepository.segSearchSQL;
+			}
+			else
+			{
+				System.out.println("search not cmoing");
+			 sql = NativeRepository.segmentviewSQL;
+			}
+			System.out.println("sqls="+sql);
+			List<SegmentGetResultDTO> segmentGetResultDTODTO = jdbcTemplate.query(sql, parameters, new SegmentGetResultDTOMapper());
+			System.out.println("native result=" + segmentGetResultDTODTO);
+			for (SegmentGetResultDTO e : segmentGetResultDTODTO) {
+				
+			
+			  RowCountCallbackHandler countCallback = new RowCountCallbackHandler();
+			  
+			  jdbcTemplate.query(sql, parameters, countCallback); int rowCount =
+			  countCallback.getRowCount(); 
+			  	cnt_obj.put("SegCount", rowCount);
+			 
+				Exp_obj.put("Seg_id", e.getSegmentid());
+				Exp_obj.put("segment", e.getSegmentname());
+				Exp_obj.put("geography", e.getSegrule());
+				Exp_obj.put("name", e.getName());
+				
+				JSONObject mergedJSON = mergeJSONObjects(cnt_obj, Exp_obj);
+				jarray.put(mergedJSON);
+				
+				
+			}
+			
+			System.out.println("jarray segment="+jarray.toString());
+			
+			return jarray.toString();
 			
 		}
 
