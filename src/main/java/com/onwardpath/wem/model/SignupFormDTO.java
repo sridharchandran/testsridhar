@@ -6,6 +6,9 @@ import javax.servlet.http.Part;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(description = "Modal to signup a new User")
 public class SignupFormDTO {
 
 	private String orgName;

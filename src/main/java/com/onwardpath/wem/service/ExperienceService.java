@@ -7,8 +7,11 @@ import java.util.List;
 import com.onwardpath.wem.entity.Config;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
+import com.onwardpath.wem.entity.Image;
 import com.onwardpath.wem.entity.Popup;
 import com.onwardpath.wem.entity.PopupAttributes;
+import com.onwardpath.wem.entity.Style;
+import com.onwardpath.wem.entity.TimeZone;
 import com.onwardpath.wem.repository.ExperienceRepository;
 
 
@@ -23,4 +26,8 @@ public interface  ExperienceService {
     public List<Popup> saveAllPopupEntites(List<Popup> entities);
 	public List<Content> saveAllContentEntites(List<Content> entities);
 	public Experience getExperienceById(int exp_id);
+	public Image  saveimage(Image image);
+    public Style  savestyle(Style style);
+    public List<TimeZone> gettimezone();
+
 }

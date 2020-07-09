@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,15 +35,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onwardpath.wem.entity.Config;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
+import com.onwardpath.wem.model.ExperienceViewPostDTO;
 import com.onwardpath.wem.exception.DbInsertException;
+import com.onwardpath.wem.model.ImageExpCreateFormDTO;
 import com.onwardpath.wem.model.PopupExpCreateFormDTO;
 import com.onwardpath.wem.model.SignupFormDTO;
+import com.onwardpath.wem.model.StyleExpCreateFormDTO;
 import com.onwardpath.wem.repository.ExperienceRepository;
 import com.onwardpath.wem.service.ExperienceService;
 import com.onwardpath.wem.repository.NativeRepository;
 import com.onwardpath.wem.service.ExperienceServiceImpl;
 import com.onwardpath.wem.service.NativeService;
 import com.onwardpath.wem.projections.SegmentNames;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javassist.compiler.ast.NewExpr;
 
@@ -64,6 +72,14 @@ public class ExperienceController {
 	
 	@Autowired
 	NativeService nativeService;
+	
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public class RecordNotFoundException extends RuntimeException 
+	{
+	    public RecordNotFoundException(String exception) {
+	        super(exception);
+	    }
+	}
 	
 	/**
 	 * Link formation and get segment dropdown Value for Experience Create Content
@@ -199,19 +215,21 @@ public class ExperienceController {
 			System.out.println("sdate:" + request.getParameter("startdate"));
 			System.out.println("edate:" + request.getParameter("enddate"));
 			Experience newexp = new Experience();
-			String startdate = request.getParameter("startdate");
+			
+			//DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-mm-dd hh:mm:ss");
+			
+			DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	        
+	        
+			String startdate = request.getParameter("startdate");	
+			LocalDateTime sqlStartDate = LocalDateTime.parse(startdate,format);
+			
 
-			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-			java.util.Date dates = sdf1.parse(startdate);
-			LocalDateTime sqlStartDate = LocalDateTime.parse(sdf1.format(dates));
-
+			
 			String enddate = request.getParameter("enddate");
+			LocalDateTime sqlendDate = LocalDateTime.parse(enddate,format);
 
-			SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-			java.util.Date datess = sdf1.parse(enddate);
-			LocalDateTime sqlendDate = LocalDateTime.parse(sdf2.format(datess));
-			System.out.println(sdf2.format(datess)); 
-
+	
 			newexp.setScheduleStart(sqlStartDate);
 			newexp.setScheduleEnd(sqlendDate);
 			newexp.setStatus(request.getParameter("status"));
@@ -229,6 +247,50 @@ public class ExperienceController {
 		return "index.jsp?view=pages/experience-create-enable";
 
 	}
+	  // Endpoint for Experience View Page
+	  @GetMapping("/experienceview")
+	  public String experienceView()
+	  {
+ 	
+	    return "/index.jsp?view=pages/experience-view";
+	  }
+	
+	
+	  // Endpoint for Experience custom Pagination
+	  
+	  @GetMapping(value = "/AjaxExpController", produces =
+	  MediaType.APPLICATION_JSON_VALUE)
+	  
+	  @ResponseBody 
+	  public String ajaxExperience(@RequestParam("offset") int
+	  offset,@RequestParam("limit") int limit,HttpSession session) throws IOException {
+	  
+	  String search = null;
+	  int org_Id = (Integer) session.getAttribute("org_id");
+	  
+	  
+	  return nativeService.getResultSetforExpView( org_Id, offset, limit, search); }
+	 
+	
+	 	
+	// Endpoint for Search/Status/Modal_popup
+	@PostMapping(value = "/AjaxExpController", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public String ajaxPostExperience(ExperienceViewPostDTO experienceViewPostDTO) throws IOException {
+	
+		return nativeService.getResultSetforExpViewPost(experienceViewPostDTO);
+	}
+	
+	/**
+	 * Bar Experience --> Create
+	 */
+	@RequestMapping(value = "/create-bar", method = RequestMethod.GET)
+	public ModelAndView createBarView() throws IOException {
+		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-bar");
+		return modelAndView;
+	}
+	
 	
 	/**
 	 * Popup Experience --> Create
@@ -266,6 +328,10 @@ public class ExperienceController {
 		return modelAndView;
 	}
 	
+	
+	/**
+	 * Experience --> Config Page
+	 */
 	@RequestMapping(value = "/experience-config", method = RequestMethod.GET)
 	public ModelAndView saveExperienceConfig(@ModelAttribute("exp_id") String exp_id) throws IOException, DbInsertException {
 		ModelAndView modelAndView = new ModelAndView();
@@ -275,7 +341,7 @@ public class ExperienceController {
 		return modelAndView;
 	}
 	
-	
+
 	 @ExceptionHandler(DbInsertException.class)
 	  public ModelAndView handleError(HttpServletRequest req, Exception ex,HttpSession session) {
 	    ModelAndView mav = new ModelAndView();
@@ -285,5 +351,50 @@ public class ExperienceController {
 	    return mav;
 	  }
 	 
+	 /**
+		 * Link formation and get segment dropdown Value for Experience Create Image
+		 */
+		@RequestMapping(value = "/image", method = RequestMethod.GET)
+		public ModelAndView createImage() throws IOException {
+			ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-image");
+			return modelAndView;
+		}
+		
+		
+		/**
+		 * Image Experience DB Save
+		 */
+		@RequestMapping(value = "/image", method = RequestMethod.POST)
+		public ModelAndView saveimageexp(ImageExpCreateFormDTO  imageExCreateFormDTO,ModelMap mp) throws IOException {
+			ModelAndView modelAndView = expControllerImpl.saveimageEXP(imageExCreateFormDTO, mp);
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");
+			return modelAndView;
+		}
+	 
+		
+		/**
+		 * Link formation and get segment dropdown Value for Experience Create style
+		 */
+		@RequestMapping(value = "/style", method = RequestMethod.GET)
+		public ModelAndView createstyle() throws IOException {
+			ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-style");
+			return modelAndView;
+		}
+		
+		
+		/**
+		 * Style Experience DB Save
+		 */
+		@RequestMapping(value = "/style", method = RequestMethod.POST)
+		public ModelAndView savestyleexp(StyleExpCreateFormDTO  styleExCreateFormDTO,ModelMap mp) throws IOException {
+			ModelAndView modelAndView = expControllerImpl.saveStyleExp(styleExCreateFormDTO, mp);
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");
+			return modelAndView;
+		}
+		
+	 
+	
 
 }
