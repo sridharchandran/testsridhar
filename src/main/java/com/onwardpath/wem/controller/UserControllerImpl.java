@@ -99,32 +99,15 @@ public class UserControllerImpl {
 	public ModelAndView profile(SignupFormDTO signupFormDTO, HttpSession session) throws IOException {
 
 		ModelAndView modelAndView = new ModelAndView();
-
-//		User userexists =  userService.findByEmail(signupFormDTO.getEmail());
 		User user = new User();
-//		InputStream targetStream  = null;
 		byte[] photo = signupFormDTO.getPhoto().getBytes();
-		/*
-		 * System.out.println("getPhoto"+signupFormDTO.getPhoto().isEmpty());
-		 * System.out.println("getPhotosize"+signupFormDTO.getPhoto().getSize());
-		 * System.out.println("photo"+photo); System.out.println("userid="+userexists);
-		 * System.out.println("signupdto="+signupFormDTO.getFirstName()); targetStream =
-		 * new ByteArrayInputStream(photo); System.out.println("image="+targetStream);
-		 */
+		int id = ((User) session.getAttribute("user")).getId();
+		
+		boolean error = false;
 
-		System.out.println("signupdtofirst=" + signupFormDTO.getFirstName());
-		System.out.println("signupdtolast=" + signupFormDTO.getLastName());
-		System.out.println("getPhoto" + signupFormDTO.getPhoto().isEmpty());
-		System.out.println("mobile=" + signupFormDTO.getPhone());
-		System.out.println("pass=" + signupFormDTO.getPassword().isEmpty());
-
-		int ids = ((User) session.getAttribute("user")).getId();
-
-		user = userRepository.findById(ids);
+		user = userRepository.findById(id);
 		if (signupFormDTO.getFirstName() != null) {
-
 			user.setFirstname(signupFormDTO.getFirstName());
-
 		}
 
 		if (signupFormDTO.getLastName() != null) {
@@ -149,28 +132,28 @@ public class UserControllerImpl {
 
 			System.out.println("sys pas=" + signupFormDTO.getPassword());
 			if (bCryptPasswordEncoder.matches(signupFormDTO.getPassword(), user.getPassword())) {
-
+				error = false;
 				user.setPassword(bCryptPasswordEncoder.encode(signupFormDTO.getNewpassword()));
-
-				session.setAttribute("user", user);
-				session.setAttribute("message", "Update Success ");
 				modelAndView.setViewName("/index.jsp?view=pages/profile-view-myprofile");
 
 			} else {
 				System.out.println("coming else");
-				session.setAttribute("user", user);
-				session.setAttribute("message", "password entered doesn't match ");
+				error = true;
 				modelAndView.setViewName("/index.jsp?view=pages/profile-view-myprofile");
 
 			}
 
 		}
-
 		user.setModifiedTime(LocalDateTime.now());
+		
+		if(error)
+		session.setAttribute("message", "password entered doesn't match ");
+		else
+		{
 		userService.saveUpdateUser(user);
-		session.setAttribute("user", user);
-		session.setAttribute("message", "Update Success ");
+		session.setAttribute("message", "Update Success");
 		modelAndView.setViewName("/index.jsp?view=pages/profile-view-myprofile");
+		}
 
 		return modelAndView;
 	}
