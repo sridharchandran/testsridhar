@@ -205,6 +205,12 @@ public class ExperienceControllerImpl {
 		return fullname;
 	}
 	
+	public ModelAndView saveBarExp() throws JsonMappingException, JsonProcessingException {
+		
+		
+		return null;
+		
+	}
 	
 	public ModelAndView saveimageEXP(ImageExpCreateFormDTO imgExpCreateFormDTO,ModelMap mp) throws JsonMappingException, JsonProcessingException {
 		ModelAndView modelAndView = new ModelAndView();
