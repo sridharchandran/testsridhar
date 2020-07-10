@@ -76,6 +76,7 @@
 	function remove(element, segment_id) {
 		var displayElement = document.getElementById(element);
 		delete expDetailsObj[segment_id];
+		delete cnt_details[segment_id];
 		displayElement.style.display = "none";
 	}
 	function saveExperience() {

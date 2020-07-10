@@ -13,6 +13,7 @@
 </style>    
 <script type="text/javascript">
 var expDetailsObj = {};
+var cnt_details= {};
 var segment = null;	
 var segment_id = null;	
 var segment_name = null;
@@ -21,9 +22,9 @@ var targetUrl = null;
 var anchorClassName = null;
 var anchorTarget = "_self";
 var imageUrl = null;
-var linkText="";
-var linkHTMLElement =""
-var errorMsg = ""
+var linkText= null;
+var linkHTMLElement =null;
+var errorMsg = "";
 var typeVal="Link"
 var imgWidth =null;
 var imgHeight =null;
@@ -138,9 +139,25 @@ function add(event){
 			if(errorMsg=="")
 			{
 			content = getContentFromLinkExp()
+			var seg_data = {};
 			
-			expDetailsObj[segment_id] = content +"#"+typeVal+"#"+linkText+"#"+targetUrl+"#"+imageUrl+"#"+anchorClassName+"#"+anchorTarget+"#"+imgWidth+"#"+imgHeight+"#"+imagelinktext;
+			expDetailsObj[segment_id] = content;
 			console.log("expDetailsObj="+expDetailsObj[segment_id]);
+			
+			//setting form values to object
+			seg_data.link_html_body = content;
+			seg_data.typeVal = typeVal;
+			seg_data.linkText = linkText;
+			seg_data.targetUrl = targetUrl;
+			seg_data.imageUrl = imageUrl;
+			seg_data.anchorClassName = anchorClassName;
+			seg_data.anchorTarget = anchorTarget;
+			seg_data.imgWidth = imgWidth;
+			seg_data.imgHeight = imgHeight;
+			seg_data.imageLinkText = imagelinktext;
+			
+			cnt_details[segment_id] = seg_data;
+			
 			var stage = document.getElementById("stage");
 			stage.innerHTML += '<button type="button" id="'+segment_name+'" class="btn btn-outline-info btn-pill mr10 mt10" onclick="remove(\''+segment_name+'\','+segment_id+')"><b>'+typeVal+'</b>:<b style="color:#3d4e5e">'+ segment_name+ '</b>:'+linkText +'<i class="la la-close"></i></button>';
 			stage.style.display = "block";
@@ -151,7 +168,7 @@ function add(event){
 			//document.getElementById("anchorcustomclass").style.display="none";
 			document.getElementById("imgalttext").style.display="none";
 			document.getElementById("adv-settings").style.display = "none";
-		typeVal = "Link";
+			typeVal = "Link";
 			}  
 			else{
 				swal.fire(errorMsg);
@@ -161,8 +178,9 @@ function add(event){
 }   
 function remove(element, segment_id){		
 	var displayElement = document.getElementById(element);	
-	delete expDetailsObj[segment_id];	
-	displayElement.style.display = "none";		
+	delete expDetailsObj[segment_id];
+	delete cnt_details[segment_id];
+	displayElement.style.display = "none";	
 }
 function saveExperience(){	
 	console.log("expDetailsObj::"+JSON.stringify(expDetailsObj))
@@ -171,9 +189,9 @@ function saveExperience(){
 	var type = "link";
 	if (JSON.stringify(expDetailsObj)!=='{}'){
 	document.getElementById("experience-form").type.value=type;	
-	document.getElementById("experience-form").experienceDetails.value=JSON.stringify(expDetailsObj);	
+	document.getElementById("experience-form").experienceDetails.value=JSON.stringify(cnt_details);	
 	document.getElementById("experience-form").method = "post";
-	document.getElementById("experience-form").action = "ExperienceController";
+	document.getElementById("experience-form").action = "/wem/create-link";
 	document.getElementById("experience-form").submit();
 	}else{
 		swal.fire("Please enter atleast one link for this Experience")

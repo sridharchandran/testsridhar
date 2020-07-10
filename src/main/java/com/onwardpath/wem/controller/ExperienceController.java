@@ -1,13 +1,10 @@
 package com.onwardpath.wem.controller;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,25 +29,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onwardpath.wem.entity.Config;
-import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
 import com.onwardpath.wem.model.ExperienceViewPostDTO;
 import com.onwardpath.wem.exception.DbInsertException;
 import com.onwardpath.wem.model.ImageExpCreateFormDTO;
+import com.onwardpath.wem.model.LinkExpCreateFormDTO;
 import com.onwardpath.wem.model.PopupExpCreateFormDTO;
-import com.onwardpath.wem.model.SignupFormDTO;
 import com.onwardpath.wem.model.StyleExpCreateFormDTO;
 import com.onwardpath.wem.repository.ExperienceRepository;
 import com.onwardpath.wem.service.ExperienceService;
 import com.onwardpath.wem.repository.NativeRepository;
 import com.onwardpath.wem.service.ExperienceServiceImpl;
 import com.onwardpath.wem.service.NativeService;
-import com.onwardpath.wem.projections.SegmentNames;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javassist.compiler.ast.NewExpr;
 
 @Controller
 public class ExperienceController {
@@ -91,69 +82,8 @@ public class ExperienceController {
 		modelAndView.setViewName("index.jsp?view=pages/experience-create-content");
 		return modelAndView;
 	}
-
-	/**
-	 * Experience Create Content DB Save functionality
-	 * 
-	 * @throws JsonProcessingException
-	 * @throws JsonMappingException
-	 */
-	@RequestMapping(value = "/experiencesave", method = RequestMethod.POST)
-	public String submitContentExperience(ModelMap mp, HttpSession session, HttpServletRequest request)
-			throws JsonMappingException, JsonProcessingException {
-
-		String UserFirstname = (String) session.getAttribute("firstname");
-		String lastname = (String) session.getAttribute("lastname");
-
-		String username = UserFirstname + " " + lastname;
-		String name = request.getParameter("name");
-		int org_Id = (Integer) session.getAttribute("org_id");
-
-		String type = "content";
-		String status = "on";
-
-		LocalDateTime now = LocalDateTime.now();  
-		Experience newcontentexp = new Experience();
-		newcontentexp.setCreatedBy(username);
-		newcontentexp.setName(name);
-		newcontentexp.setStatus(status);
-		newcontentexp.setType(type);
-		newcontentexp.setScheduleStart(now);
-		newcontentexp.setOrgId(org_Id);
-		newcontentexp.setModBy(username);
-		newcontentexp.setCreatedTime(now);
-
-		expseg.saveExperience(newcontentexp);
-
-		int experience_id = newcontentexp.getId();
-
-		String experienceDetails = request.getParameter("experienceDetails");
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, String> map = mapper.readValue(experienceDetails, Map.class);
-		System.out.println(map);
-		for (Map.Entry<String, String> entry : map.entrySet()) {
-			int segment_id = Integer.parseInt(entry.getKey());
-			String contentvalue = entry.getValue();
-			Content content = new Content();
-			content.setExperience_id(experience_id);
-			content.setSegment_id(segment_id);
-			content.setContent(contentvalue);
-			content.setCreate_time(LocalDateTime.now());
-			expseg.savecontent(content);
-		}
-		mp.put("zonelist", expseg.gettimezone());
-
-		// request.setAttribute("exp_id", exp_id);
-		// mp.addAttribute("exp_id", exp_id);
-		// mp.addAttribute("msg", "Experience <b>"+newcontentexp.getName()+"</b> saved.
-		// You can now configure the pages for this experience.#"+exp_id+"#"+name);
-
-		session.setAttribute("message",
-				"Experience <b>" + name + "</b> saved. You can now configure the pages for this experience. #n=" + name
-						+ "#e=" + experience_id + "#o=" + newcontentexp.getOrgId() + "#t=" + type);
-		return "index.jsp?view=pages/experience-create-enable";
-	}
-
+	
+	
 	// Function tot convert String to Date
 	public static Instant getDateFromString(String string) {
 
@@ -364,14 +294,30 @@ public class ExperienceController {
 		/**
 		 * Image Experience DB Save
 		 */
+		
 		@RequestMapping(value = "/image", method = RequestMethod.POST)
-		public ModelAndView saveimageexp(ImageExpCreateFormDTO  imageExCreateFormDTO,ModelMap mp) throws IOException {
-			ModelAndView modelAndView = expControllerImpl.saveimageEXP(imageExCreateFormDTO, mp);
-			modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");
+		public ModelAndView saveimageexp(ImageExpCreateFormDTO imageExCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
+			ModelAndView modelAndView = expControllerImpl.saveimageEXP(imageExCreateFormDTO);
+			Map<String, Object> model = modelAndView.getModel();
+			boolean expNameExists = (boolean) model.get("expExists");
+			
+			modelAndView.clear();
+			
+			if(expNameExists)
+			{
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-image");
+			}
+			else
+			{
+			String exp_id = model.get("exp_id").toString();
+			modelAndView.setViewName("redirect:/experience-config");
+			rdAttr.addAttribute("exp_id",exp_id);
+			}
+			
 			return modelAndView;
 		}
-	 
-		
+
+	
 		/**
 		 * Link formation and get segment dropdown Value for Experience Create style
 		 */
@@ -387,9 +333,51 @@ public class ExperienceController {
 		 * Style Experience DB Save
 		 */
 		@RequestMapping(value = "/style", method = RequestMethod.POST)
-		public ModelAndView savestyleexp(StyleExpCreateFormDTO  styleExCreateFormDTO,ModelMap mp) throws IOException {
-			ModelAndView modelAndView = expControllerImpl.saveStyleExp(styleExCreateFormDTO, mp);
-			modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");
+		public ModelAndView savestyleexp(StyleExpCreateFormDTO styleExCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
+			ModelAndView modelAndView = expControllerImpl.saveStyleExp(styleExCreateFormDTO);
+			Map<String, Object> model = modelAndView.getModel();
+			boolean expNameExists = (boolean) model.get("expExists");
+			
+			modelAndView.clear();
+			
+			if(expNameExists)
+			{
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-style");
+			}
+			else
+			{
+			String exp_id = model.get("exp_id").toString();
+			modelAndView.setViewName("redirect:/experience-config");
+			rdAttr.addAttribute("exp_id",exp_id);
+			}
+			
+			return modelAndView;
+		}
+		
+		
+		
+		/**
+		 * Content Experience DB Save
+		 */
+		@RequestMapping(value = "/content", method = RequestMethod.POST)
+		public ModelAndView savecontenteexp(ImageExpCreateFormDTO imageExCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
+			ModelAndView modelAndView = expControllerImpl.savecontentEXP(imageExCreateFormDTO);
+			Map<String, Object> model = modelAndView.getModel();
+			boolean expNameExists = (boolean) model.get("expExists");
+			
+			modelAndView.clear();
+			
+			if(expNameExists)
+			{
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-content");
+			}
+			else
+			{
+			String exp_id = model.get("exp_id").toString();
+			modelAndView.setViewName("redirect:/experience-config");
+			rdAttr.addAttribute("exp_id",exp_id);
+			}
+			
 			return modelAndView;
 		}
 		
@@ -403,5 +391,33 @@ public class ExperienceController {
 			return modelAndView;
 		}
 	
+		/**
+		 * Link Experience --> Save
+		 * @throws DbInsertException 
+		 */
+		@RequestMapping(value = "/create-link", method = RequestMethod.POST)
+		public ModelAndView saveLinkExperience(LinkExpCreateFormDTO linkExCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
+			ModelAndView modelAndView = expControllerImpl.saveLinkExp(linkExCreateFormDTO);
+			Map<String, Object> model = modelAndView.getModel();
+			boolean expNameExists = (boolean) model.get("expExists");
+			
+			modelAndView.clear();
+			
+			if(expNameExists)
+			{
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
+			}
+			else
+			{
+			String exp_id = model.get("exp_id").toString();
+			modelAndView.setViewName("redirect:/experience-config");
+			rdAttr.addAttribute("exp_id",exp_id);
+			}
+			
+			return modelAndView;
+		}
+		
+		
 
 }
+
