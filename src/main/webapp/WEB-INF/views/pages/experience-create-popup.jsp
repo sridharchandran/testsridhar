@@ -33,15 +33,13 @@
 	}
 	function add(event) {
 		selectIndex();
-		if (segment_id in expDetailsObj) {
+		if (segment_id in cnt_details) {
 			swal.fire("Segment " + segment_name
 					+ " already added please select a different segment.");
 		} else {
 			if (modalurl.value.length > 0 || (modalcontent.value.length > 0 || bgimgurl.length > 0)) {
 				
 				var seg_data = {};
-				
-				expDetailsObj[segment_id] = content;
 				
 				seg_data.popup_type= popup.options[popup.selectedIndex].value;
 				seg_data.popup_body = content;
@@ -64,7 +62,7 @@
 						+ segment_name
 						+ '\','
 						+ segment_id
-						+ ')">'
+						+ ',event)">'
 						+ segment_name
 						+ '<i class="la la-close"></i></button></div>';
 				stage.style.display = "block";
@@ -73,11 +71,10 @@
 		}
 
 	}
-	function remove(element, segment_id) {
-		var displayElement = document.getElementById(element);
-		delete expDetailsObj[segment_id];
+	function remove(element, segment_id,event) {
 		delete cnt_details[segment_id];
-		displayElement.style.display = "none";
+		var stage =  document.getElementById("stage");
+		stage.removeChild(event.currentTarget);
 	}
 	function saveExperience() {
 		var page_events = getCheckedEvents();
@@ -94,7 +91,7 @@
 		document.getElementById("experience-form").method = "post";
         
 		
-		if (Object.entries(expDetailsObj).length <= 0) {
+		if (Object.entries(cnt_details).length <= 0) {
 			swal.fire("Please add atleast one content by Clicking ADD Button");
 		} else {
 			document.getElementById("experience-form").action = "/wem/create-popup";

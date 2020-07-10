@@ -12,7 +12,6 @@
 }
 </style>    
 <script type="text/javascript">
-var expDetailsObj = {};
 var cnt_details= {};
 var segment = null;	
 var segment_id = null;	
@@ -72,8 +71,7 @@ function selectIndex()
 	
 	
 	//anchorClassName
-	anchorClassName = document.getElementById("anchorcustomclass").value
-	
+	anchorClassName = document.getElementById("anchorcustomclass").value;
 	//console.log("imaheurl value is ::"+imageUrl+"Checked value is ::"+document.getElementById("imageChkBox").checked)
 }
 function toggleCheckbox(element)
@@ -132,8 +130,8 @@ function add(event){
 	//console.log("Before add function() ::")
        selectIndex();
 	
-	console.log("After selectindex function ::"+expDetailsObj)
-	   if (segment_id in expDetailsObj) {
+
+	   if (segment_id in cnt_details) {
 		   swal.fire("Segment "+segment_name+" already added. Select a different segment.");	
 		} else {
 			if(errorMsg=="")
@@ -141,25 +139,23 @@ function add(event){
 			content = getContentFromLinkExp()
 			var seg_data = {};
 			
-			expDetailsObj[segment_id] = content;
-			console.log("expDetailsObj="+expDetailsObj[segment_id]);
 			
 			//setting form values to object
 			seg_data.link_html_body = content;
 			seg_data.typeVal = typeVal;
-			seg_data.linkText = linkText;
-			seg_data.targetUrl = targetUrl;
-			seg_data.imageUrl = imageUrl;
-			seg_data.anchorClassName = anchorClassName;
-			seg_data.anchorTarget = anchorTarget;
-			seg_data.imgWidth = imgWidth;
-			seg_data.imgHeight = imgHeight;
-			seg_data.imageLinkText = imagelinktext;
+			seg_data.linkText = linkText == null ? "null" : linkText;
+			seg_data.targetUrl = targetUrl  == null ? "null" : targetUrl;
+			seg_data.imageUrl = imageUrl  == null ? "null" : imageUrl;
+			seg_data.anchorClassName = anchorClassName == "" ? "null" : anchorClassName;
+			seg_data.anchorTarget = anchorTarget  == null ? "null" : anchorTarget;
+			seg_data.imgWidth = imgWidth  == null ? "null" : imgWidth;
+			seg_data.imgHeight = imgHeight  == null ? "null" : imgHeight;
+			seg_data.imagelinktext = imagelinktext   == null ? "null" : imagelinktext;
 			
 			cnt_details[segment_id] = seg_data;
 			
 			var stage = document.getElementById("stage");
-			stage.innerHTML += '<button type="button" id="'+segment_name+'" class="btn btn-outline-info btn-pill mr10 mt10" onclick="remove(\''+segment_name+'\','+segment_id+')"><b>'+typeVal+'</b>:<b style="color:#3d4e5e">'+ segment_name+ '</b>:'+linkText +'<i class="la la-close"></i></button>';
+			stage.innerHTML += '<button type="button" id="'+segment_name+'" class="btn btn-outline-info btn-pill mr10 mt10" onclick="remove(\''+segment_name+'\','+segment_id+',event)"><b>'+typeVal+'</b>:<b style="color:#3d4e5e">'+ segment_name+ '</b>:'+linkText +'<i class="la la-close"></i></button>';
 			stage.style.display = "block";
 			document.getElementById("dummy-form").reset();
 			document.getElementById("imageurl").style.display ="none"
@@ -176,18 +172,17 @@ function add(event){
 			}
 		}		 
 }   
-function remove(element, segment_id){		
-	var displayElement = document.getElementById(element);	
-	delete expDetailsObj[segment_id];
+function remove(element,segment_id,event){
 	delete cnt_details[segment_id];
-	displayElement.style.display = "none";	
+	var stage =  document.getElementById("stage");
+	stage.removeChild(event.currentTarget);
 }
 function saveExperience(){	
-	console.log("expDetailsObj::"+JSON.stringify(expDetailsObj))
+
 	var name = document.getElementById('name').value;
 	if(name){	
 	var type = "link";
-	if (JSON.stringify(expDetailsObj)!=='{}'){
+	if (JSON.stringify(cnt_details)!=='{}'){
 	document.getElementById("experience-form").type.value=type;	
 	document.getElementById("experience-form").experienceDetails.value=JSON.stringify(cnt_details);	
 	document.getElementById("experience-form").method = "post";
