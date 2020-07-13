@@ -29,7 +29,6 @@ public class Content {
 	
 	private String content;
 	
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(name = "created_time")
 	private LocalDateTime create_time;
 
