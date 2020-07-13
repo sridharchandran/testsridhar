@@ -25,6 +25,7 @@ import com.onwardpath.wem.entity.Bar;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
 import com.onwardpath.wem.entity.Image;
+import com.onwardpath.wem.entity.Link;
 import com.onwardpath.wem.entity.Popup;
 import com.onwardpath.wem.entity.PopupAttributes;
 import com.onwardpath.wem.entity.Style;
