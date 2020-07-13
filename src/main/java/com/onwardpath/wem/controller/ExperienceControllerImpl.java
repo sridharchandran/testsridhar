@@ -32,6 +32,7 @@ import com.onwardpath.wem.entity.User;
 import com.onwardpath.wem.exception.DbInsertException;
 import com.onwardpath.wem.model.BarExpCreateFormDTO;
 import com.onwardpath.wem.model.ImageExpCreateFormDTO;
+import com.onwardpath.wem.model.LinkExpCreateFormDTO;
 import com.onwardpath.wem.model.PopupExpCreateFormDTO;
 import com.onwardpath.wem.model.StyleExpCreateFormDTO;
 import com.onwardpath.wem.projections.SegmentNames;
@@ -141,6 +142,12 @@ public class ExperienceControllerImpl {
 		}
 		return modelAndView;
 	}
+
+	/*
+	 * Saving Popup values into content & Popup tables
+	 * @param PopupExpCreateFormDTO
+	 * @param exp_id
+	 */
 
 	public void savePopupContentsAndAttributes(PopupExpCreateFormDTO popupExpCreateFormDTO, int exp_id)
 			throws JsonMappingException, JsonProcessingException, DbInsertException {
@@ -437,6 +444,91 @@ public ModelAndView savecontentEXP(ImageExpCreateFormDTO imgExpCreateFormDTO) th
 	
 			return modelAndView;
 }
+	
+	/*
+	 * Saving Link values into content & Link tables
+	 * @param LinkExpCreateFormDTO
+	 * @param exp_id
+	 */
 
 
+	@Transactional(rollbackFor = DbInsertException.class)
+	public ModelAndView saveLinkExp(LinkExpCreateFormDTO linkExCreateFormDTO) throws DbInsertException {
+		ModelAndView modelAndView = new ModelAndView();
+		String exp_name = linkExCreateFormDTO.getName();
+		String type = linkExCreateFormDTO.getType();
+		String status = "on";
+		int user_id = (int) session.getAttribute("user_id");
+		int org_id = (int) session.getAttribute("org_id");
+		boolean expExists;
+		try {
+			expExists = expService.expExists(org_id, exp_name);
+			if (expExists) {
+				session.setAttribute("message", expCreateSetErrorMessage(exp_name));
+				modelAndView.addObject("expExists", expExists);
+			} else {
+				expExists = false;
+				int exp_id = saveExperience(exp_name, type, status, user_id);
+				saveLinkContents(linkExCreateFormDTO, exp_id);
+				session.setAttribute("message", expCreateSetSuccessMessage(exp_name));
+				modelAndView.addObject("exp_id", exp_id);
+				modelAndView.addObject("expExists", expExists);
+			}
+		} catch (Exception e) {
+			/*
+			 * expExists = true; modelAndView.addObject("error", "true");
+			 * session.setAttribute(
+			 * "message","Unresolved Error: Please contact administrator");
+			 */
+			e.printStackTrace();
+			throw new DbInsertException("Exception is thrown");
+		}
+		return modelAndView;
+	}
+	
+	/*
+	 * Saving Popup values into content & Popup tables
+	 * @param PopupExpCreateFormDTO
+	 * @param exp_id
+	 */
+
+	public void saveLinkContents(LinkExpCreateFormDTO linkExpCreateFormDTO, int exp_id)
+			throws JsonMappingException, JsonProcessingException, DbInsertException {
+		List<Link> link_entities = new ArrayList<Link>();	
+		List<Content> content_entities = new ArrayList<Content>();
+		String experienceDetails = linkExpCreateFormDTO.getExperienceDetails();
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, LinkedHashMap> map = mapper.readValue(experienceDetails, Map.class);
+		for (Entry<String, LinkedHashMap> entry : map.entrySet()) {
+			int segment_id = Integer.parseInt(entry.getKey());
+			//int segment_id = 1;
+			LinkedHashMap<?, ?> seg_data = entry.getValue();
+			Link newLinkModel = new Link();
+			Content newContentModel = new Content();
+			
+			newLinkModel.setExperienceId(exp_id);
+			newLinkModel.setSegmentId(segment_id);
+
+			newLinkModel.setType(seg_data.get("typeVal").toString());
+			newLinkModel.setText(seg_data.get("linkText").toString());
+			newLinkModel.setTargeturl(seg_data.get("targetUrl").toString());
+			newLinkModel.setImageurl(seg_data.get("imageUrl").toString());
+			newLinkModel.setClassname(seg_data.get("anchorClassName").toString());
+			newLinkModel.setPagetarget(seg_data.get("anchorTarget").toString());
+			newLinkModel.setWidth(seg_data.get("imgWidth").toString());
+			newLinkModel.setHeight(seg_data.get("imgHeight").toString());
+			newLinkModel.setAlttext(seg_data.get("imagelinktext").toString());
+			link_entities.add(newLinkModel);
+			
+			newContentModel.setExperience_id(exp_id);
+			newContentModel.setSegment_id(segment_id);
+			newContentModel.setContent(seg_data.get("link_html_body").toString());
+			newContentModel.setCreate_time(LocalDateTime.now());
+			content_entities.add(newContentModel);
+		}
+		// batch insert
+		expService.saveAllLinkEntites(link_entities);
+		expService.saveAllContentEntites(content_entities);
+	}
 }

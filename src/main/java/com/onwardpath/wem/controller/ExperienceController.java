@@ -37,6 +37,7 @@ import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
 import com.onwardpath.wem.model.BarExpCreateFormDTO;
 import com.onwardpath.wem.model.ExperienceViewPostDTO;
+import com.onwardpath.wem.model.LinkExpCreateFormDTO;
 import com.onwardpath.wem.exception.DbInsertException;
 import com.onwardpath.wem.model.ImageExpCreateFormDTO;
 import com.onwardpath.wem.model.PopupExpCreateFormDTO;
@@ -415,6 +416,43 @@ public class ExperienceController {
 			
 			return modelAndView;
 		}
+		
+		/**
+		 * Link Experience --> Create	
+		 */
+		@RequestMapping(value = "/create-link", method = RequestMethod.GET)
+		public ModelAndView createLinkExpereinceView() throws IOException {
+			ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-link");
+			return modelAndView;
+		}
+	
+		/**
+		 * Link Experience --> Save
+		 * @throws DbInsertException 
+		 */
+		@RequestMapping(value = "/create-link", method = RequestMethod.POST)
+		public ModelAndView saveLinkExperience(LinkExpCreateFormDTO linkExCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
+			ModelAndView modelAndView = expControllerImpl.saveLinkExp(linkExCreateFormDTO);
+			Map<String, Object> model = modelAndView.getModel();
+			boolean expNameExists = (boolean) model.get("expExists");
+			
+			modelAndView.clear();
+			
+			if(expNameExists)
+			{
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
+			}
+			else
+			{
+			String exp_id = model.get("exp_id").toString();
+			modelAndView.setViewName("redirect:/experience-config");
+			rdAttr.addAttribute("exp_id",exp_id);
+			}
+			
+			return modelAndView;
+		}
+		
 		
 		
 

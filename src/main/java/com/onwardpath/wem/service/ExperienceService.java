@@ -9,6 +9,7 @@ import com.onwardpath.wem.entity.Config;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
 import com.onwardpath.wem.entity.Image;
+import com.onwardpath.wem.entity.Link;
 import com.onwardpath.wem.entity.Popup;
 import com.onwardpath.wem.entity.PopupAttributes;
 import com.onwardpath.wem.entity.Style;
@@ -22,9 +23,14 @@ public interface  ExperienceService {
     public Content savecontent(Content con);
     public Config  saveconfig(Config config);
     public boolean expExists(int orgId, String exp_name);
+    
     public Popup savePopupContents(Popup popup);
     public PopupAttributes savePopupAttributes(PopupAttributes popupAttributes);
     public List<Popup> saveAllPopupEntites(List<Popup> entities);
+    
+    public Link saveLinkContents(Link link);
+    public List<Link> saveAllLinkEntites(List<Link> entities);
+    
 	public List<Content> saveAllContentEntites(List<Content> entities);
 	public Experience getExperienceById(int exp_id);
 	public Image  saveimage(Image image);

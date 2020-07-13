@@ -10,6 +10,7 @@ import com.onwardpath.wem.entity.Config;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
 import com.onwardpath.wem.entity.Image;
+import com.onwardpath.wem.entity.Link;
 import com.onwardpath.wem.entity.Popup;
 import com.onwardpath.wem.entity.PopupAttributes;
 import com.onwardpath.wem.entity.Segment;
@@ -20,6 +21,7 @@ import com.onwardpath.wem.repository.ConfigRepository;
 import com.onwardpath.wem.repository.ContentRepository;
 import com.onwardpath.wem.repository.ExperienceRepository;
 import com.onwardpath.wem.repository.ImageRepository;
+import com.onwardpath.wem.repository.LinkRepository;
 import com.onwardpath.wem.repository.PopupAttrRepository;
 import com.onwardpath.wem.repository.PopupRepository;
 import com.onwardpath.wem.repository.SegmentRepository;
@@ -39,10 +41,11 @@ public class ExperienceServiceImpl implements  ExperienceService {
 	private ImageRepository imageRepos;
 	private StyleRepository styleRepos;
 	private BarRepository	barRepos;
+	private LinkRepository linkRepos;
 
 	
 	@Autowired
-	public ExperienceServiceImpl(SegmentRepository sepRepos,ExperienceRepository expRepos,ContentRepository conRepos,TimeZoneRepository timezoneRepos,PopupRepository popupRepos,ConfigRepository configRepos,PopupAttrRepository popupAttrRepos,ImageRepository imageRepos,StyleRepository styleRepos,BarRepository barRepos)
+	public ExperienceServiceImpl(SegmentRepository sepRepos,ExperienceRepository expRepos,ContentRepository conRepos,TimeZoneRepository timezoneRepos,PopupRepository popupRepos,ConfigRepository configRepos,PopupAttrRepository popupAttrRepos,ImageRepository imageRepos,StyleRepository styleRepos,BarRepository barRepos,LinkRepository linkRepos)
 	{
 		this.sepRepos = sepRepos;
 		this.expRepos  = expRepos;
@@ -54,7 +57,7 @@ public class ExperienceServiceImpl implements  ExperienceService {
 		this.imageRepos = imageRepos;
 		this.styleRepos = styleRepos;
 		this.barRepos = barRepos;
-
+		this.linkRepos = linkRepos;
 	}
 	
 	
@@ -147,6 +150,20 @@ public class ExperienceServiceImpl implements  ExperienceService {
 	public Style savestyle(Style style) {
 		// TODO Auto-generated method stub
 		return styleRepos.save(style);
+	}
+
+
+	@Override
+	public Link saveLinkContents(Link link) {
+		// TODO Auto-generated method stub
+		return linkRepos.save(link);
+	}
+
+
+	@Override
+	public List<Link> saveAllLinkEntites(List<Link> entities) {
+		// TODO Auto-generated method stub
+		return linkRepos.saveAll(entities);
 	}
 	
 }
