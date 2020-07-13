@@ -74,13 +74,6 @@ public class ExperienceController {
 	@Autowired
 	NativeService nativeService;
 	
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public class RecordNotFoundException extends RuntimeException 
-	{
-	    public RecordNotFoundException(String exception) {
-	        super(exception);
-	    }
-	}
 	
 	/**
 	 * Link formation and get segment dropdown Value for Experience Create Content
@@ -237,8 +230,9 @@ public class ExperienceController {
 	 */
 	@RequestMapping(value = "/create-bar", method = RequestMethod.POST)
 	public ModelAndView saveBarExperience(BarExpCreateFormDTO barExpCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
-		ModelAndView modelAndView = expControllerImpl.saveBarExp();
+		ModelAndView modelAndView = expControllerImpl.saveBarExp(barExpCreateFormDTO);
 		Map<String, Object> model = modelAndView.getModel();
+		System.out.println("expexits="+(boolean) model.get("expExists"));
 		boolean expNameExists = (boolean) model.get("expExists");
 		
 		modelAndView.clear();
@@ -312,8 +306,12 @@ public class ExperienceController {
 	  public ModelAndView handleError(HttpServletRequest req, Exception ex,HttpSession session) {
 	    ModelAndView mav = new ModelAndView();
 		session.setAttribute("message","Unresolved Error: Please contact administrator");
+		System.out.println("type="+session.getAttribute("exp_type"));
+		String type = (String) session.getAttribute("exp_type");
 	    mav.addObject("exception", ex);
-	    mav.setViewName("index.jsp?view=pages/experience-create-popup");
+	   
+	    mav.setViewName("redirect:/create-popup");	
+	    
 	    return mav;
 	  }
 	 
