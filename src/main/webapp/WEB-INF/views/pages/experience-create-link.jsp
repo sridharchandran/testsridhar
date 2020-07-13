@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.Map, com.onwardpath.wem.repository.SegmentRepository" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
 <style>
 .mr10{
 	margin-right :10px;
@@ -12,7 +12,7 @@
 }
 </style>    
 <script type="text/javascript">
-var expDetailsObj = {};
+var cnt_details= {};
 var segment = null;	
 var segment_id = null;	
 var segment_name = null;
@@ -21,9 +21,9 @@ var targetUrl = null;
 var anchorClassName = null;
 var anchorTarget = "_self";
 var imageUrl = null;
-var linkText="";
-var linkHTMLElement =""
-var errorMsg = ""
+var linkText= null;
+var linkHTMLElement =null;
+var errorMsg = "";
 var typeVal="Link"
 var imgWidth =null;
 var imgHeight =null;
@@ -71,8 +71,7 @@ function selectIndex()
 	
 	
 	//anchorClassName
-	anchorClassName = document.getElementById("anchorcustomclass").value
-	
+	anchorClassName = document.getElementById("anchorcustomclass").value;
 	//console.log("imaheurl value is ::"+imageUrl+"Checked value is ::"+document.getElementById("imageChkBox").checked)
 }
 function toggleCheckbox(element)
@@ -131,18 +130,32 @@ function add(event){
 	//console.log("Before add function() ::")
        selectIndex();
 	
-	console.log("After selectindex function ::"+expDetailsObj)
-	   if (segment_id in expDetailsObj) {
+
+	   if (segment_id in cnt_details) {
 		   swal.fire("Segment "+segment_name+" already added. Select a different segment.");	
 		} else {
 			if(errorMsg=="")
 			{
 			content = getContentFromLinkExp()
+			var seg_data = {};
 			
-			expDetailsObj[segment_id] = content +"#"+typeVal+"#"+linkText+"#"+targetUrl+"#"+imageUrl+"#"+anchorClassName+"#"+anchorTarget+"#"+imgWidth+"#"+imgHeight+"#"+imagelinktext;
-			console.log("expDetailsObj="+expDetailsObj[segment_id]);
+			
+			//setting form values to object
+			seg_data.link_html_body = content;
+			seg_data.typeVal = typeVal;
+			seg_data.linkText = linkText == null ? "null" : linkText;
+			seg_data.targetUrl = targetUrl  == null ? "null" : targetUrl;
+			seg_data.imageUrl = imageUrl  == null ? "null" : imageUrl;
+			seg_data.anchorClassName = anchorClassName == "" ? "null" : anchorClassName;
+			seg_data.anchorTarget = anchorTarget  == null ? "null" : anchorTarget;
+			seg_data.imgWidth = imgWidth  == null ? "null" : imgWidth;
+			seg_data.imgHeight = imgHeight  == null ? "null" : imgHeight;
+			seg_data.imagelinktext = imagelinktext   == null ? "null" : imagelinktext;
+			
+			cnt_details[segment_id] = seg_data;
+			
 			var stage = document.getElementById("stage");
-			stage.innerHTML += '<button type="button" id="'+segment_name+'" class="btn btn-outline-info btn-pill mr10 mt10" onclick="remove(\''+segment_name+'\','+segment_id+')"><b>'+typeVal+'</b>:<b style="color:#3d4e5e">'+ segment_name+ '</b>:'+linkText +'<i class="la la-close"></i></button>';
+			stage.innerHTML += '<button type="button" id="'+segment_name+'" class="btn btn-outline-info btn-pill mr10 mt10" onclick="remove(\''+segment_name+'\','+segment_id+',event)"><b>'+typeVal+'</b>:<b style="color:#3d4e5e">'+ segment_name+ '</b>:'+linkText +'<i class="la la-close"></i></button>';
 			stage.style.display = "block";
 			document.getElementById("dummy-form").reset();
 			document.getElementById("imageurl").style.display ="none"
@@ -151,7 +164,7 @@ function add(event){
 			//document.getElementById("anchorcustomclass").style.display="none";
 			document.getElementById("imgalttext").style.display="none";
 			document.getElementById("adv-settings").style.display = "none";
-		typeVal = "Link";
+			typeVal = "Link";
 			}  
 			else{
 				swal.fire(errorMsg);
@@ -159,21 +172,21 @@ function add(event){
 			}
 		}		 
 }   
-function remove(element, segment_id){		
-	var displayElement = document.getElementById(element);	
-	delete expDetailsObj[segment_id];	
-	displayElement.style.display = "none";		
+function remove(element,segment_id,event){
+	delete cnt_details[segment_id];
+	var stage =  document.getElementById("stage");
+	stage.removeChild(event.currentTarget);
 }
 function saveExperience(){	
-	console.log("expDetailsObj::"+JSON.stringify(expDetailsObj))
+
 	var name = document.getElementById('name').value;
 	if(name){	
 	var type = "link";
-	if (JSON.stringify(expDetailsObj)!=='{}'){
+	if (JSON.stringify(cnt_details)!=='{}'){
 	document.getElementById("experience-form").type.value=type;	
-	document.getElementById("experience-form").experienceDetails.value=JSON.stringify(expDetailsObj);	
+	document.getElementById("experience-form").experienceDetails.value=JSON.stringify(cnt_details);	
 	document.getElementById("experience-form").method = "post";
-	document.getElementById("experience-form").action = "ExperienceController";
+	document.getElementById("experience-form").action = "/wem/create-link";
 	document.getElementById("experience-form").submit();
 	}else{
 		swal.fire("Please enter atleast one link for this Experience")
@@ -207,12 +220,12 @@ window.addEventListener("load", function() {
 	<%	
 	String message = (String) session.getAttribute("message");
 	
-	SegmentRepository segmentRepository = new SegmentRepository();
+	//SegmentRepository segmentRepository = new SegmentRepository();
 	int org_id = (Integer)session.getAttribute("org_id");
-	Map<Integer,String> segments = segmentRepository.getOrgSegments(org_id);
+/* 	Map<Integer,String> segments = segmentRepository.getOrgSegments(org_id);
 	if (segments.size() == 0) {
 		message = "Error: No Segments are configured. Create a Segment <a class='kt-link kt-font-bold' href='?view=pages/segment-create-geo.jsp'>here</a>";	
-	}
+	}*/
 				
 	if (message != null && !message.equals("")) {
 		String icon = "fa fa-cocktail"; 
@@ -326,13 +339,17 @@ window.addEventListener("load", function() {
 				<label class="col-form-label col-lg-3 col-sm-12">Segment</label>
 					<div class="col-lg-4 col-md-9 col-sm-12">											
 						<select id="segment" class="custom-select form-control" data-width="300" onchange="javascript:selectIndex()">
-						    <%
+<%-- 						    <%
 							for ( Map.Entry<Integer, String> entry : segments.entrySet()) {
 								Integer key = entry.getKey();
 							    String val = entry.getValue();	     	   
 							    out.println("<option value='"+key+"'>"+val+"</option>");
 							}
-							%>													
+							%>	 --%>	
+									<c:forEach items="${seglist}" var="segment">
+										<option value="${segment.id}">${segment.name}</option>
+									</c:forEach>
+																					
 						</select>																																							
 					</div>
 				</div>

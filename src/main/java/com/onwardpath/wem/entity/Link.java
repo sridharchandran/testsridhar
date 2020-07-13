@@ -1,5 +1,6 @@
 package com.onwardpath.wem.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,8 +14,13 @@ public class Link {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-	private int experience_id;
-	private int segment_id;
+	
+	@Column(name = "experience_id")
+	private int experienceId;
+	
+	@Column(name = "segment_id")
+	private int segmentId;
+	
 	private String type;
 	private String text;
 	private String targeturl;
@@ -30,18 +36,6 @@ public class Link {
 	}
 	public void setId(int id) {
 		this.id = id;
-	}
-	public int getExperience_id() {
-		return experience_id;
-	}
-	public void setExperience_id(int experience_id) {
-		this.experience_id = experience_id;
-	}
-	public int getSegment_id() {
-		return segment_id;
-	}
-	public void setSegment_id(int segment_id) {
-		this.segment_id = segment_id;
 	}
 	public String getType() {
 		return type;
@@ -96,6 +90,18 @@ public class Link {
 	}
 	public void setAlttext(String alttext) {
 		this.alttext = alttext;
+	}
+	public int getExperienceId() {
+		return experienceId;
+	}
+	public void setExperienceId(int experienceId) {
+		this.experienceId = experienceId;
+	}
+	public int getSegmentId() {
+		return segmentId;
+	}
+	public void setSegmentId(int segmentId) {
+		this.segmentId = segmentId;
 	}
 
 }

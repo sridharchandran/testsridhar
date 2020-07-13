@@ -1,13 +1,10 @@
 package com.onwardpath.wem.controller;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,25 +29,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onwardpath.wem.entity.Config;
-import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
 import com.onwardpath.wem.model.ExperienceViewPostDTO;
 import com.onwardpath.wem.exception.DbInsertException;
 import com.onwardpath.wem.model.ImageExpCreateFormDTO;
+import com.onwardpath.wem.model.LinkExpCreateFormDTO;
 import com.onwardpath.wem.model.PopupExpCreateFormDTO;
-import com.onwardpath.wem.model.SignupFormDTO;
 import com.onwardpath.wem.model.StyleExpCreateFormDTO;
 import com.onwardpath.wem.repository.ExperienceRepository;
 import com.onwardpath.wem.service.ExperienceService;
 import com.onwardpath.wem.repository.NativeRepository;
 import com.onwardpath.wem.service.ExperienceServiceImpl;
 import com.onwardpath.wem.service.NativeService;
-import com.onwardpath.wem.projections.SegmentNames;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javassist.compiler.ast.NewExpr;
 
 @Controller
 public class ExperienceController {
@@ -390,6 +381,43 @@ public class ExperienceController {
 			return modelAndView;
 		}
 		
+		/**
+		 * Link Experience --> Create	
+		 */
+		@RequestMapping(value = "/create-link", method = RequestMethod.GET)
+		public ModelAndView createLinkExpereinceView() throws IOException {
+			ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-link");
+			return modelAndView;
+		}
+	
+		/**
+		 * Link Experience --> Save
+		 * @throws DbInsertException 
+		 */
+		@RequestMapping(value = "/create-link", method = RequestMethod.POST)
+		public ModelAndView saveLinkExperience(LinkExpCreateFormDTO linkExCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
+			ModelAndView modelAndView = expControllerImpl.saveLinkExp(linkExCreateFormDTO);
+			Map<String, Object> model = modelAndView.getModel();
+			boolean expNameExists = (boolean) model.get("expExists");
+			
+			modelAndView.clear();
+			
+			if(expNameExists)
+			{
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
+			}
+			else
+			{
+			String exp_id = model.get("exp_id").toString();
+			modelAndView.setViewName("redirect:/experience-config");
+			rdAttr.addAttribute("exp_id",exp_id);
+			}
+			
+			return modelAndView;
+		}
+		
 		
 
 }
+
