@@ -444,7 +444,8 @@ public class ExperienceControllerImpl {
 			newLinkModel.setWidth(seg_data.get("imgWidth").toString());
 			newLinkModel.setHeight(seg_data.get("imgHeight").toString());
 			newLinkModel.setAlttext(seg_data.get("imagelinktext").toString());
-
+			link_entities.add(newLinkModel);
+			
 			newContentModel.setExperience_id(exp_id);
 			newContentModel.setSegment_id(segment_id);
 			newContentModel.setContent(seg_data.get("link_html_body").toString());
