@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.onwardpath.wem.entity.Bar;
 import com.onwardpath.wem.entity.Config;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
@@ -15,6 +16,7 @@ import com.onwardpath.wem.entity.PopupAttributes;
 import com.onwardpath.wem.entity.Segment;
 import com.onwardpath.wem.entity.Style;
 import com.onwardpath.wem.entity.TimeZone;
+import com.onwardpath.wem.repository.BarRepository;
 import com.onwardpath.wem.repository.ConfigRepository;
 import com.onwardpath.wem.repository.ContentRepository;
 import com.onwardpath.wem.repository.ExperienceRepository;
@@ -38,11 +40,12 @@ public class ExperienceServiceImpl implements  ExperienceService {
 	private PopupAttrRepository popupAttrRepos;
 	private ImageRepository imageRepos;
 	private StyleRepository styleRepos;
+	private BarRepository	barRepos;
 	private LinkRepository linkRepos;
 
 	
 	@Autowired
-	public ExperienceServiceImpl(SegmentRepository sepRepos,ExperienceRepository expRepos,ContentRepository conRepos,TimeZoneRepository timezoneRepos,PopupRepository popupRepos,ConfigRepository configRepos,PopupAttrRepository popupAttrRepos,ImageRepository imageRepos,StyleRepository styleRepos,LinkRepository linkRepos)
+	public ExperienceServiceImpl(SegmentRepository sepRepos,ExperienceRepository expRepos,ContentRepository conRepos,TimeZoneRepository timezoneRepos,PopupRepository popupRepos,ConfigRepository configRepos,PopupAttrRepository popupAttrRepos,ImageRepository imageRepos,StyleRepository styleRepos,BarRepository barRepos,LinkRepository linkRepos)
 	{
 		this.sepRepos = sepRepos;
 		this.expRepos  = expRepos;
@@ -53,8 +56,8 @@ public class ExperienceServiceImpl implements  ExperienceService {
 		this.popupAttrRepos = popupAttrRepos;
 		this.imageRepos = imageRepos;
 		this.styleRepos = styleRepos;
+		this.barRepos = barRepos;
 		this.linkRepos = linkRepos;
-
 	}
 	
 	
@@ -120,6 +123,12 @@ public class ExperienceServiceImpl implements  ExperienceService {
 	public List<Content> saveAllContentEntites(List<Content> entities) {
 		// TODO Auto-generated method stub
 		return conRepos.saveAll(entities);
+	}
+	
+	@Override
+	public List<Bar> saveAllBarEntites(List<Bar> entities) {
+		// TODO Auto-generated method stub
+		return barRepos.saveAll(entities);
 	}
 
 

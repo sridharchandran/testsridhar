@@ -1,10 +1,13 @@
 package com.onwardpath.wem.controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,20 +33,27 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onwardpath.wem.entity.Config;
+import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
+import com.onwardpath.wem.model.BarExpCreateFormDTO;
 import com.onwardpath.wem.model.ExperienceViewPostDTO;
+import com.onwardpath.wem.model.LinkExpCreateFormDTO;
 import com.onwardpath.wem.exception.DbInsertException;
 import com.onwardpath.wem.model.ImageExpCreateFormDTO;
-import com.onwardpath.wem.model.LinkExpCreateFormDTO;
 import com.onwardpath.wem.model.PopupExpCreateFormDTO;
+import com.onwardpath.wem.model.SignupFormDTO;
 import com.onwardpath.wem.model.StyleExpCreateFormDTO;
 import com.onwardpath.wem.repository.ExperienceRepository;
 import com.onwardpath.wem.service.ExperienceService;
 import com.onwardpath.wem.repository.NativeRepository;
 import com.onwardpath.wem.service.ExperienceServiceImpl;
 import com.onwardpath.wem.service.NativeService;
+import com.onwardpath.wem.projections.SegmentNames;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import javassist.compiler.ast.NewExpr;
 
 @Controller
 public class ExperienceController {
@@ -64,13 +75,6 @@ public class ExperienceController {
 	@Autowired
 	NativeService nativeService;
 	
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public class RecordNotFoundException extends RuntimeException 
-	{
-	    public RecordNotFoundException(String exception) {
-	        super(exception);
-	    }
-	}
 	
 	/**
 	 * Link formation and get segment dropdown Value for Experience Create Content
@@ -222,6 +226,34 @@ public class ExperienceController {
 	
 	
 	/**
+	 * Bar Experience --> Save
+	 * @throws DbInsertException 
+	 */
+	@RequestMapping(value = "/create-bar", method = RequestMethod.POST)
+	public ModelAndView saveBarExperience(BarExpCreateFormDTO barExpCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
+		ModelAndView modelAndView = expControllerImpl.saveBarExp(barExpCreateFormDTO);
+		Map<String, Object> model = modelAndView.getModel();
+		System.out.println("expexits="+(boolean) model.get("expExists"));
+		boolean expNameExists = (boolean) model.get("expExists");
+		
+		modelAndView.clear();
+		
+		if(expNameExists)
+		{
+		modelAndView.setViewName("redirect:/create-bar");
+		}
+		else
+		{
+		String exp_id = model.get("exp_id").toString();
+		modelAndView.setViewName("redirect:/experience-config");
+		rdAttr.addAttribute("exp_id",exp_id);
+		}
+		
+		return modelAndView;
+	}
+	
+	
+	/**
 	 * Popup Experience --> Create
 	 */
 	@RequestMapping(value = "/create-popup", method = RequestMethod.GET)
@@ -275,8 +307,12 @@ public class ExperienceController {
 	  public ModelAndView handleError(HttpServletRequest req, Exception ex,HttpSession session) {
 	    ModelAndView mav = new ModelAndView();
 		session.setAttribute("message","Unresolved Error: Please contact administrator");
+		System.out.println("type="+session.getAttribute("exp_type"));
+		String type = (String) session.getAttribute("exp_type");
 	    mav.addObject("exception", ex);
-	    mav.setViewName("index.jsp?view=pages/experience-create-popup");
+	   
+	    mav.setViewName("redirect:/create-popup");	
+	    
 	    return mav;
 	  }
 	 
@@ -418,6 +454,6 @@ public class ExperienceController {
 		}
 		
 		
+		
 
 }
-

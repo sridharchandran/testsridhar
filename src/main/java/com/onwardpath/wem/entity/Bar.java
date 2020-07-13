@@ -1,5 +1,6 @@
 package com.onwardpath.wem.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,19 +13,46 @@ public class Bar {
 	 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
     private int id;
-	private int experience_id;
-	private int segment_id;
-	private String bar_align;
-	private String bar_bg_color;
-	private String bar_text_color;
-	private String bar_text;
+	
+	@Column(name = "experience_id")
+	private int experienceId;
+	
+	@Column(name = "segment_id")
+	private int segmentId;
+	
+	@Column(name = "bar_align")
+	private String barAlign;
+
+	@Column(name = "bar_bg_color")
+	private String barBgColor;
+	
+	@Column(name = "bar_text_color")
+	private String barTextColor;
+	
+	@Column(name = "bar_text")
+	private String barText;
+	
+	@Column(name = "button")
 	private String button;
-	private String button_bg_color;
-	private String button_text_color;
-	private String button_text;
-	private String link_url;
-	private String target_link;
+	
+	@Column(name = "button_bg_color")
+	private String buttonBgColor;
+	
+	@Column(name = "button_text_color")
+	private String buttonTextColor;
+	
+	@Column(name = "button_text")
+	private String buttonText;
+	
+	@Column(name = "link_url")
+	private String linkUrl;
+	
+	@Column(name = "target_link")
+	private String targetLink;
+	
+	
 	
 	public int getId() {
 		return id;
@@ -32,41 +60,41 @@ public class Bar {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getExperience_id() {
-		return experience_id;
+	public int getExperienceId() {
+		return experienceId;
 	}
-	public void setExperience_id(int experience_id) {
-		this.experience_id = experience_id;
+	public void setExperienceId(int experienceId) {
+		this.experienceId = experienceId;
 	}
-	public int getSegment_id() {
-		return segment_id;
+	public int getSegmentId() {
+		return segmentId;
 	}
-	public void setSegment_id(int segment_id) {
-		this.segment_id = segment_id;
+	public void setSegmentId(int segmentId) {
+		this.segmentId = segmentId;
 	}
-	public String getBar_align() {
-		return bar_align;
+	public String getBarAlign() {
+		return barAlign;
 	}
-	public void setBar_align(String bar_align) {
-		this.bar_align = bar_align;
+	public void setBarAlign(String barAlign) {
+		this.barAlign = barAlign;
 	}
-	public String getBar_bg_color() {
-		return bar_bg_color;
+	public String getBarBgColor() {
+		return barBgColor;
 	}
-	public void setBar_bg_color(String bar_bg_color) {
-		this.bar_bg_color = bar_bg_color;
+	public void setBarBgColor(String barBgColor) {
+		this.barBgColor = barBgColor;
 	}
-	public String getBar_text_color() {
-		return bar_text_color;
+	public String getBarTextColor() {
+		return barTextColor;
 	}
-	public void setBar_text_color(String bar_text_color) {
-		this.bar_text_color = bar_text_color;
+	public void setBarTextColor(String barTextColor) {
+		this.barTextColor = barTextColor;
 	}
-	public String getBar_text() {
-		return bar_text;
+	public String getBarText() {
+		return barText;
 	}
-	public void setBar_text(String bar_text) {
-		this.bar_text = bar_text;
+	public void setBarText(String barText) {
+		this.barText = barText;
 	}
 	public String getButton() {
 		return button;
@@ -74,36 +102,38 @@ public class Bar {
 	public void setButton(String button) {
 		this.button = button;
 	}
-	public String getButton_bg_color() {
-		return button_bg_color;
+	public String getButtonBgColor() {
+		return buttonBgColor;
 	}
-	public void setButton_bg_color(String button_bg_color) {
-		this.button_bg_color = button_bg_color;
+	public void setButtonBgColor(String buttonBgColor) {
+		this.buttonBgColor = buttonBgColor;
 	}
-	public String getButton_text_color() {
-		return button_text_color;
+	public String getButtonTextColor() {
+		return buttonTextColor;
 	}
-	public void setButton_text_color(String button_text_color) {
-		this.button_text_color = button_text_color;
+	public void setButtonTextColor(String buttonTextColor) {
+		this.buttonTextColor = buttonTextColor;
 	}
-	public String getButton_text() {
-		return button_text;
+	public String getButtonText() {
+		return buttonText;
 	}
-	public void setButton_text(String button_text) {
-		this.button_text = button_text;
+	public void setButtonText(String buttonText) {
+		this.buttonText = buttonText;
 	}
-	public String getLink_url() {
-		return link_url;
+	public String getLinkUrl() {
+		return linkUrl;
 	}
-	public void setLink_url(String link_url) {
-		this.link_url = link_url;
+	public void setLinkUrl(String linkUrl) {
+		this.linkUrl = linkUrl;
 	}
-	public String getTarget_link() {
-		return target_link;
+	public String getTargetLink() {
+		return targetLink;
 	}
-	public void setTarget_link(String target_link) {
-		this.target_link = target_link;
+	public void setTargetLink(String targetLink) {
+		this.targetLink = targetLink;
 	}
+	
+	
 	
 
 }

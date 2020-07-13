@@ -47,7 +47,7 @@ public class SegmentController {
 	    }
 	
 	// Endpoint to load city/state/country
-	 	@ApiOperation(value = "Returns Segments List Dropdown")
+	 	
 		@GetMapping("/AjaxController")
 		@ResponseBody
 		public String segmentCreateDropdown(@RequestParam("service") String service,@RequestParam("geoloc") String geoloc) throws JsonGenerationException, JsonMappingException, IOException {

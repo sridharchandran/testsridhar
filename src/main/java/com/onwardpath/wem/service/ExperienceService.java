@@ -4,6 +4,7 @@ package com.onwardpath.wem.service;
 
 import java.util.List;
 
+import com.onwardpath.wem.entity.Bar;
 import com.onwardpath.wem.entity.Config;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
@@ -34,6 +35,7 @@ public interface  ExperienceService {
 	public Experience getExperienceById(int exp_id);
 	public Image  saveimage(Image image);
     public Style  savestyle(Style style);
+    public List<Bar> saveAllBarEntites(List<Bar> entities);
     public List<TimeZone> gettimezone();
 
 }

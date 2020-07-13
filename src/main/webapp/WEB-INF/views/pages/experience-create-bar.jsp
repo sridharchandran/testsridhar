@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.Map, com.onwardpath.wem.repository.SegmentRepository" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,8 +16,9 @@
 
 </style>  
 <script type="text/javascript">
-//var expDetailsObj =  new Array();
-var expDetailsObj = {};
+
+
+var bar_details= {};
 var segment = null;	
 var segment_id = null;	
 var segment_name = null;
@@ -101,7 +102,7 @@ function add(event) {
 	{
 	swal.fire("Please enter Link URL");
 	}
-	else  if (segment_id in expDetailsObj) {
+	else  if (segment_id in bar_details) {
 		swal.fire("Segment " + segment_name
 				+ " already added please select a different segment.");
 	} else {
@@ -123,11 +124,11 @@ function add(event) {
 					var Not_button = localStorage.getItem("Not_button");
 					if(Not_button == "hide")
 						{
-						var button_txt = null;
-						var button_text_col = null;
-						var button_back_col = null;
-						var link_val = null;
-						var anchorTarget = null;
+						var button_txt = "null";
+						var button_text_col = "null";
+						var button_back_col = "null";
+						var link_val = "null";
+						var anchorTarget = "null";
 						}
 					else
 						{
@@ -138,8 +139,24 @@ function add(event) {
 					var anchorTarget = localStorage.getItem("anchorTarget");
 						}
 										
-			expDetailsObj[segment_id] = bar_content+"#"+screen+"#"+bar_bgcolor+"#"+bar_text_col+"#"+bar_txt+"#"+Not_button
-										+"#"+button_back_col+"#"+button_text_col+"#"+button_txt+"#"+link_val+"#"+anchorTarget;
+			
+			
+			var seg_data = {};
+
+			seg_data.screen				=	screen;
+			seg_data.bar_body			=	bar_content;
+			seg_data.bar_bgcolor		=	bar_bgcolor;
+			seg_data.bar_text_col		=	bar_text_col;
+			seg_data.bar_txt			=	bar_txt;
+			seg_data.Not_button			=	Not_button
+			seg_data.button_back_col	=	button_back_col == "" ? "null" : button_back_col;
+			seg_data.button_text_col	=	button_text_col == "" ? "null" : button_text_col;
+			seg_data.button_txt			=	button_txt == "" ? "null" : button_txt;
+			seg_data.link_val			=	link_val == "" ? "null" : link_val;
+			seg_data.anchorTarget		=	anchorTarget == "" ? "null" : anchorTarget;
+
+
+			bar_details[segment_id] = seg_data;
 			
 			var stage = document.getElementById("stage");
 			stage.innerHTML += '<button type="button" id="'+segment_name+'" class="btn btn-outline-info btn-pill mr10 mt10" onclick="remove(\''
@@ -148,7 +165,7 @@ function add(event) {
 					+ segment_name
 					+ '\','
 					+ segment_id
-					+ ')">'
+					+ ',event)">'
 					+'<b >'+typeVal+'</b>'
 					+':'
 					+'<b style="color:#3d4e5e">'+segment_name+'</b>'
@@ -177,13 +194,13 @@ function saveExperience() {
 	var name = document.getElementById('name').value;
 	if(name){	
 	var type = "bar"; 
-//	if ((JSON.stringify(expDetailsObj)!='[]') || (JSON.stringify(expDetailsObj)!= null)){
-	if (JSON.stringify(expDetailsObj)!=='{}'){
-		console.log("bar="+JSON.stringify(expDetailsObj))
+
+	if (JSON.stringify(bar_details)!=='{}'){
+		
 	document.getElementById("experience-form").type.value=type;	
-	document.getElementById("experience-form").experienceDetails.value=JSON.stringify(expDetailsObj);	
+	document.getElementById("experience-form").experienceDetails.value=JSON.stringify(bar_details);	
 	document.getElementById("experience-form").method = "post";
-	document.getElementById("experience-form").action = "ExperienceController";
+	document.getElementById("experience-form").action = "/wem/create-bar";
 	document.getElementById("experience-form").submit();
 	}else{
 		swal.fire("Please enter atleast one content for this Experience")
@@ -194,10 +211,12 @@ function saveExperience() {
 	 
 	}
 //Function to delete selected segment	
-	function remove(element, segment_id) {
-		var displayElement = document.getElementById(element);
-		delete expDetailsObj[segment_id];
-		displayElement.style.display = "none";
+	function remove(element, segment_id, event) {
+	
+		delete bar_details[segment_id];
+		var stage =  document.getElementById("stage");
+		stage.removeChild(event.currentTarget);
+		
 	}
 //Function to Shoe/Hide Button 
 /* 	function ShowCheckbox(element) {
@@ -513,13 +532,13 @@ function saveExperience() {
 	<%	
 	String message = (String) session.getAttribute("message");
 	
-	SegmentRepository segmentRepository = new SegmentRepository();
+	/* SegmentRepository segmentRepository = new SegmentRepository(); */
 	int org_id = (Integer)session.getAttribute("org_id");
-	Map<Integer,String> segments = segmentRepository.getOrgSegments(org_id);
+	/* Map<Integer,String> segments = segmentRepository.getOrgSegments(org_id);
 	if (segments.size() == 0) {
 		message = "Error: No Segments are configured. Create a Segment <a class='kt-link kt-font-bold' href='?view=pages/segment-create-geo.jsp'>here</a>";	
 	}
-				
+	*/		
 	if (message != null && !message.equals("")) {
 		String icon = "fa fa-cocktail"; 
 		if (message.startsWith("Error"))
@@ -535,7 +554,7 @@ function saveExperience() {
 			name = decoder[0].substring(decoder[0].indexOf("=")+1);
 			experience = decoder[1].substring(decoder[0].indexOf("=")+1);
 			organization = decoder[2].substring(decoder[0].indexOf("=")+1);
-		}			 							 							 					
+		}	 	 							 							 					
 		%>
 		<div class="row">
 		    <div class="col">
@@ -578,14 +597,17 @@ function saveExperience() {
 								<div class="col-lg-4 col-md-9 col-sm-12">
 									<select id="segment" class="custom-select form-control"
 										data-width="300" onchange="javascript:selectIndex()">
-										<%
+										<%-- <%
 											for (Map.Entry<Integer, String> entry : segments.entrySet()) {
 												Integer key = entry.getKey();
 												String val = entry.getValue();
 												out.println("<option value='" + key + "'>" + val + "</option>");
 												session.setAttribute("segment_id", key);
 											}
-										%>
+										%> --%>
+										<c:forEach items="${seglist}" var="segment">
+										<option value="${segment.id}">${segment.name}</option>
+										</c:forEach>
 									</select>
 								</div>
 							</div>
