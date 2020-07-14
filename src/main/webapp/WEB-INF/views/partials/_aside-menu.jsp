@@ -132,7 +132,7 @@
 											</a>
 										</li>
 										<li class="kt-menu__item " aria-haspopup="true" id="experience-create-redirect">
-											<a href="/wem?view=pages/experience-create-redirect.jsp" class="kt-menu__link ">
+											<a href="/wem/redirect" class="kt-menu__link ">
 											<i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Redirect</span>
 											</a>
 										</li>

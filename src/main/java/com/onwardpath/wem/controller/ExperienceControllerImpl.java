@@ -28,6 +28,7 @@ import com.onwardpath.wem.entity.Image;
 import com.onwardpath.wem.entity.Link;
 import com.onwardpath.wem.entity.Popup;
 import com.onwardpath.wem.entity.PopupAttributes;
+import com.onwardpath.wem.entity.Redirect;
 import com.onwardpath.wem.entity.Style;
 import com.onwardpath.wem.entity.User;
 import com.onwardpath.wem.exception.DbInsertException;
@@ -532,4 +533,62 @@ public ModelAndView savecontentEXP(ImageExpCreateFormDTO imgExpCreateFormDTO) th
 		expService.saveAllLinkEntites(link_entities);
 		expService.saveAllContentEntites(content_entities);
 	}
+	
+	
+	@Transactional(rollbackFor = DbInsertException.class)
+	public ModelAndView saveRedirectExp(StyleExpCreateFormDTO styelExpCreateFormDTO) throws JsonMappingException, JsonProcessingException,DbInsertException {
+		ModelAndView modelAndView = new ModelAndView();
+		String exp_name = styelExpCreateFormDTO.getName();
+		String type = styelExpCreateFormDTO.getType();
+		String status = "on";
+		int user_id = (int) session.getAttribute("user_id");
+		int org_id = (int) session.getAttribute("org_id");
+		Date date = new Date(System.currentTimeMillis());
+		try {
+		boolean expExists = expService.expExists(org_id, exp_name);
+		if (expExists) {
+			session.setAttribute("message", expCreateSetErrorMessage(exp_name));
+			modelAndView.addObject("expExists", expExists);
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-style");
+		} else {
+			expExists = false;
+			int exp_id = saveExperience(exp_name, type, status, user_id);
+			String experienceDetails = styelExpCreateFormDTO.getExperienceDetails();
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, String> map = mapper.readValue(experienceDetails, Map.class);
+			System.out.println(map);
+			for (Map.Entry<String, String> entry : map.entrySet()) {
+				int segment_id = Integer.parseInt(entry.getKey());
+				String contentvalue = entry.getValue();
+				Style style = new Style();
+				Redirect redirect = new Redirect();
+				redirect.setRedirect_url(contentvalue.split("#")[0]);
+				redirect.setAllsubpage(contentvalue.split("#")[1]);
+				redirect.setPopup(contentvalue.split("#")[2]);
+				redirect.setPopuptime(contentvalue.split("#")[3]);
+				redirect.setSegment_id(segment_id);
+				redirect.setExperience_id(exp_id);
+			    expService.saveredirect(redirect);
+			}
+			session.setAttribute("message", expCreateSetSuccessMessage(exp_name));
+			modelAndView.addObject("exp_id", exp_id);
+			modelAndView.addObject("expExists", expExists);
+		}
+		}
+		catch (Exception e) {
+			/*
+			 * expExists = true; modelAndView.addObject("error", "true");
+			 * session.setAttribute(
+			 * "message","Unresolved Error: Please contact administrator");
+			 */
+			throw new DbInsertException("Exception is thrown");
+		}
+						//modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");
+		 
+			//session.setAttribute("message", "Experience <b>"+exp_name+"</b> saved. You can now configure the pages for this experience");
+			//modelAndView.addObject("exp_id", exp_id);
+		
+		return modelAndView;
+	}
+
 }
