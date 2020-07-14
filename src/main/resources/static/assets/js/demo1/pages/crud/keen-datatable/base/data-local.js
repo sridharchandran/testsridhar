@@ -32,7 +32,7 @@ $(document).on('mouseenter', '.flaticon-eye', function () {
 	var seg_name    =   $(this).attr('data-segname');
 	var exp_type	=	$(this).attr('data-exptype');
 	
-	 var url	 = "/wem/AjaxExpController"
+	 var url	 = "AjaxExpController"
 		 var params = "service="+segment_id+"&expid="+exp_id+"&exper="+exp_type+"";
 	 	  var response = "";
 	 
@@ -101,7 +101,7 @@ $(document).on("change","#mySelect", function() {
 			$.ajax({
 	            type : "GET", 
 	           
-	            url : "/wem/AjaxExpController",
+	            url : "AjaxExpController",
 	            contentType: "application/json; charset=utf-8", 
 	            data: { 
 	            	offset: offset, 
@@ -598,7 +598,7 @@ function page(id)
 	}
 
 
- 		var url	 = "/wem/AjaxExpController"
+ 		var url	 = "AjaxExpController"
  		var params = "offset="+offset_l+"&limit="+limit+"&load=next";
  		var response = "";
  		document.getElementById("spin").style.display= "block";
@@ -675,7 +675,7 @@ function search() {
 			  </span>\
  			  ';
       
-		var url	 = "/wem/AjaxExpController"
+		var url	 = "AjaxExpController"
 		var params = "search="+values+"&limit=10"+"&exper=search";
   		var response = "";
 	   		 
@@ -782,7 +782,7 @@ document.body.onclick= function(e){
 		var seg_name    =   e.getAttribute("data-segname");
 		
 		
-		 var url	 = "/wem/AjaxExpController"
+		 var url	 = "AjaxExpController"
 			 var params = "service="+segment_id+"&expid="+exp_id+"&exper=content";
 		 	  var response = "";
 		 
@@ -861,7 +861,7 @@ function myFunction() {
         	
         	
 		
-		   		 var url	 = "/wem/AjaxExpController"
+		   		 var url	 = "AjaxExpController"
 	   			 var params = "toggle="+status+"&expid="+exp_id+"&exper=status";
 	   			  var response = "";
 	   		 
@@ -977,7 +977,7 @@ function test(offset,limit,record)
 		$.ajax({
             type : "GET", 
            
-            url : "/wem/AjaxExpController",
+            url : "AjaxExpController",
             contentType: "application/json; charset=utf-8", 
             data: { 
             	offset: offset, 
