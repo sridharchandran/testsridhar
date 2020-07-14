@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.Map, com.onwardpath.wem.repository.SegmentRepository" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -157,12 +157,12 @@ function saveExperience() {
 	<%	
 	String message = (String) session.getAttribute("message");
 	
-	SegmentRepository segmentRepository = new SegmentRepository();
+//	SegmentRepository segmentRepository = new SegmentRepository();
 	int org_id = (Integer)session.getAttribute("org_id");
-	Map<Integer,String> segments = segmentRepository.getOrgSegments(org_id);
+	/* Map<Integer,String> segments = segmentRepository.getOrgSegments(org_id);
 	if (segments.size() == 0) {
 		message = "Error: No Segments are configured. Create a Segment <a class='kt-link kt-font-bold' href='?view=pages/segment-create-geo.jsp'>here</a>";	
-	}
+	} */
 				
 	if (message != null && !message.equals("")) {
 		String icon = "fa fa-cocktail"; 
@@ -222,14 +222,18 @@ function saveExperience() {
 								<div class="col-lg-4 col-md-9 col-sm-12">
 									<select id="segment" class="custom-select form-control"
 										data-width="300" onchange="javascript:selectIndex()">
-										<%
+									<%-- 	<%
 											for (Map.Entry<Integer, String> entry : segments.entrySet()) {
 												Integer key = entry.getKey();
 												String val = entry.getValue();
 												out.println("<option value='" + key + "'>" + val + "</option>");
 												session.setAttribute("segment_id", key);
 											}
-										%>
+										%> --%>
+										
+										<c:forEach items="${seglist}" var="segment">
+										<option value="${segment.id}">${segment.name}</option>
+										</c:forEach>
 									</select>
 								</div>
 							</div>

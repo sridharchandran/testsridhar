@@ -36,6 +36,7 @@ import com.onwardpath.wem.entity.Config;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
 import com.onwardpath.wem.model.BarExpCreateFormDTO;
+import com.onwardpath.wem.model.BlockExpCreateFormDTO;
 import com.onwardpath.wem.model.ExperienceViewPostDTO;
 import com.onwardpath.wem.model.LinkExpCreateFormDTO;
 import com.onwardpath.wem.exception.DbInsertException;
@@ -119,7 +120,8 @@ public class ExperienceController {
 //		// String org_id = request.getParameter("name");
 //		String experience_type = request.getParameter("experience_type");
 		
-		int exp_id = Integer.parseInt(request.getParameter("exp_id"));	
+		int exp_id = Integer.parseInt(request.getParameter("exp_id"));
+		System.out.println("bar"+(String) session.getAttribute("bar"));
 		Experience e = expService.getExperienceById(exp_id);
 		String exp_name = e.getName();
 		String exp_type = e.getType();
@@ -453,6 +455,41 @@ public class ExperienceController {
 			return modelAndView;
 		}
 		
+		/**
+		 * Block Experience --> Create	
+		 */
+		@RequestMapping(value = "/create-block", method = RequestMethod.GET)
+		public ModelAndView createBlockExpereinceView() throws IOException {
+			ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-block");
+			return modelAndView;
+		}
+		
+		/**
+		 * Block Experience --> Save
+		 * @throws DbInsertException 
+		 */
+		@RequestMapping(value = "/create-link", method = RequestMethod.POST)
+		public ModelAndView saveBlockExperience(BlockExpCreateFormDTO blockExpCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
+			ModelAndView modelAndView = expControllerImpl.saveBlockExp(blockExpCreateFormDTO);
+			Map<String, Object> model = modelAndView.getModel();
+			boolean expNameExists = (boolean) model.get("expExists");
+			
+			modelAndView.clear();
+			
+			if(expNameExists)
+			{
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
+			}
+			else
+			{
+			String exp_id = model.get("exp_id").toString();
+			modelAndView.setViewName("redirect:/experience-config");
+			rdAttr.addAttribute("exp_id",exp_id);
+			}
+			
+			return modelAndView;
+		}
 		
 		
 

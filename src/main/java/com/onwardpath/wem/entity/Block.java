@@ -1,5 +1,6 @@
 package com.onwardpath.wem.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,11 +13,20 @@ public class Block {
 		
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
     private int id;
-	private int experience_id;
-	private int segment_id;
-	private String block_url;
-	private String allsubpage;
+	
+	@Column(name = "experience_id")
+	private int experienceId;
+	
+	@Column(name = "segment_id")
+	private int segmentId;
+	
+	@Column(name = "block_url")
+	private String blockUrl;
+	
+	@Column(name = "allsubpage")
+	private String allSubPage;
 	
 	public int getId() {
 		return id;
@@ -24,30 +34,32 @@ public class Block {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getExperience_id() {
-		return experience_id;
+	public int getExperienceId() {
+		return experienceId;
 	}
-	public void setExperience_id(int experience_id) {
-		this.experience_id = experience_id;
+	public void setExperienceId(int experienceId) {
+		this.experienceId = experienceId;
 	}
-	public int getSegment_id() {
-		return segment_id;
+	public int getSegmentId() {
+		return segmentId;
 	}
-	public void setSegment_id(int segment_id) {
-		this.segment_id = segment_id;
+	public void setSegmentId(int segmentId) {
+		this.segmentId = segmentId;
 	}
-	public String getBlock_url() {
-		return block_url;
+	public String getBlockUrl() {
+		return blockUrl;
 	}
-	public void setBlock_url(String block_url) {
-		this.block_url = block_url;
+	public void setBlockUrl(String blockUrl) {
+		this.blockUrl = blockUrl;
 	}
-	public String getAllsubpage() {
-		return allsubpage;
+	public String getAllSubPage() {
+		return allSubPage;
 	}
-	public void setAllsubpage(String allsubpage) {
-		this.allsubpage = allsubpage;
+	public void setAllSubPage(String allSubPage) {
+		this.allSubPage = allSubPage;
 	}
+	
+	
 	
 
 }

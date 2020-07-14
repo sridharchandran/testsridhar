@@ -216,7 +216,7 @@ function saveExperience() {
 		delete bar_details[segment_id];
 		var stage =  document.getElementById("stage");
 		stage.removeChild(event.currentTarget);
-		
+		console.log("bar segments deleted");
 	}
 //Function to Shoe/Hide Button 
 /* 	function ShowCheckbox(element) {
