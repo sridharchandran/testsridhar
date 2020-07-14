@@ -13,6 +13,7 @@ import com.onwardpath.wem.entity.Image;
 import com.onwardpath.wem.entity.Link;
 import com.onwardpath.wem.entity.Popup;
 import com.onwardpath.wem.entity.PopupAttributes;
+import com.onwardpath.wem.entity.Redirect;
 import com.onwardpath.wem.entity.Segment;
 import com.onwardpath.wem.entity.Style;
 import com.onwardpath.wem.entity.TimeZone;
@@ -24,6 +25,7 @@ import com.onwardpath.wem.repository.ImageRepository;
 import com.onwardpath.wem.repository.LinkRepository;
 import com.onwardpath.wem.repository.PopupAttrRepository;
 import com.onwardpath.wem.repository.PopupRepository;
+import com.onwardpath.wem.repository.RedirectRepository;
 import com.onwardpath.wem.repository.SegmentRepository;
 import com.onwardpath.wem.repository.StyleRepository;
 import com.onwardpath.wem.repository.TimeZoneRepository;
@@ -42,10 +44,10 @@ public class ExperienceServiceImpl implements  ExperienceService {
 	private StyleRepository styleRepos;
 	private BarRepository	barRepos;
 	private LinkRepository linkRepos;
-
+    private RedirectRepository redirectRepos;
 	
 	@Autowired
-	public ExperienceServiceImpl(SegmentRepository sepRepos,ExperienceRepository expRepos,ContentRepository conRepos,TimeZoneRepository timezoneRepos,PopupRepository popupRepos,ConfigRepository configRepos,PopupAttrRepository popupAttrRepos,ImageRepository imageRepos,StyleRepository styleRepos,BarRepository barRepos,LinkRepository linkRepos)
+	public ExperienceServiceImpl(SegmentRepository sepRepos,ExperienceRepository expRepos,ContentRepository conRepos,TimeZoneRepository timezoneRepos,PopupRepository popupRepos,ConfigRepository configRepos,PopupAttrRepository popupAttrRepos,ImageRepository imageRepos,StyleRepository styleRepos,BarRepository barRepos,LinkRepository linkRepos,RedirectRepository redirectRepos)
 	{
 		this.sepRepos = sepRepos;
 		this.expRepos  = expRepos;
@@ -58,6 +60,7 @@ public class ExperienceServiceImpl implements  ExperienceService {
 		this.styleRepos = styleRepos;
 		this.barRepos = barRepos;
 		this.linkRepos = linkRepos;
+		this.redirectRepos= redirectRepos;
 	}
 	
 	
@@ -164,6 +167,13 @@ public class ExperienceServiceImpl implements  ExperienceService {
 	public List<Link> saveAllLinkEntites(List<Link> entities) {
 		// TODO Auto-generated method stub
 		return linkRepos.saveAll(entities);
+	}
+
+
+	@Override
+	public Redirect saveredirect(Redirect redirect) {
+		// TODO Auto-generated method stub
+		return redirectRepos.save(redirect);
 	}
 	
 }

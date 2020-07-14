@@ -455,5 +455,43 @@ public class ExperienceController {
 		
 		
 		
+		/**
+		 * Redirect Experience --> Create	
+		 */
+		@RequestMapping(value = "/redirect", method = RequestMethod.GET)
+		public ModelAndView createRedirect() throws IOException {
+			ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-redirect");
+			return modelAndView;
+		}
+	
+		/**
+		 * Redirect Experience --> Save
+		 * @throws DbInsertException 
+		 */
+		@RequestMapping(value = "/redirect", method = RequestMethod.POST)
+		public ModelAndView saveRedirectExperience(StyleExpCreateFormDTO styelExpCreateFormDTO ,RedirectAttributes rdAttr) throws IOException, DbInsertException {
+			ModelAndView modelAndView = expControllerImpl.saveRedirectExp(styelExpCreateFormDTO);
+			Map<String, Object> model = modelAndView.getModel();
+			boolean expNameExists = (boolean) model.get("expExists");
+			
+			modelAndView.clear();
+			
+			if(expNameExists)
+			{
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
+			}
+			else
+			{
+			String exp_id = model.get("exp_id").toString();
+			modelAndView.setViewName("redirect:/experience-config");
+			rdAttr.addAttribute("exp_id",exp_id);
+			}
+			
+			return modelAndView;
+		}
+
+		
+		
 
 }
