@@ -51,7 +51,7 @@ $(document).on("change","#mySelect", function() {
 		$.ajax({
             type : "GET", 
            
-            url : "/wem/segmentlist",
+            url : "segmentlist",
             contentType: "application/json; charset=utf-8", 
             data: { 
             	'segtype':seg_geo, 
@@ -550,7 +550,7 @@ function page(id)
 
 
 
- 		var url	 = "/wem/segmentlist"
+ 		var url	 = "segmentlist"
  		var params = "offset="+offset_l+"&limit="+limit+"&load=next&segtype=loc&segbev=beh&segtech=tech&segint=int&segref=ref";
  		var response = "";
  		document.getElementById("spin").style.display= "block";
@@ -626,7 +626,7 @@ function search() {
 			  </span>\
  			  ';
       
-		var url	 = "/wem/segmentlist"
+		var url	 = "segmentlist"
  		var params = "search="+values+"&limit=10"+"&segtype=loc&segbev=beh&segtech=tech&segint=int&segref=ref";
   		var response = "";
 	   		 
@@ -852,7 +852,7 @@ var seg_ref = "ref";
 		$.ajax({
             type : "GET", 
            
-            url : "/wem/segmentlist",
+            url : "segmentlist",
             contentType: "application/json; charset=utf-8", 
             data: { 
             	'segtype':seg_geo, 
