@@ -163,7 +163,7 @@ function suggestArea(obj) {
 				$('#geobutton').attr("disabled", false);
 			}
 		};
-		xhttp.open("GET", "/wem/AjaxController?service="+serviceName+"_suggestions&geoloc="
+		xhttp.open("GET", "AjaxController?service="+serviceName+"_suggestions&geoloc="
 				+ geoloc);
 		xhttp.send();
 	}
@@ -186,7 +186,7 @@ $(document).ready(function() {
         highlight: false,
         source: function(request, response) {
             $.ajax({
-                url: "/wem/AjaxController",
+                url: "AjaxController",
                contentType: "application/json; charset=utf-8", 
 				data: { 
             	service: document.getElementById("geotype").options[document.getElementById("geotype").selectedIndex].value+"_suggestions", 

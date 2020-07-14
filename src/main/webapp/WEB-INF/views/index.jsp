@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <!--begin::Fonts -->
-        <script src="/wem/assets/js/jscolor.js"></script> 
+        <script src="assets/js/jscolor.js"></script> 
        
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
  <!--    <link  href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.min.css" rel="stylesheet" />
@@ -32,24 +32,24 @@
         </script>
         <!--end::Fonts -->
         <!--begin::Page Vendors Styles(used by this page) -->
-        <link href="/wem/assets/vendors/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
+        <link href="assets/vendors/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
        <!-- 
-        <link href="/wem/assets/vendors/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" /> -->
+        <link href="assets/vendors/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" /> -->
         <!--end::Page Vendors Styles -->
         <!--begin::Global Theme Styles(used by all pages) -->
-        <link href="/wem/assets/vendors/global/vendors.bundle.css" rel="stylesheet" type="text/css" />
-        <link href="/wem/assets/css/demo1/style.bundle.css" rel="stylesheet" type="text/css" />
+        <link href="assets/vendors/global/vendors.bundle.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/demo1/style.bundle.css" rel="stylesheet" type="text/css" />
         <!--end::Global Theme Styles -->
         <!--begin::Layout Skins(used by all pages) -->
-        <link href="/wem/assets/css/demo1/skins/header/base/light.css" rel="stylesheet" type="text/css" />
-        <link href="/wem/assets/css/demo1/skins/header/menu/light.css" rel="stylesheet" type="text/css" />
-        <link href="/wem/assets/css/demo1/skins/brand/brand.css" rel="stylesheet" type="text/css" />
-        <link href="/wem/assets/css/demo1/skins/aside/navy.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/demo1/skins/header/base/light.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/demo1/skins/header/menu/light.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/demo1/skins/brand/brand.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/demo1/skins/aside/navy.css" rel="stylesheet" type="text/css" />
      
        
         <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
         <!--end::Layout Skins -->
-        <!-- link rel="shortcut icon" href="/wem/assets/media/logos/favicon.ico" / -->
+        <!-- link rel="shortcut icon" href="assets/media/logos/favicon.ico" / -->
         <style>
         .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
 			background: #5d78ff !important;
@@ -57,14 +57,14 @@
     		border: 1px solid #5d78ff;
 		}
         </style>
-           <link href="/wem/assets/css/selectstyle.css" rel="stylesheet" type="text/css" />
+           <link href="assets/css/selectstyle.css" rel="stylesheet" type="text/css" />
     </head>
     <!-- end::Head -->
     <!-- begin::Body -->
     <body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading" >    	     
   <%
 		if (null == session.getAttribute("authenticated") || session.getAttribute("authenticated").equals("") || !session.getAttribute("authenticated").equals("true")) { 			
-			response.sendRedirect("/wem/login");
+			response.sendRedirect("login");
 		    return;
 		} else {%>
 		<h1>User profile Page</h1>
@@ -114,34 +114,34 @@
         <!--begin::Global Theme Bundle(used by all pages) -->
         
        <!--  <script src="https://code.jquery.com/jquery-3.3.1.js" type="text/javascript"></script> -->
-        <script src="/wem/assets/vendors/global/vendors.bundle.js" type="text/javascript"></script>
-        <script src="/wem/assets/js/demo1/scripts.bundle.js" type="text/javascript"></script>
-        <!-- <script src="/wem/assets/vendors/custom/datatables/datatables.bundle.js"></script>
-        <script src="/wem/assets/js/demo1/pages/components/datatables/basic/basic.js"></script> -->
+        <script src="assets/vendors/global/vendors.bundle.js" type="text/javascript"></script>
+        <script src="assets/js/demo1/scripts.bundle.js" type="text/javascript"></script>
+        <!-- <script src="assets/vendors/custom/datatables/datatables.bundle.js"></script>
+        <script src="assets/js/demo1/pages/components/datatables/basic/basic.js"></script> -->
         <!--end::Global Theme Bundle -->
         <!--begin::Page Vendors(used by this page) -->
-        <script src="/wem/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js" type="text/javascript"></script>
+        <script src="assets/vendors/custom/fullcalendar/fullcalendar.bundle.js" type="text/javascript"></script>
         <!-- using below causes issues with bootstrap-select components -->
-        <!-- script src="/wem/assets/vendors/custom/datatables/datatables.bundle.js" type="text/javascript"></script -->        
+        <!-- script src="assets/vendors/custom/datatables/datatables.bundle.js" type="text/javascript"></script -->        
         <!--end::Page Vendors -->
         <!--begin::Page Scripts(used by this page) -->
-        <script src="/wem/assets/js/demo1/pages/dashboard.js" type="text/javascript"></script>
-        <script src="/wem/assets/js/demo1/pages/crud/forms/layouts/repeater.js" type="text/javascript"></script>
-        <script src="/wem/assets/js/demo1/pages/crud/forms/widgets/bootstrap-select.js" type="text/javascript"></script>
-        <script src="/wem/assets/js/demo1/pages/components/extended/session-timeout.js" type="text/javascript"></script>
+        <script src="assets/js/demo1/pages/dashboard.js" type="text/javascript"></script>
+        <script src="assets/js/demo1/pages/crud/forms/layouts/repeater.js" type="text/javascript"></script>
+        <script src="assets/js/demo1/pages/crud/forms/widgets/bootstrap-select.js" type="text/javascript"></script>
+        <script src="assets/js/demo1/pages/components/extended/session-timeout.js" type="text/javascript"></script>
         
         
         <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript"></script>
         
         <!-- using below causes issues with bootstrap-select components -->        
-        <!-- script src="/wem/assets/js/demo1/pages/crud/datatables/data-sources/html.js" type="text/javascript"></script>        
-        <script src="/wem/assets/js/demo1/pages/crud/datatables/advanced/multiple-controls.js" type="text/javascript"></script -->
+        <!-- script src="assets/js/demo1/pages/crud/datatables/data-sources/html.js" type="text/javascript"></script>        
+        <script src="assets/js/demo1/pages/crud/datatables/advanced/multiple-controls.js" type="text/javascript"></script -->
         <!--end::Page Scripts -->
-       <script src=" /wem/assets/js/bootstrap-datepicker.js"></script>
+       <script src=" assets/js/bootstrap-datepicker.js"></script>
         
      <!--   <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script> -->
         
-       <script src="/wem/assets/js/selectstyle.js" type="text/javascript"></script>
+       <script src="assets/js/selectstyle.js" type="text/javascript"></script>
        <!-- <script src="https://keenthemes.com/keen/themes/keen/theme/demo1/dist/assets/js/pages/components/forms/widgets/bootstrap-daterangepicker.js"></script> -->
        
         <script>

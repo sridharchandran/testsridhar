@@ -42,7 +42,7 @@ session.setAttribute("view", view);
 								</div>                   
 							</div>                   
 							<div class="modal-footer">                     
-								<form id="logout" action="/wem/logout" method="post">
+								<form id="logout" action="logout" method="post">
 									<input type="hidden" name="pageName" value="logout">
 								</form>
 							    	<a href="javascript:logout();" class="btn btn-label-brand btn-upper btn-sm btn-bold">Sign Out</a>                     
