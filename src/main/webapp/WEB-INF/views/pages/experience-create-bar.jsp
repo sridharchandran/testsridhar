@@ -200,7 +200,7 @@ function saveExperience() {
 	document.getElementById("experience-form").type.value=type;	
 	document.getElementById("experience-form").experienceDetails.value=JSON.stringify(bar_details);	
 	document.getElementById("experience-form").method = "post";
-	document.getElementById("experience-form").action = "create-bar";
+	document.getElementById("experience-form").action = "/wem/create-bar";
 	document.getElementById("experience-form").submit();
 	}else{
 		swal.fire("Please enter atleast one content for this Experience")

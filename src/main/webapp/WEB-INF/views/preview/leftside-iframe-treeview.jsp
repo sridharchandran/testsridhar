@@ -27,10 +27,10 @@
 		}
 	});
 </script>
-<link rel="stylesheet" href="preview/jqtree.css">
+<link rel="stylesheet" href="/wem/preview/jqtree.css">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="preview/tree.jquery.js"></script>
+<script src="/wem/preview/tree.jquery.js"></script>
 
 <script type="text/template" id="tree_data">	
    <%=tree_data%>
@@ -100,7 +100,7 @@
   			  	cb(response,obj);
 			}
 		};
-		xhttp.open("GET", "AjaxController?service=get_contents&id="+id);
+		xhttp.open("GET", "/wem/AjaxController?service=get_contents&id="+id);
 		xhttp.send();
 	}
 	
@@ -169,6 +169,6 @@
 <!-- 	<button type="button" name="toggleContentEditable"
 		onclick="toggleevent(event)">Disable Contenteditable</button> -->
 	<div id="dragitemslistcontainer" class="exp-tree" style=""></div>
-	<script src="preview/tree.jquery.js"></script>
+	<script src="/wem/preview/tree.jquery.js"></script>
 </body>
 </html>

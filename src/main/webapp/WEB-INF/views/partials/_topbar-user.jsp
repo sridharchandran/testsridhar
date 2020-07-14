@@ -40,7 +40,7 @@ if ((User) session.getAttribute("user") != null) {
             	<%	
             } else if(profilepic.length != 0) {
             	%>
-            	<img alt="Pic" src='DisplayImageController'/>
+            	<img alt="Pic" src='/wem/DisplayImageController'/>
             	<% 
             }            
             %>                                    

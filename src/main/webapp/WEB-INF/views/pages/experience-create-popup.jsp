@@ -94,7 +94,7 @@
 		if (Object.entries(cnt_details).length <= 0) {
 			swal.fire("Please add atleast one content by Clicking ADD Button");
 		} else {
-			document.getElementById("experience-form").action = "create-popup";
+			document.getElementById("experience-form").action = "/wem/create-popup";
 			document.getElementById("experience-form").submit();
 		}
 

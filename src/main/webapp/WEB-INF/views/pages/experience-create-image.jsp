@@ -86,7 +86,7 @@
 		localStorage.setItem("exp_type", "image");
 	});
 	/* function cancelOperation() {
-	location.replace("?view=pages/experience-create-image.jsp")
+	location.replace("/wem/?view=pages/experience-create-image.jsp")
 } */
 </script>
 

@@ -186,7 +186,7 @@ function saveExperience(){
 	document.getElementById("experience-form").type.value=type;	
 	document.getElementById("experience-form").experienceDetails.value=JSON.stringify(cnt_details);	
 	document.getElementById("experience-form").method = "post";
-	document.getElementById("experience-form").action = "create-link";
+	document.getElementById("experience-form").action = "/wem/create-link";
 	document.getElementById("experience-form").submit();
 	}else{
 		swal.fire("Please enter atleast one link for this Experience")

@@ -36,7 +36,7 @@ function logout() {
         <div class="kt-user-card__pic">
         	<%
         	if (pic.length != 0) {%>
-        		<img alt="Pic" src='DisplayImageController'/> 
+        		<img alt="Pic" src='/wem/DisplayImageController'/> 
         	<%}%>            
         </div>
         <div class="kt-user-card__details">
@@ -52,7 +52,7 @@ function logout() {
 </div>
 <ul class="kt-nav kt-margin-b-10">
     <li class="kt-nav__item">
-        <a href="userprofilesetting" class="kt-nav__link">
+        <a href="/wem/userprofilesetting" class="kt-nav__link">
             <span class="kt-nav__link-icon"><i class="flaticon2-calendar-3"></i></span>
             <span class="kt-nav__link-text">My Profile</span> 
         </a>
@@ -70,7 +70,7 @@ function logout() {
         </a>
     </li>
     <li class="kt-nav__item">
-        <a href="profilesetting" class="kt-nav__link">
+        <a href="/wem/profilesetting" class="kt-nav__link">
             <span class="kt-nav__link-icon"><i class="flaticon2-gear"></i></span>
             <span class="kt-nav__link-text">Settings</span> 
         </a>

@@ -51,7 +51,7 @@ public class UserControllerImpl {
 
 		if (userExists != null) {
 			session.setAttribute("message", "Error. User " + signupFormDTO.getEmail()
-					+ " already exists. <a href='login'>Click here</a> to login");
+					+ " already exists. <a href='/wem/login'>Click here</a> to login");
 			modelAndView.setViewName("redirect:/registration");
 		} else {
 			if (orgExists != null) {
