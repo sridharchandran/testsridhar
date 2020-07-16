@@ -114,7 +114,7 @@ function addtoSchdeule(segment_id,timezone,startdate,endate) {
 </script>
  
 <!-- <script src="https://code.jquery.com/jquery-3.3.1.js" type="text/javascript"></script> -->
-<script src="/wem/js/experience-edit.js" type="text/javascript"></script> 
+<script src="js/experience-edit.js" type="text/javascript"></script> 
 <c:set var="all_segements" value="<%=segmentRepository.getOrgSegments(org_id) %>" />
 <c:set var="experience_contents" value="<%=expHelper.experienceImage(id) %>" />
 <c:set var="scheduleValue" value="<%=expHelper.scheduleDate(id) %>" />

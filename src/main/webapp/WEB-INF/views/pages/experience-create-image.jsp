@@ -70,7 +70,7 @@
 				document.getElementById("experience-form").type.value = type;
 				document.getElementById("experience-form").experienceDetails.value = JSON.stringify(expDetailsObj);
 				document.getElementById("experience-form").method = "post";
-				document.getElementById("experience-form").action = "image";
+				document.getElementById("experience-form").action = "create-image";
 				document.getElementById("experience-form").submit();
 			}
 			else{
@@ -86,7 +86,7 @@
 		localStorage.setItem("exp_type", "image");
 	});
 	/* function cancelOperation() {
-	location.replace("/wem/?view=pages/experience-create-image.jsp")
+	location.replace("?view=pages/experience-create-image.jsp")
 } */
 </script>
 

@@ -17,7 +17,7 @@
 							<span class="kt-menu__link"><span class="kt-menu__link-text">Segment</span></span>
 						</li>
 							<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
-								<a href="/wem/segment_create" class="kt-menu__link kt-menu__toggle">
+								<a href="segment-create" class="kt-menu__link kt-menu__toggle">
 									<i class="kt-menu__link-icon la flaticon2-edit"><span></span></i>
 									<span class="kt-menu__link-text">Create</span>
 									<i class="kt-menu__ver-arrow la la-angle-right"></i>
@@ -54,7 +54,7 @@
 								</div> -->
 							</li>
 							<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
-								<a href="/wem/segmentview" class="kt-menu__link kt-menu__toggle">
+								<a href="segment-view" class="kt-menu__link kt-menu__toggle">
 									<i class="kt-menu__link-icon la flaticon-eye"><span></span></i>
 									<span class="kt-menu__link-text">View</span>
 									<i class="kt-menu__ver-arrow la la-angle-right"></i>
@@ -111,33 +111,33 @@
 									<span class="kt-menu__arrow"></span>
 									<ul class="kt-menu__subnav">
 										<li class="kt-menu__item " aria-haspopup="true" id="experience-create-content">
-											<a href="/wem/content" class="kt-menu__link ">
+											<a href="create-content" class="kt-menu__link ">
 											<i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Content</span>
 											</a>
 										</li>
 										<li class="kt-menu__item " aria-haspopup="true" id="experience-create-image">
-											<a href="/wem/image" class="kt-menu__link ">
+											<a href="create-image" class="kt-menu__link ">
 											<i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Image</span>
 											</a>
 										</li>
 										<li class="kt-menu__item " aria-haspopup="true" id="experience-create-link">
-											<a href="/wem/create-link" class="kt-menu__link ">
+											<a href="create-link" class="kt-menu__link ">
 												<i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Link</span>
 											</a>
 										</li>
 										
 										<li class="kt-menu__item " aria-haspopup="true" id="experience-create-popup">
-											<a href="/wem/create-popup" class="kt-menu__link ">
+											<a href="create-popup" class="kt-menu__link ">
 											<i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Pop Up</span>
 											</a>
 										</li>
 										<li class="kt-menu__item " aria-haspopup="true" id="experience-create-redirect">
-											<a href="/wem?view=pages/experience-create-redirect.jsp" class="kt-menu__link ">
+											<a href="create-redirect" class="kt-menu__link ">
 											<i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Redirect</span>
 											</a>
 										</li>
 										<li class="kt-menu__item " aria-haspopup="true" id="experience-create-bar">
-											<a href="/wem/create-bar" class="kt-menu__link ">
+											<a href="create-bar" class="kt-menu__link ">
 											<i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Bar</span>
 											</a>
 										</li>
@@ -147,7 +147,7 @@
 											</a>
 										</li>
 										<li class="kt-menu__item " aria-haspopup="true" id="experience-create-style">
-											<a href="/wem/style" class="kt-menu__link ">
+											<a href="create-style" class="kt-menu__link ">
 											<i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text">Style</span>
 											</a>
 										</li>
@@ -155,7 +155,7 @@
 								</div>
 							</li>
 							<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
-								<a href="/wem/experienceview" class="kt-menu__link kt-menu__toggle">
+								<a href="experience-view" class="kt-menu__link kt-menu__toggle">
 									<i class="kt-menu__link-icon la flaticon-eye"><span></span></i>
 									<span class="kt-menu__link-text">View</span>
 									<i class="kt-menu__ver-arrow la la-angle-right"></i>

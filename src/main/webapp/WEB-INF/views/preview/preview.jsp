@@ -7,10 +7,10 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<link rel="stylesheet" href="/wem/preview/jqtree.css">
+<link rel="stylesheet" href="preview/jqtree.css">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="/wem/preview/tree.jquery.js"></script>
+<script src="preview/tree.jquery.js"></script>
 <title>Preview Page</title>
 </head>
 <style>
@@ -694,7 +694,7 @@
 <body>
 	<div class="sidenav">
 		<iframe class="leftside-tree" id="treeFrameWindow"
-			src="/wem/preview/leftside-iframe-treeview.jsp" frameborder="0"></iframe>
+			src="preview/leftside-iframe-treeview.jsp" frameborder="0"></iframe>
 	</div>
 	<div class="main">
 		<div id="content" style="display: none">

@@ -5,7 +5,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<script src="/wem/js/unified_segment.js" type="text/javascript"></script> 
+<script src="js/unified_segment.js" type="text/javascript"></script> 
 </head>
 <body>
 

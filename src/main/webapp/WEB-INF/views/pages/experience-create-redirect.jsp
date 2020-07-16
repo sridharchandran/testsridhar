@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.Map, com.onwardpath.wem.repository.SegmentRepository" %>    
 <script type="text/javascript">
 
@@ -126,7 +127,7 @@ function saveExperience(){
 	//document.getElementById("experience-form").redirecturl.value=redirectURL; 
 	document.getElementById("experience-form").experienceDetails.value=JSON.stringify(expDetailsObj);	
 	document.getElementById("experience-form").method = "post";
-	document.getElementById("experience-form").action = "ExperienceController";
+	document.getElementById("experience-form").action = "create-redirect";
 	document.getElementById("experience-form").submit();
 	}else{
 		swal.fire("Please enter Redirect URL for this Experience")
@@ -145,12 +146,6 @@ function saveExperience(){
 	<%	
 	String message = (String) session.getAttribute("message");
 	
-	SegmentRepository segmentRepository = new SegmentRepository();
-	int org_id = (Integer)session.getAttribute("org_id");
-	Map<Integer,String> segments = segmentRepository.getOrgSegments(org_id);
-	if (segments.size() == 0) {
-		message = "Error: No Segments are configured. Create a Segment <a class='kt-link kt-font-bold' href='?view=pages/segment-create-geo.jsp'>here</a>";	
-	}
 				
 	if (message != null && !message.equals("")) {
 		String icon = "fa fa-cocktail"; 
@@ -184,65 +179,7 @@ function saveExperience(){
 		    </div>
 		</div>	
 		
-		<!-- begin::modal -->		
-		<div class="kt-section__content kt-section__content--border">			
-			<!-- Modal -->
-			<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display: none;">
-				<div class="modal-dialog modal-dialog-centered" role="document">
-					<div class="modal-content">						
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalCenterTitle">Embed Code for: <%=name%></h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">×</span>
-							</button>
-						</div>
-						<div class="modal-body">														 
-							 <h3>Header</h3>
-							 <code>
-								&lt;!-- Begin::GeoSmart-Header --&gt; 
-								&lt;script&gt;
-								function geo()
-								{
-								      var serviceURL= "http://lab01.onwardpath.com/GeoTargetService/app/georeach/get?id=<%=experience%>&org_id=<%=org_id%>&s=";
-								      var geoElement = document.getElementById("Geo-<%=name%>-<%=experience%>");
-								      var url = new URL(window.location.href);
-								      var c = url.searchParams.get("s");
-								      serviceURL += c;
-								      console.log(serviceURL);
-								
-								      var xhttp = new XMLHttpRequest();
-								      xhttp.responseType = 'json';
-								      xhttp.onreadystatechange = function() 
-								      {
-										if (this.readyState == 4 && this.status == 200)
-										{
-											let data = this.response;
-											geoElement.innerHTML = data[1].embedCode;
-										}
-								      };
-								      xhttp.open("GET", serviceURL);
-								      xhttp.send();
-								 }								
-								window.onload = geo;
-								&lt;/script&gt;  
-								&lt;!-- End::GeoSmart-Header --&gt;
-							</code>
-							<h3>Body</h3>
-							<code>
-								&lt;!-- Begin::GeoSmart-Body --&gt;
-								&lt;div id="G-<%=name%>-<%=experience%>"&gt;&lt;/div&gt;
-								&lt;!-- End::GeoSmart-Body --&gt;
-							</code>
-						</div>
-						<div class="modal-footer">							
-							<button type="button" class="btn btn-outline-brand">Copy</button>
-							<button type="button" class="btn btn-outline-brand" data-dismiss="modal">Close</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>	
-		<!-- end::modal -->						
+			
 		<%
 		session.setAttribute("message", "");
 	}																
@@ -263,13 +200,10 @@ function saveExperience(){
 				<label class="col-form-label col-lg-3 col-sm-12">Segment</label>
 					<div class="col-lg-4 col-md-9 col-sm-12">											
 						<select id="segment" class="custom-select form-control" data-width="300" onchange="javascript:selectIndex()">
-						    <%
-							for ( Map.Entry<Integer, String> entry : segments.entrySet()) {
-								Integer key = entry.getKey();
-							    String val = entry.getValue();	     	   
-							    out.println("<option value='"+key+"'>"+val+"</option>");
-							}
-							%>													
+						   		<c:forEach items="${seglist}" var="segment">
+										<option value="${segment.id}">${segment.name}</option>
+									</c:forEach>
+																					
 						</select>																																							
 					</div>
 				</div>

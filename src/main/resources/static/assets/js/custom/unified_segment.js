@@ -110,7 +110,7 @@ function saveSegment() {
 			document.getElementById("segmentRules").value = attrstr;
 			if (segmentName.replace(" ", "").length > 0) {
 				document.getElementById("segment-form").method = "post";
-				document.getElementById("segment-form").action = "Segment_Save";
+				document.getElementById("segment-form").action = "segment-save";
 				document.getElementById("segment-form").submit();
 			} else {
 				swal.fire("Segment Name value should not be empty.")
@@ -163,7 +163,7 @@ function suggestArea(obj) {
 				$('#geobutton').attr("disabled", false);
 			}
 		};
-		xhttp.open("GET", "/wem/AjaxController?service="+serviceName+"_suggestions&geoloc="
+		xhttp.open("GET", "AjaxController?service="+serviceName+"_suggestions&geoloc="
 				+ geoloc);
 		xhttp.send();
 	}
@@ -186,7 +186,7 @@ $(document).ready(function() {
         highlight: false,
         source: function(request, response) {
             $.ajax({
-                url: "/wem/AjaxController",
+                url: "AjaxController",
                contentType: "application/json; charset=utf-8", 
 				data: { 
             	service: document.getElementById("geotype").options[document.getElementById("geotype").selectedIndex].value+"_suggestions", 

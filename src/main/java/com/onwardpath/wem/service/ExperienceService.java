@@ -13,6 +13,7 @@ import com.onwardpath.wem.entity.Image;
 import com.onwardpath.wem.entity.Link;
 import com.onwardpath.wem.entity.Popup;
 import com.onwardpath.wem.entity.PopupAttributes;
+import com.onwardpath.wem.entity.Redirect;
 import com.onwardpath.wem.entity.Style;
 import com.onwardpath.wem.entity.TimeZone;
 import com.onwardpath.wem.repository.ExperienceRepository;
@@ -39,5 +40,6 @@ public interface  ExperienceService {
     public Block  saveBlock(Block block);
     public List<Bar> saveAllBarEntites(List<Bar> entities);
     public List<TimeZone> gettimezone();
+    public Redirect  saveredirect(Redirect redirect);
 
 }

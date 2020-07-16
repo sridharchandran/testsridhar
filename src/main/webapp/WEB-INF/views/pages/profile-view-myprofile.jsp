@@ -204,7 +204,7 @@ String email = ((User) session.getAttribute("user")).getEmail();
 
 											</div>
 											</br> <img alt="Pic" id="output"
-												src='/wem/DisplayImageController'
+												src='DisplayImageController'
 												height="100" width="100" />
 										</div>
 
