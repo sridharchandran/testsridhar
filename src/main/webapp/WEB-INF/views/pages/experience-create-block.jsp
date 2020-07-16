@@ -68,7 +68,7 @@ function add(event) {
 					+ segment_name
 					+ '\','
 					+ segment_id
-					+ ')">'
+					+ ',event)">'
 					+'<b >'+typeVal+'</b>'
 					+':'
 					+'<b style="color:#3d4e5e">'+segment_name+'</b>'
@@ -116,11 +116,13 @@ function saveExperience() {
 	 
 	}
 //Function to delete selected segment	
-	function remove(element, segment_id) {
-		var displayElement = document.getElementById(element);
-		delete expDetailsObj[segment_id];
-		displayElement.style.display = "none";
-	}
+function remove(element, segment_id, event) {
+
+	delete expDetailsObj[segment_id];
+	var stage =  document.getElementById("stage");
+	stage.removeChild(event.currentTarget);
+	console.log("bar segments deleted");
+}
 
 	/* function getallsubpages(page)
 	{
