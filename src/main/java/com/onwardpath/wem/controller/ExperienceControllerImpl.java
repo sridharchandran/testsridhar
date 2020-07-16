@@ -23,6 +23,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onwardpath.wem.entity.Bar;
+import com.onwardpath.wem.entity.Block;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
 import com.onwardpath.wem.entity.Image;
@@ -34,6 +35,7 @@ import com.onwardpath.wem.entity.Style;
 import com.onwardpath.wem.entity.User;
 import com.onwardpath.wem.exception.DbInsertException;
 import com.onwardpath.wem.model.BarExpCreateFormDTO;
+import com.onwardpath.wem.model.BlockExpCreateFormDTO;
 import com.onwardpath.wem.model.ImageExpCreateFormDTO;
 import com.onwardpath.wem.model.LinkExpCreateFormDTO;
 import com.onwardpath.wem.model.PopupExpCreateFormDTO;
@@ -219,7 +221,11 @@ public class ExperienceControllerImpl {
 		return fullname;
 	}
 	
-	
+	/*
+	 * Saving Bar values into  Bar tables
+	 * @param BarExpCreateFormDTO
+	 * @param exp_id
+	 */
 	@Transactional(rollbackFor = DbInsertException.class)
 	public ModelAndView saveBarExp(BarExpCreateFormDTO barExpCreateFormDTO) throws JsonMappingException, JsonProcessingException , DbInsertException{
 		
@@ -240,6 +246,7 @@ public class ExperienceControllerImpl {
 				int exp_id = saveExperience(exp_name, type, status, user_id);
 				saveBarsAndContents(barExpCreateFormDTO, exp_id);
 				session.setAttribute("message", expCreateSetSuccessMessage(exp_name));
+				session.setAttribute("bar", exp_name);
 				modelAndView.addObject("exp_id", exp_id);
 				modelAndView.addObject("expExists", expExists);
 				
@@ -250,6 +257,12 @@ public class ExperienceControllerImpl {
 		}
 		return modelAndView;
 	}
+	
+	/*
+	 * Saving Bar values into content & Bar tables
+	 * @param BarExpCreateFormDTO
+	 * @param exp_id
+	 */
 	
 	public void saveBarsAndContents(BarExpCreateFormDTO barExpCreateFormDTO, int exp_id)
 			throws JsonMappingException, JsonProcessingException, DbInsertException {
@@ -287,6 +300,7 @@ public class ExperienceControllerImpl {
 			  newContentModel.setContent(seg_data.get("bar_body").toString());
 			  newContentModel.setCreate_time(LocalDateTime.now());
 			  content_entities.add(newContentModel);
+			  
 
 		}
 		// batch insert
@@ -537,7 +551,65 @@ public ModelAndView savecontentEXP(ImageExpCreateFormDTO imgExpCreateFormDTO) th
 		expService.saveAllContentEntites(content_entities);
 	}
 	
+	/*
+	 * Saving Block values into Block tables
+	 * @param BlockExpCreateFormDTO
+	 * @param exp_id
+	 */
+
+	@Transactional(rollbackFor = DbInsertException.class)
+	public ModelAndView saveBlockExp(BlockExpCreateFormDTO blockExpCreateFormDTO) throws JsonMappingException, JsonProcessingException,DbInsertException {
+		
+		ModelAndView modelAndView = new ModelAndView();
+		String exp_name = blockExpCreateFormDTO.getName();
+		String type = blockExpCreateFormDTO.getType();
+		String status = "on";
+		int user_id = (int) session.getAttribute("user_id");
+		int org_id = (int) session.getAttribute("org_id");
+		boolean expExists;
+		try {
+			expExists = expService.expExists(org_id, exp_name);
+			if (expExists) {
+				session.setAttribute("message", expCreateSetErrorMessage(exp_name));
+				modelAndView.addObject("expExists", expExists);
+				
+			} else {
+				expExists = false;
+				int exp_id = saveExperience(exp_name, type, status, user_id);
+				String experienceDetails = blockExpCreateFormDTO.getExperienceDetails();
+				ObjectMapper mapper = new ObjectMapper();
+				Map<String, String> map = mapper.readValue(experienceDetails, Map.class);
+				System.out.println(map);
+				for (Map.Entry<String, String> entry : map.entrySet()) {
+					int segment_id = Integer.parseInt(entry.getKey());
+					String block_url = entry.getValue();
+					Block block = new Block();
+					block.setExperienceId(exp_id);
+					block.setSegmentId(segment_id);
+					block.setBlockUrl(block_url.split("-")[1]);
+					block.setAllSubPage(blockExpCreateFormDTO.getSubpage()); 
+					expService.saveBlock(block);
+					 
+				}
+				session.setAttribute("message", "Block Experience <b>"+exp_name+"</b> has been saved Successfully.");
+				session.setAttribute("block_url", experienceDetails);
+				modelAndView.addObject("exp_id", exp_id);
+				modelAndView.addObject("expExists", expExists);
+			}
+		} catch (Exception e) {
+			/*
+			 * expExists = true; modelAndView.addObject("error", "true");
+			 * session.setAttribute(
+			 * "message","Unresolved Error: Please contact administrator");
+			 */
+			throw new DbInsertException("Exception is thrown");
+		}
+		
+				return modelAndView;
+		
+	}
 	
+
 	@Transactional(rollbackFor = DbInsertException.class)
 	public ModelAndView saveRedirectExp(StyleExpCreateFormDTO styelExpCreateFormDTO) throws JsonMappingException, JsonProcessingException,DbInsertException {
 		ModelAndView modelAndView = new ModelAndView();
@@ -593,5 +665,4 @@ public ModelAndView savecontentEXP(ImageExpCreateFormDTO imgExpCreateFormDTO) th
 		
 		return modelAndView;
 	}
-
 }

@@ -272,7 +272,7 @@ function toggleCheckbox(){
 		<!--begin::Form-->
 		<form class="kt-form kt-form--label-right" id="dummy-form"> 
 			<div class="kt-portlet__body">
-				<div id="show_block">											 																
+				<div id="show_block" style="display:none;">											 																
 				<div class="form-group row">
 					<label class="col-form-label col-lg-3 col-sm-12">Page Address</label>
 						<div class="col-lg-4 col-md-9 col-sm-12">															

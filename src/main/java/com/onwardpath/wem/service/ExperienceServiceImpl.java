@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.onwardpath.wem.entity.Bar;
+import com.onwardpath.wem.entity.Block;
 import com.onwardpath.wem.entity.Config;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
@@ -18,6 +19,7 @@ import com.onwardpath.wem.entity.Segment;
 import com.onwardpath.wem.entity.Style;
 import com.onwardpath.wem.entity.TimeZone;
 import com.onwardpath.wem.repository.BarRepository;
+import com.onwardpath.wem.repository.BlockRepository;
 import com.onwardpath.wem.repository.ConfigRepository;
 import com.onwardpath.wem.repository.ContentRepository;
 import com.onwardpath.wem.repository.ExperienceRepository;
@@ -44,10 +46,11 @@ public class ExperienceServiceImpl implements  ExperienceService {
 	private StyleRepository styleRepos;
 	private BarRepository	barRepos;
 	private LinkRepository linkRepos;
+	private BlockRepository blockRepos;
     private RedirectRepository redirectRepos;
 	
 	@Autowired
-	public ExperienceServiceImpl(SegmentRepository sepRepos,ExperienceRepository expRepos,ContentRepository conRepos,TimeZoneRepository timezoneRepos,PopupRepository popupRepos,ConfigRepository configRepos,PopupAttrRepository popupAttrRepos,ImageRepository imageRepos,StyleRepository styleRepos,BarRepository barRepos,LinkRepository linkRepos,RedirectRepository redirectRepos)
+	public ExperienceServiceImpl(SegmentRepository sepRepos,ExperienceRepository expRepos,ContentRepository conRepos,TimeZoneRepository timezoneRepos,PopupRepository popupRepos,ConfigRepository configRepos,PopupAttrRepository popupAttrRepos,ImageRepository imageRepos,StyleRepository styleRepos,BarRepository barRepos,LinkRepository linkRepos,BlockRepository blockRepos,RedirectRepository redirectRepos)
 	{
 		this.sepRepos = sepRepos;
 		this.expRepos  = expRepos;
@@ -60,6 +63,7 @@ public class ExperienceServiceImpl implements  ExperienceService {
 		this.styleRepos = styleRepos;
 		this.barRepos = barRepos;
 		this.linkRepos = linkRepos;
+		this.blockRepos = blockRepos;
 		this.redirectRepos= redirectRepos;
 	}
 	
@@ -175,5 +179,13 @@ public class ExperienceServiceImpl implements  ExperienceService {
 		// TODO Auto-generated method stub
 		return redirectRepos.save(redirect);
 	}
+	
+	@Override
+	public Block saveBlock(Block block) {
+		// TODO Auto-generated method stub
+		return blockRepos.save(block);
+	}
+
+
 	
 }
