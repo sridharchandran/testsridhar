@@ -10,10 +10,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -62,32 +65,28 @@ public class ExperienceController {
 
 	@Autowired
 	ExperienceRepository expRepo;
-	
+
 	@Autowired
 	ExperienceControllerImpl expControllerImpl;
-	
+
 	@Autowired
 	ExperienceService expService;
-	
+
 	@Autowired
 	private NativeRepository nr;
-	
+
 	@Autowired
 	NativeService nativeService;
-	
-	
-	/**
-	 * Link formation and get segment dropdown Value for Experience Create Content
-	 */
-	
-	@RequestMapping(value = "/content", method = RequestMethod.GET)
+
+	DefaultRequestToViewNameTranslator defaultRequestToViewNameTranslator = new DefaultRequestToViewNameTranslator();
+
+	@RequestMapping(value = "/create-content", method = RequestMethod.GET)
 	public ModelAndView createContent() throws IOException {
 		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
 		modelAndView.setViewName("index.jsp?view=pages/experience-create-content");
 		return modelAndView;
 	}
-	
-	
+
 	// Function tot convert String to Date
 	public static Instant getDateFromString(String string) {
 
@@ -112,18 +111,18 @@ public class ExperienceController {
 	public String submitconfig(ModelMap mp, HttpSession session, HttpServletRequest request)
 			throws JsonMappingException, JsonProcessingException, ParseException {
 
-		System.out.print("getmodelmap"+mp.get("exp_id"));
+		System.out.print("getmodelmap" + mp.get("exp_id"));
 //		int experience_id = Integer.parseInt(request.getParameter("experience_id"));
 //
 //		String expname = request.getParameter("experience_name");
 //		// String org_id = request.getParameter("name");
 //		String experience_type = request.getParameter("experience_type");
-		
-		int exp_id = Integer.parseInt(request.getParameter("exp_id"));	
+
+		int exp_id = Integer.parseInt(request.getParameter("exp_id"));
 		Experience e = expService.getExperienceById(exp_id);
 		String exp_name = e.getName();
 		String exp_type = e.getType();
-		
+
 		int user_Id = (Integer) session.getAttribute("user_id");
 		int org_id = (Integer) session.getAttribute("org_id");
 		String configDetails = request.getParameter("urlList");
@@ -148,21 +147,18 @@ public class ExperienceController {
 			System.out.println("sdate:" + request.getParameter("startdate"));
 			System.out.println("edate:" + request.getParameter("enddate"));
 			Experience newexp = new Experience();
-			
-			//DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-mm-dd hh:mm:ss");
-			
+
+			// DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-mm-dd
+			// hh:mm:ss");
+
 			DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-	        
-	        
-			String startdate = request.getParameter("startdate");	
-			LocalDateTime sqlStartDate = LocalDateTime.parse(startdate,format);
-			
 
-			
+			String startdate = request.getParameter("startdate");
+			LocalDateTime sqlStartDate = LocalDateTime.parse(startdate, format);
+
 			String enddate = request.getParameter("enddate");
-			LocalDateTime sqlendDate = LocalDateTime.parse(enddate,format);
+			LocalDateTime sqlendDate = LocalDateTime.parse(enddate, format);
 
-	
 			newexp.setScheduleStart(sqlStartDate);
 			newexp.setScheduleEnd(sqlendDate);
 			newexp.setStatus(request.getParameter("status"));
@@ -175,45 +171,41 @@ public class ExperienceController {
 		// mp.addAttribute("msg", "Page configuration for <b>"+expname+"</b> saved
 		// succesfully");
 
-		session.setAttribute("message", "Page configuration for <b>" + exp_name + "</b> saved succesfully.#n=" + exp_name
-				+ "#e=" + exp_id + "#o=" + org_id + "#t=" + exp_type);
+		session.setAttribute("message", "Page configuration for <b>" + exp_name + "</b> saved succesfully.#n="
+				+ exp_name + "#e=" + exp_id + "#o=" + org_id + "#t=" + exp_type);
 		return "index.jsp?view=pages/experience-create-enable";
 
 	}
-	  // Endpoint for Experience View Page
-	  @GetMapping("/experienceview")
-	  public String experienceView()
-	  {
- 	
-	    return "/index.jsp?view=pages/experience-view";
-	  }
-	
-	
-	  // Endpoint for Experience custom Pagination
-	  
-	  @GetMapping(value = "/AjaxExpController", produces =
-	  MediaType.APPLICATION_JSON_VALUE)
-	  
-	  @ResponseBody 
-	  public String ajaxExperience(@RequestParam("offset") int
-	  offset,@RequestParam("limit") int limit,HttpSession session) throws IOException {
-	  
-	  String search = null;
-	  int org_Id = (Integer) session.getAttribute("org_id");
-	  
-	  
-	  return nativeService.getResultSetforExpView( org_Id, offset, limit, search); }
-	 
-	
-	 	
+
+	// Endpoint for Experience View Page
+	@GetMapping("/experience-view")
+	public String experienceView() {
+
+		return "/index.jsp?view=pages/experience-view";
+	}
+
+	// Endpoint for Experience custom Pagination
+
+	@GetMapping(value = "/AjaxExpController", produces = MediaType.APPLICATION_JSON_VALUE)
+
+	@ResponseBody
+	public String ajaxExperience(@RequestParam("offset") int offset, @RequestParam("limit") int limit,
+			HttpSession session) throws IOException {
+
+		String search = null;
+		int org_Id = (Integer) session.getAttribute("org_id");
+
+		return nativeService.getResultSetforExpView(org_Id, offset, limit, search);
+	}
+
 	// Endpoint for Search/Status/Modal_popup
 	@PostMapping(value = "/AjaxExpController", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public String ajaxPostExperience(ExperienceViewPostDTO experienceViewPostDTO) throws IOException {
-	
+
 		return nativeService.getResultSetforExpViewPost(experienceViewPostDTO);
 	}
-	
+
 	/**
 	 * Bar Experience --> Create
 	 */
@@ -223,36 +215,33 @@ public class ExperienceController {
 		modelAndView.setViewName("index.jsp?view=pages/experience-create-bar");
 		return modelAndView;
 	}
-	
-	
+
 	/**
 	 * Bar Experience --> Save
-	 * @throws DbInsertException 
+	 * 
+	 * @throws DbInsertException
 	 */
 	@RequestMapping(value = "/create-bar", method = RequestMethod.POST)
-	public ModelAndView saveBarExperience(BarExpCreateFormDTO barExpCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
+	public ModelAndView saveBarExperience(BarExpCreateFormDTO barExpCreateFormDTO, RedirectAttributes rdAttr)
+			throws IOException, DbInsertException {
 		ModelAndView modelAndView = expControllerImpl.saveBarExp(barExpCreateFormDTO);
 		Map<String, Object> model = modelAndView.getModel();
-		System.out.println("expexits="+(boolean) model.get("expExists"));
+		System.out.println("expexits=" + (boolean) model.get("expExists"));
 		boolean expNameExists = (boolean) model.get("expExists");
-		
+
 		modelAndView.clear();
-		
-		if(expNameExists)
-		{
-		modelAndView.setViewName("redirect:/create-bar");
+
+		if (expNameExists) {
+			modelAndView.setViewName("redirect:/create-bar");
+		} else {
+			String exp_id = model.get("exp_id").toString();
+			modelAndView.setViewName("redirect:/experience-config");
+			rdAttr.addAttribute("exp_id", exp_id);
 		}
-		else
-		{
-		String exp_id = model.get("exp_id").toString();
-		modelAndView.setViewName("redirect:/experience-config");
-		rdAttr.addAttribute("exp_id",exp_id);
-		}
-		
+
 		return modelAndView;
 	}
-	
-	
+
 	/**
 	 * Popup Experience --> Create
 	 */
@@ -262,236 +251,219 @@ public class ExperienceController {
 		modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
 		return modelAndView;
 	}
-	
+
 	/**
 	 * Popup Experience --> Save
-	 * @throws DbInsertException 
+	 * 
+	 * @throws DbInsertException
 	 */
 	@RequestMapping(value = "/create-popup", method = RequestMethod.POST)
-	public ModelAndView savePopupExperience(PopupExpCreateFormDTO popupExCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
+	public ModelAndView savePopupExperience(PopupExpCreateFormDTO popupExCreateFormDTO, RedirectAttributes rdAttr)
+			throws IOException, DbInsertException {
 		ModelAndView modelAndView = expControllerImpl.savePopupExp(popupExCreateFormDTO);
 		Map<String, Object> model = modelAndView.getModel();
 		boolean expNameExists = (boolean) model.get("expExists");
-		
+
 		modelAndView.clear();
-		
-		if(expNameExists)
-		{
-		modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
+
+		if (expNameExists) {
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
+		} else {
+			String exp_id = model.get("exp_id").toString();
+			modelAndView.setViewName("redirect:/experience-config");
+			rdAttr.addAttribute("exp_id", exp_id);
 		}
-		else
-		{
-		String exp_id = model.get("exp_id").toString();
-		modelAndView.setViewName("redirect:/experience-config");
-		rdAttr.addAttribute("exp_id",exp_id);
-		}
-		
+
 		return modelAndView;
 	}
-	
-	
+
 	/**
 	 * Experience --> Config Page
 	 */
 	@RequestMapping(value = "/experience-config", method = RequestMethod.GET)
-	public ModelAndView saveExperienceConfig(@ModelAttribute("exp_id") String exp_id) throws IOException, DbInsertException {
+	public ModelAndView saveExperienceConfig(@ModelAttribute("exp_id") String exp_id)
+			throws IOException, DbInsertException {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("zonelist", expseg.gettimezone());
 		modelAndView.addObject("exp_id", exp_id);
-		modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");			
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-enable");
 		return modelAndView;
 	}
-	
 
-	 @ExceptionHandler(DbInsertException.class)
-	  public ModelAndView handleError(HttpServletRequest req, Exception ex,HttpSession session) {
-	    ModelAndView mav = new ModelAndView();
-		session.setAttribute("message","Unresolved Error: Please contact administrator");
-		System.out.println("type="+session.getAttribute("exp_type"));
-		String type = (String) session.getAttribute("exp_type");
-	    mav.addObject("exception", ex);
-	   
-	    mav.setViewName("redirect:/create-popup");	
-	    
-	    return mav;
-	  }
-	 
-	 /**
-		 * Link formation and get segment dropdown Value for Experience Create Image
+	@ExceptionHandler(DbInsertException.class)
+	public ModelAndView handleError(HttpServletRequest req, Exception ex, HttpSession session) throws IOException {
+		ModelAndView mav = new ModelAndView();
+		session.setAttribute("message", "Unresolved Error: Please contact administrator");
+		String getViewName = defaultRequestToViewNameTranslator.getViewName(req);
+		String redirect_URL = "index.jsp?view=pages/experience-" + getViewName;
+		/*
+		 * System.out.println("getURI"+req.getRequestURI()+":"+req.getServletPath()+":"+
+		 * mav.getViewName()); String type = (String) session.getAttribute("exp_type");
 		 */
-		@RequestMapping(value = "/image", method = RequestMethod.GET)
-		public ModelAndView createImage() throws IOException {
-			ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+		mav.addObject("exception", ex);
+		mav.setViewName(redirect_URL);
+
+		return mav;
+	}
+
+	/**
+	 * Link formation and get segment dropdown Value for Experience Create Image
+	 */
+	@RequestMapping(value = "/create-image", method = RequestMethod.GET)
+	public ModelAndView createImage() throws IOException {
+		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-image");
+		return modelAndView;
+	}
+
+	/**
+	 * Image Experience DB Save
+	 */
+
+	@RequestMapping(value = "/create-image", method = RequestMethod.POST)
+	public ModelAndView saveimageexp(ImageExpCreateFormDTO imageExCreateFormDTO, RedirectAttributes rdAttr)
+			throws IOException, DbInsertException {
+		ModelAndView modelAndView = expControllerImpl.saveimageEXP(imageExCreateFormDTO);
+		Map<String, Object> model = modelAndView.getModel();
+		boolean expNameExists = (boolean) model.get("expExists");
+
+		modelAndView.clear();
+
+		if (expNameExists) {
 			modelAndView.setViewName("index.jsp?view=pages/experience-create-image");
-			return modelAndView;
-		}
-		
-		
-		/**
-		 * Image Experience DB Save
-		 */
-		
-		@RequestMapping(value = "/image", method = RequestMethod.POST)
-		public ModelAndView saveimageexp(ImageExpCreateFormDTO imageExCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
-			ModelAndView modelAndView = expControllerImpl.saveimageEXP(imageExCreateFormDTO);
-			Map<String, Object> model = modelAndView.getModel();
-			boolean expNameExists = (boolean) model.get("expExists");
-			
-			modelAndView.clear();
-			
-			if(expNameExists)
-			{
-			modelAndView.setViewName("index.jsp?view=pages/experience-create-image");
-			}
-			else
-			{
+		} else {
 			String exp_id = model.get("exp_id").toString();
 			modelAndView.setViewName("redirect:/experience-config");
-			rdAttr.addAttribute("exp_id",exp_id);
-			}
-			
-			return modelAndView;
+			rdAttr.addAttribute("exp_id", exp_id);
 		}
 
-	
-		/**
-		 * Link formation and get segment dropdown Value for Experience Create style
-		 */
-		@RequestMapping(value = "/style", method = RequestMethod.GET)
-		public ModelAndView createstyle() throws IOException {
-			ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+		return modelAndView;
+	}
+
+	/**
+	 * Link formation and get segment dropdown Value for Experience Create style
+	 */
+	@RequestMapping(value = "/create-style", method = RequestMethod.GET)
+	public ModelAndView createstyle() throws IOException {
+		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-style");
+		return modelAndView;
+	}
+
+	/**
+	 * Style Experience DB Save
+	 */
+	@RequestMapping(value = "/create-style", method = RequestMethod.POST)
+	public ModelAndView savestyleexp(StyleExpCreateFormDTO styleExCreateFormDTO, RedirectAttributes rdAttr)
+			throws IOException, DbInsertException {
+		ModelAndView modelAndView = expControllerImpl.saveStyleExp(styleExCreateFormDTO);
+		Map<String, Object> model = modelAndView.getModel();
+		boolean expNameExists = (boolean) model.get("expExists");
+
+		modelAndView.clear();
+
+		if (expNameExists) {
 			modelAndView.setViewName("index.jsp?view=pages/experience-create-style");
-			return modelAndView;
-		}
-		
-		
-		/**
-		 * Style Experience DB Save
-		 */
-		@RequestMapping(value = "/style", method = RequestMethod.POST)
-		public ModelAndView savestyleexp(StyleExpCreateFormDTO styleExCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
-			ModelAndView modelAndView = expControllerImpl.saveStyleExp(styleExCreateFormDTO);
-			Map<String, Object> model = modelAndView.getModel();
-			boolean expNameExists = (boolean) model.get("expExists");
-			
-			modelAndView.clear();
-			
-			if(expNameExists)
-			{
-			modelAndView.setViewName("index.jsp?view=pages/experience-create-style");
-			}
-			else
-			{
+		} else {
 			String exp_id = model.get("exp_id").toString();
 			modelAndView.setViewName("redirect:/experience-config");
-			rdAttr.addAttribute("exp_id",exp_id);
-			}
-			
-			return modelAndView;
+			rdAttr.addAttribute("exp_id", exp_id);
 		}
-		
-		
-		
-		/**
-		 * Content Experience DB Save
-		 */
-		@RequestMapping(value = "/content", method = RequestMethod.POST)
-		public ModelAndView savecontenteexp(ImageExpCreateFormDTO imageExCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
-			ModelAndView modelAndView = expControllerImpl.savecontentEXP(imageExCreateFormDTO);
-			Map<String, Object> model = modelAndView.getModel();
-			boolean expNameExists = (boolean) model.get("expExists");
-			
-			modelAndView.clear();
-			
-			if(expNameExists)
-			{
+
+		return modelAndView;
+	}
+
+	/**
+	 * Content Experience DB Save
+	 */
+	@RequestMapping(value = "/create-content", method = RequestMethod.POST)
+	public ModelAndView savecontenteexp(ImageExpCreateFormDTO imageExCreateFormDTO, RedirectAttributes rdAttr)
+			throws IOException, DbInsertException {
+		ModelAndView modelAndView = expControllerImpl.savecontentEXP(imageExCreateFormDTO);
+		Map<String, Object> model = modelAndView.getModel();
+		boolean expNameExists = (boolean) model.get("expExists");
+
+		modelAndView.clear();
+
+		if (expNameExists) {
 			modelAndView.setViewName("index.jsp?view=pages/experience-create-content");
-			}
-			else
-			{
+		} else {
 			String exp_id = model.get("exp_id").toString();
 			modelAndView.setViewName("redirect:/experience-config");
-			rdAttr.addAttribute("exp_id",exp_id);
-			}
-			
-			return modelAndView;
-		}
-		
-		/**
-		 * Link Experience --> Create	
-		 */
-		@RequestMapping(value = "/create-link", method = RequestMethod.GET)
-		public ModelAndView createLinkExpereinceView() throws IOException {
-			ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
-			modelAndView.setViewName("index.jsp?view=pages/experience-create-link");
-			return modelAndView;
-		}
-	
-		/**
-		 * Link Experience --> Save
-		 * @throws DbInsertException 
-		 */
-		@RequestMapping(value = "/create-link", method = RequestMethod.POST)
-		public ModelAndView saveLinkExperience(LinkExpCreateFormDTO linkExCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
-			ModelAndView modelAndView = expControllerImpl.saveLinkExp(linkExCreateFormDTO);
-			Map<String, Object> model = modelAndView.getModel();
-			boolean expNameExists = (boolean) model.get("expExists");
-			
-			modelAndView.clear();
-			
-			if(expNameExists)
-			{
-			modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
-			}
-			else
-			{
-			String exp_id = model.get("exp_id").toString();
-			modelAndView.setViewName("redirect:/experience-config");
-			rdAttr.addAttribute("exp_id",exp_id);
-			}
-			
-			return modelAndView;
-		}
-		
-		
-		
-		/**
-		 * Redirect Experience --> Create	
-		 */
-		@RequestMapping(value = "/redirect", method = RequestMethod.GET)
-		public ModelAndView createRedirect() throws IOException {
-			ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
-			modelAndView.setViewName("index.jsp?view=pages/experience-create-redirect");
-			return modelAndView;
-		}
-	
-		/**
-		 * Redirect Experience --> Save
-		 * @throws DbInsertException 
-		 */
-		@RequestMapping(value = "/redirect", method = RequestMethod.POST)
-		public ModelAndView saveRedirectExperience(StyleExpCreateFormDTO styelExpCreateFormDTO ,RedirectAttributes rdAttr) throws IOException, DbInsertException {
-			ModelAndView modelAndView = expControllerImpl.saveRedirectExp(styelExpCreateFormDTO);
-			Map<String, Object> model = modelAndView.getModel();
-			boolean expNameExists = (boolean) model.get("expExists");
-			
-			modelAndView.clear();
-			
-			if(expNameExists)
-			{
-			modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
-			}
-			else
-			{
-			String exp_id = model.get("exp_id").toString();
-			modelAndView.setViewName("redirect:/experience-config");
-			rdAttr.addAttribute("exp_id",exp_id);
-			}
-			
-			return modelAndView;
+			rdAttr.addAttribute("exp_id", exp_id);
 		}
 
-		
-		
+		return modelAndView;
+	}
+
+	/**
+	 * Link Experience --> Create
+	 */
+	@RequestMapping(value = "/create-link", method = RequestMethod.GET)
+	public ModelAndView createLinkExpereinceView() throws IOException {
+		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-link");
+		return modelAndView;
+	}
+
+	/**
+	 * Link Experience --> Save
+	 * 
+	 * @throws DbInsertException
+	 */
+	@RequestMapping(value = "/create-link", method = RequestMethod.POST)
+	public ModelAndView saveLinkExperience(LinkExpCreateFormDTO linkExCreateFormDTO, RedirectAttributes rdAttr)
+			throws IOException, DbInsertException {
+		ModelAndView modelAndView = expControllerImpl.saveLinkExp(linkExCreateFormDTO);
+		Map<String, Object> model = modelAndView.getModel();
+		boolean expNameExists = (boolean) model.get("expExists");
+
+		modelAndView.clear();
+
+		if (expNameExists) {
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
+		} else {
+			String exp_id = model.get("exp_id").toString();
+			modelAndView.setViewName("redirect:/experience-config");
+			rdAttr.addAttribute("exp_id", exp_id);
+		}
+
+		return modelAndView;
+	}
+
+	/**
+	 * Redirect Experience --> Create
+	 */
+	@RequestMapping(value = "/create-redirect", method = RequestMethod.GET)
+	public ModelAndView createRedirect() throws IOException {
+		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+		modelAndView.setViewName("index.jsp?view=pages/experience-create-redirect");
+		return modelAndView;
+	}
+
+	/**
+	 * Redirect Experience --> Save
+	 * 
+	 * @throws DbInsertException
+	 */
+	@RequestMapping(value = "/create-redirect", method = RequestMethod.POST)
+	public ModelAndView saveRedirectExperience(StyleExpCreateFormDTO styelExpCreateFormDTO, RedirectAttributes rdAttr)
+			throws IOException, DbInsertException {
+		ModelAndView modelAndView = expControllerImpl.saveRedirectExp(styelExpCreateFormDTO);
+		Map<String, Object> model = modelAndView.getModel();
+		boolean expNameExists = (boolean) model.get("expExists");
+
+		modelAndView.clear();
+
+		if (expNameExists) {
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
+		} else {
+			String exp_id = model.get("exp_id").toString();
+			modelAndView.setViewName("redirect:/experience-config");
+			rdAttr.addAttribute("exp_id", exp_id);
+		}
+
+		return modelAndView;
+	}
 
 }

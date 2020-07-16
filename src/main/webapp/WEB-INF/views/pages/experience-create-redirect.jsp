@@ -127,7 +127,7 @@ function saveExperience(){
 	//document.getElementById("experience-form").redirecturl.value=redirectURL; 
 	document.getElementById("experience-form").experienceDetails.value=JSON.stringify(expDetailsObj);	
 	document.getElementById("experience-form").method = "post";
-	document.getElementById("experience-form").action = "redirect";
+	document.getElementById("experience-form").action = "create-redirect";
 	document.getElementById("experience-form").submit();
 	}else{
 		swal.fire("Please enter Redirect URL for this Experience")
