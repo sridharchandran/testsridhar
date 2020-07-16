@@ -6,6 +6,7 @@ public class BlockExpCreateFormDTO {
 	private String pageName;
 	private String type;
 	private String experienceDetails;
+	private String subpage;
 	public String getName() {
 		return name;
 	}
@@ -29,6 +30,12 @@ public class BlockExpCreateFormDTO {
 	}
 	public void setExperienceDetails(String experienceDetails) {
 		this.experienceDetails = experienceDetails;
+	}
+	public String getSubpage() {
+		return subpage;
+	}
+	public void setSubpage(String subpage) {
+		this.subpage = subpage;
 	}
 	
 	

@@ -562,15 +562,13 @@ public ModelAndView savecontentEXP(ImageExpCreateFormDTO imgExpCreateFormDTO) th
 		String status = "on";
 		int user_id = (int) session.getAttribute("user_id");
 		int org_id = (int) session.getAttribute("org_id");
-		Date date = new Date(System.currentTimeMillis());
-		boolean expExists = expService.expExists(org_id, exp_name);
-		
+		boolean expExists;
 		try {
 			expExists = expService.expExists(org_id, exp_name);
 			if (expExists) {
 				session.setAttribute("message", expCreateSetErrorMessage(exp_name));
 				modelAndView.addObject("expExists", expExists);
-				//modelAndView.setViewName("index.jsp?view=pages/experience-create-image");
+				
 			} else {
 				expExists = false;
 				int exp_id = saveExperience(exp_name, type, status, user_id);
@@ -585,11 +583,12 @@ public ModelAndView savecontentEXP(ImageExpCreateFormDTO imgExpCreateFormDTO) th
 					block.setExperienceId(exp_id);
 					block.setSegmentId(segment_id);
 					block.setBlockUrl(block_url.split("-")[1]);
-					/*
-					 * block.setAllSubPage(allSubPage); expService.saveimage(image);
-					 */
+					block.setAllSubPage(blockExpCreateFormDTO.getSubpage()); 
+					expService.saveBlock(block);
+					 
 				}
-				session.setAttribute("message", expCreateSetSuccessMessage(exp_name));
+				session.setAttribute("message", "Block Experience <b>"+exp_name+"</b> has been saved Successfully.");
+				session.setAttribute("block_url", experienceDetails);
 				modelAndView.addObject("exp_id", exp_id);
 				modelAndView.addObject("expExists", expExists);
 			}

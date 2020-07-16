@@ -112,24 +112,24 @@ public class ExperienceController {
 	@RequestMapping(value = "/configsave", method = RequestMethod.POST)
 	public String submitconfig(ModelMap mp, HttpSession session, HttpServletRequest request)
 			throws JsonMappingException, JsonProcessingException, ParseException {
-
-		System.out.print("getmodelmap"+mp.get("exp_id"));
-//		int experience_id = Integer.parseInt(request.getParameter("experience_id"));
-//
-//		String expname = request.getParameter("experience_name");
-//		// String org_id = request.getParameter("name");
-//		String experience_type = request.getParameter("experience_type");
-		
+		String configDetails = null;
+	
 		int exp_id = Integer.parseInt(request.getParameter("exp_id"));
-		System.out.println("bar"+(String) session.getAttribute("bar"));
 		Experience e = expService.getExperienceById(exp_id);
 		String exp_name = e.getName();
 		String exp_type = e.getType();
 		
 		int user_Id = (Integer) session.getAttribute("user_id");
 		int org_id = (Integer) session.getAttribute("org_id");
-		String configDetails = request.getParameter("urlList");
 		LocalDateTime now = LocalDateTime.now();
+		if(exp_type.equals("block"))
+		{
+		configDetails = (String) session.getAttribute("block_url");
+		}
+		else
+		{
+		configDetails = request.getParameter("urlList");
+		}
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
 		Map<String, String> map = mapper.readValue(configDetails, Map.class);
@@ -139,12 +139,20 @@ public class ExperienceController {
 			String url = entry.getValue();
 			Config config = new Config();
 			config.setExperience_id(exp_id);
-			config.setUrl(url);
+			if(exp_type.equals("block"))
+			{
+				config.setUrl(url.split("-")[0]);
+			}
+			else
+			{
+				config.setUrl(url);
+			}
+			
 			config.setUser_id(user_Id);
 			config.setCreate_time(now);
 			expseg.saveconfig(config);
 		}
-
+		
 		if (request.getParameter("status") != null && request.getParameter("status") != "") {
 			System.out.println("Statu:" + request.getParameter("status"));
 			System.out.println("sdate:" + request.getParameter("startdate"));
@@ -469,17 +477,16 @@ public class ExperienceController {
 		 * Block Experience --> Save
 		 * @throws DbInsertException 
 		 */
-		@RequestMapping(value = "/create-link", method = RequestMethod.POST)
+		@RequestMapping(value = "/create-block", method = RequestMethod.POST)
 		public ModelAndView saveBlockExperience(BlockExpCreateFormDTO blockExpCreateFormDTO,RedirectAttributes rdAttr) throws IOException, DbInsertException {
 			ModelAndView modelAndView = expControllerImpl.saveBlockExp(blockExpCreateFormDTO);
 			Map<String, Object> model = modelAndView.getModel();
 			boolean expNameExists = (boolean) model.get("expExists");
-			
 			modelAndView.clear();
 			
 			if(expNameExists)
 			{
-			modelAndView.setViewName("index.jsp?view=pages/experience-create-popup");
+			modelAndView.setViewName("index.jsp?view=pages/experience-create-block");
 			}
 			else
 			{
@@ -490,7 +497,5 @@ public class ExperienceController {
 			
 			return modelAndView;
 		}
-		
-		
 
 }

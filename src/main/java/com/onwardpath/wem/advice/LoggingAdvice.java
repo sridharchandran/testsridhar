@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class LoggingAdvice {
 	
-	Logger log = LoggerFactory.getLogger(LoggingAdvice.class);
+	Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Pointcut(value="execution(* com.onwardpath.wem.controller.SegmentController.*(..) )")
 	public void myPointcut() {
