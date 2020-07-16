@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
@@ -50,14 +51,16 @@ public class ExperienceControllerImpl {
 	private SegmentService segService;
 	private UserService userService;
 	HttpSession session;
+	private HttpServletRequest request;
 
 	@Autowired
 	public ExperienceControllerImpl(SegmentService segService, ExperienceService expService, UserService userService,
-			HttpSession session) {
+			HttpSession session,HttpServletRequest reqest) {
 		this.segService = segService;
 		this.expService = expService;
 		this.userService = userService;
 		this.session = session;
+		this.request = request;
 	}
 
 	public List<SegmentNames> getSegmentNames(int orgId) {
@@ -72,7 +75,7 @@ public class ExperienceControllerImpl {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("seglist", seglist);
 		if (seglist.size() == 0) {
-			String message = "Error: No Segments are configured. Create a Segment <a class='kt-link kt-font-bold' href='?view=pages/segment-create.jsp'>here</a>";
+			String message = "Notice: No Segments are configured. Create a Segment <a class='kt-link kt-font-bold' href='segment-create'>here</a>";
 			session.setAttribute("message", message);
 		}
 		return modelAndView;

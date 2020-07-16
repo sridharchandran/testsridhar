@@ -70,7 +70,7 @@
 				document.getElementById("experience-form").type.value = type;
 				document.getElementById("experience-form").experienceDetails.value = JSON.stringify(expDetailsObj);
 				document.getElementById("experience-form").method = "post";
-				document.getElementById("experience-form").action = "image";
+				document.getElementById("experience-form").action = "create-image";
 				document.getElementById("experience-form").submit();
 			}
 			else{

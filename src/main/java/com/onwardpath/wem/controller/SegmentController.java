@@ -39,11 +39,10 @@ public class SegmentController {
 	NativeService nativeService;
 	
 	
-	 	@GetMapping("/segment_create")
+	 	@GetMapping("/segment-create")
 	    public String segmentCreate()
 	    {
-	    	
-	    	return "index.jsp?view=pages/segment-create";
+	       	return "index.jsp?view=pages/segment-create";
 	    }
 	
 	// Endpoint to load city/state/country
@@ -68,18 +67,17 @@ public class SegmentController {
 			return jsonString;
 		}
 
-		@PostMapping("/Segment_Save")
+		@PostMapping("/segment-save")
 		@ResponseBody
 		public ModelAndView segmentSave(SegmentCreateFormDTO segmentCreateFormDTO)throws IOException {
 		
-			
 			ModelAndView modelAndView = segcontimpl.saveSegment(segmentCreateFormDTO);
-			modelAndView.setViewName("index.jsp?view=pages/segment-create");
+			modelAndView.setViewName("redirect:/segment-create");
 			return modelAndView;
 			
 		}
 		
-		@GetMapping("/segmentview")
+		@GetMapping("/segment-view")
 	    public String segmentView()
 	    {
 	    	
@@ -91,7 +89,7 @@ public class SegmentController {
 		@ResponseBody
 		public String ajaxSegmentGETRequest(SegmentViewDTO segmentViewDTO,HttpSession session) throws IOException {
 		
-			return nativeService.getResultSetforSegView(segmentViewDTO,session);
+		return nativeService.getResultSetforSegView(segmentViewDTO,session);
 		}
 		
 		// Endpoint for Segment Search Values

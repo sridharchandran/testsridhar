@@ -110,7 +110,7 @@ function saveSegment() {
 			document.getElementById("segmentRules").value = attrstr;
 			if (segmentName.replace(" ", "").length > 0) {
 				document.getElementById("segment-form").method = "post";
-				document.getElementById("segment-form").action = "Segment_Save";
+				document.getElementById("segment-form").action = "segment-save";
 				document.getElementById("segment-form").submit();
 			} else {
 				swal.fire("Segment Name value should not be empty.")
