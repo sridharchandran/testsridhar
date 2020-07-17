@@ -15,5 +15,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class LoggingAdvice {
 	
+Logger log = LoggerFactory.getLogger(this.getClass());
+	
+	@Pointcut(value="execution(* com.onwardpath.wem.*.*.*(..) )")
+	public void myPointcut() {
+		
+	}
+	
+	@Around("myPointcut()")
+	public Object applicationLogger(ProceedingJoinPoint pjp) throws Throwable{
+		ObjectMapper mapper = new ObjectMapper();
+		String methodName = pjp.getSignature().getName();
+		String className = pjp.getTarget().getClass().toString();
+		Object[] array = pjp.getArgs();
+		log.info("method invoked :: " + className + " : " + methodName + "()" );
+		Object object = pjp.proceed();
+		log.info("method returned :: "+className + " : " + methodName + "()" + object  );
+		return object;
+		
+	}
+	
 	
 }
