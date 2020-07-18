@@ -1191,7 +1191,7 @@ function ktDATA()
     					title: 'Status',
     					template:function(row)
     					{
-    						pagetype =row.status
+    						pagetype =row.type;
     						var exp_id = row.id;
     						experid = row.id;
     						expname = row.experience;
@@ -1258,7 +1258,7 @@ function ktDATA()
     					autoHide: false,
     					template: function() {
     						return '\
-    						<a <a href="/wem?view=pages/experience-edit-'+pagetype+'.jsp&id='+experid+'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit details">\
+    						<a <a href="editcontent?id='+experid+'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit details">\
     							<i class="la la-edit"></i>\
     						</a>\
     						<a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete">\

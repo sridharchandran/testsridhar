@@ -2,6 +2,7 @@ package com.onwardpath.wem.repository;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -29,6 +30,11 @@ public interface  ExperienceRepository  extends JpaRepository<Experience, Long> 
     Experience findByOrgIdAndName(int orgId,String exp_name);
 	Experience findByOrgIdAndNameIgnoreCase(int orgId,String exp_name);
 	Experience findById(int exp_id);
+	
+	@Transactional
+    @Query(value="SELECT status,schedule_start,schedule_end,timezone_id where id = :id",nativeQuery=true)
+    public List<Experience> findscheduleDate(@Param("id") int id);
+
 	
 }
 	 	

@@ -44,6 +44,7 @@ import com.onwardpath.wem.model.PopupExpCreateFormDTO;
 import com.onwardpath.wem.model.SignupFormDTO;
 import com.onwardpath.wem.model.StyleExpCreateFormDTO;
 import com.onwardpath.wem.repository.ExperienceRepository;
+import com.onwardpath.wem.service.ExperienceEdit;
 import com.onwardpath.wem.service.ExperienceService;
 import com.onwardpath.wem.repository.NativeRepository;
 import com.onwardpath.wem.service.ExperienceServiceImpl;
@@ -75,6 +76,9 @@ public class ExperienceController {
 	@Autowired
 	NativeService nativeService;
 	
+	@Autowired
+	ExperienceEdit editservice;
+	
 	
 	/**
 	 * Link formation and get segment dropdown Value for Experience Create Content
@@ -88,6 +92,19 @@ public class ExperienceController {
 	}
 	
 	
+	@RequestMapping(value = "/editcontent", method = RequestMethod.GET)
+	public ModelAndView editContent(ModelMap mp,HttpServletRequest request) throws IOException {
+		
+		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+		String id = request.getParameter("id");
+		System.out.println("idhere:"+id);
+		
+		modelAndView.addObject("contentvalue", editservice.experienceContent(id));
+		
+		modelAndView.setViewName("index.jsp?view=pages/experience-edit-content");
+		return modelAndView;  
+	} 
+		      
 	// Function tot convert String to Date
 	public static Instant getDateFromString(String string) {
 
