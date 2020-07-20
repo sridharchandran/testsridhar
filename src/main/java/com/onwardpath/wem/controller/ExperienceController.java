@@ -43,6 +43,8 @@ import com.onwardpath.wem.model.ImageExpCreateFormDTO;
 import com.onwardpath.wem.model.PopupExpCreateFormDTO;
 import com.onwardpath.wem.model.SignupFormDTO;
 import com.onwardpath.wem.model.StyleExpCreateFormDTO;
+import com.onwardpath.wem.repository.ConfigRepository;
+import com.onwardpath.wem.repository.ContentRepository;
 import com.onwardpath.wem.repository.ExperienceRepository;
 import com.onwardpath.wem.service.ExperienceEdit;
 import com.onwardpath.wem.service.ExperienceService;
@@ -79,6 +81,20 @@ public class ExperienceController {
 	@Autowired
 	ExperienceEdit editservice;
 	
+	@Autowired
+    ContentRepository conRepo;
+	
+	@Autowired
+	ConfigRepository configRepo;
+	
+ 
+	
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * Link formation and get segment dropdown Value for Experience Create Content
@@ -100,10 +116,93 @@ public class ExperienceController {
 		System.out.println("idhere:"+id);
 		
 		modelAndView.addObject("contentvalue", editservice.experienceContent(id));
-		
+		modelAndView.addObject("scheduleValue", editservice.experienceschdule(id));
+		modelAndView.addObject("zonelist", expseg.gettimezone());
 		modelAndView.setViewName("index.jsp?view=pages/experience-edit-content");
 		return modelAndView;  
 	} 
+	 
+	@RequestMapping(value = "/editcontentsave", method = RequestMethod.POST)
+	public ModelAndView editContentsavevalue(ModelMap mp,HttpServletRequest request,ImageExpCreateFormDTO imgExpCreateFormDTO,HttpSession session) throws IOException {
+		ModelAndView modelAndView =  new ModelAndView();
+		long id =   Integer.parseInt(request.getParameter("expid"));
+		System.out.println("idhere:"+id);
+		String expname = request.getParameter("expName");
+		System.out.println("name:"+expname);
+		expRepo.updateName(expname, id);
+		//editservice.saveeditExperiencename(exp, id, expname);
+		conRepo.deletecontent((int) id); 
+		String experienceDetails = imgExpCreateFormDTO.getExperienceDetails();
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, String> map = mapper.readValue(experienceDetails, Map.class);
+		System.out.println(map);
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			int segment_id = Integer.parseInt(entry.getKey());
+			String urlvalue = entry.getValue();
+			Content content = new Content();
+			content.setExperience_id((int) id);
+			content.setSegment_id(segment_id);
+			content.setContent(urlvalue);
+			content.setCreate_time(LocalDateTime.now());
+			expService.savecontent(content);
+		}
+		
+		int user_Id = (Integer) session.getAttribute("user_id");
+		//int org_id = (Integer) session.getAttribute("org_id");
+		String configDetails = request.getParameter("urlList");
+		System.out.println("urliste:"+configDetails);
+		LocalDateTime now = LocalDateTime.now();
+		ObjectMapper mappers = new ObjectMapper();
+		@SuppressWarnings("unchecked")
+		Map<String, String> maps = mappers.readValue(configDetails, Map.class);
+		System.out.println("hey:"+maps);
+		configRepo.deleteconfig(id);
+		for (Map.Entry<String, String> entry : maps.entrySet()) {
+			int index = Integer.parseInt(entry.getKey());
+			String url = entry.getValue();
+			Config config = new Config();
+			config.setExperience_id((int)id);
+			config.setUrl(url);
+			config.setUser_id(user_Id);
+			config.setCreate_time(now);
+			expseg.saveconfig(config);
+		
+			//configRepo.updateconfig(config.getUrl(),config.getUser_id(),config.getExperience_id());
+			 
+				}
+		
+		//System.out.println("idhere:"+expname);
+		
+		String schListDetails = request.getParameter("schList");
+  		 
+		    if(!"{}".equals(schListDetails)) {
+		    	System.out.println("inside  if"+schListDetails);
+		    	expRepo.updatestatus("scheduled", id);
+		    	
+		    	if(request.getParameter("startdate") != null && request.getParameter("startdate") !="") {
+		    		expRepo.updatestartdate(request.getParameter("startdate"), id);
+		    			
+        	}
+        	if(request.getParameter("enddate") != null && request.getParameter("enddate") !="") {
+        		expRepo.updateenddate(request.getParameter("enddate"), id);
+        			
+        	}
+        	if(request.getParameter("timezoneval") != null && request.getParameter("timezoneval") !="") {
+        		
+                expRepo.updatetimezoneval(request.getParameter("timezoneval"), id);
+        		    	}    
+		        }else {
+		    	
+		    	expRepo.resetschdule(id);
+		    	
+		    	      
+		    	System.out.println("coming Inside else");
+		    }    
+     
+		
+		modelAndView.setViewName("index.jsp?view=pages/experience-view");
+		return modelAndView;  
+	}
 		      
 	// Function tot convert String to Date
 	public static Instant getDateFromString(String string) {

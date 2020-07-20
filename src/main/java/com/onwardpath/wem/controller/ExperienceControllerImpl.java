@@ -450,6 +450,27 @@ public ModelAndView savecontentEXP(ImageExpCreateFormDTO imgExpCreateFormDTO) th
 			return modelAndView;
 }
 	
+
+@Transactional(rollbackFor = DbInsertException.class)
+public ModelAndView saveconEXP(int id,ImageExpCreateFormDTO imgExpCreateFormDTO) throws JsonMappingException, JsonProcessingException,DbInsertException {
+	ModelAndView modelAndView = new ModelAndView();
+
+			String experienceDetails = imgExpCreateFormDTO.getExperienceDetails();
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, String> map = mapper.readValue(experienceDetails, Map.class);
+			System.out.println(map);
+			for (Map.Entry<String, String> entry : map.entrySet()) {
+				int segment_id = Integer.parseInt(entry.getKey());
+				String urlvalue = entry.getValue();
+				Content content = new Content();
+				content.setExperience_id(id);
+				content.setSegment_id(segment_id);
+				content.setContent(urlvalue);
+				content.setCreate_time(LocalDateTime.now());
+				expService.savecontent(content);
+			}
+							return modelAndView;
+}
 	/*
 	 * Saving Link values into content & Link tables
 	 * @param LinkExpCreateFormDTO

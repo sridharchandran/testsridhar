@@ -254,21 +254,21 @@ function addUrl() {
 function saveExperience() {
 	var finalexp_name = document.getElementById("form-expname").value;
 	if (finalexp_name) {
-		if (JSON.stringify(expDetailsObj) !== '{}') {
+		if (JSON.stringify(expDetailsObj) !== '{}' && JSON.stringify(cfgDetailsObj) !=='{}') {
 			var experienceid =document.getElementsByName("expid");
 			document.getElementById("form-contentdetails").value = JSON.stringify(expDetailsObj);
 			document.getElementById("form-urldetails").value = JSON.stringify(cfgDetailsObj);
 			document.getElementById("form-schdetails").value = JSON.stringify(schDetailsObj);
 			document.getElementById("experience-form").method = "post";
-			document.getElementById("experience-form").action = "editcontent";
+			document.getElementById("experience-form").action = "editcontentsave";
 			document.getElementById("experience-form").submit();
 		} else {
-			Swal.fire("Please enter atleast one content for this Experience")
+			Swal.fire("Experience or URL Cannot be empty")
 		}
 	} else { 
 		Swal.fire("Please enter a value for  Experience Name")
 	}
- 
+  
 }
       
 function cancelOperation() {	
@@ -290,13 +290,16 @@ function cancelOperation() {
 				<h3 class="kt-portlet__head-title">Edit Content Experience </h3>
 			</div>
 		</div>
-		Hey:${scheduleValue} 
+	
 		<div class="kt-portlet__body">
 		<form class="kt-form kt-form--label-right" id="experience-form" >
 			<div class="form-group row">
 				<label class="col-form-label col-lg-3 col-sm-12">Experience Name</label>
-				<div class="col-lg-4 col-md-9 col-sm-12">															
-					<input type="text"		id="form-expname"			name="expName"   class="form-control" aria-describedby="Experience Name"  placeholder="Expereince Name"  value='${experience_name}'>
+				<div class="col-lg-4 col-md-9 col-sm-12">
+				<c:forEach items="${contentvalue}" var="content"  varStatus="counter" begin="0" end="0">
+																						
+					<input type="text"		id="form-expname"			name="expName"   class="form-control" aria-describedby="Experience Name"  placeholder="Expereince Name"  value='${content.experienceName}'>
+					</c:forEach>
 					<input type="hidden" 	id="form-contentdetails"	name="experienceDetails"  />
 					<input type="hidden"	id="form-urldetails"		name="urlList"   />
 					<input type="hidden"	id="form-schdetails"		name="schList"   />
@@ -315,7 +318,7 @@ function cancelOperation() {
 						<div class="kt-section__content kt-section__content--border">
 							<ul class="list-group" id="addonContent">
 							<c:forEach items="${contentvalue}" var="content"  varStatus="counter">
-							hey:${content.experienceName} 
+							
 							<c:if test ="${not empty content.segmentName }">
 							<li class="list-group-item" id="segmentlist-${content.id}">
 								<div class="row d-flex align-items-center">
@@ -458,16 +461,16 @@ function cancelOperation() {
 							status:${schedule.status}   
 							timezonefullvalue:${schedule.timeZonevalue} --%> 
 							<c:if test="${schedule.status eq 'scheduled'}">   
-							<li class="list-group-item" id="schedulelist-${schedule.id}">
+							<li class="list-group-item" id="schedulelist-1">
 								<div class="row d-flex align-items-center">
-								<div class="col-sm-9"><span id="schedule-${schedule.id}-namespan" data-toggle="tooltip"  title='Scheduling Enabled'> Scheduling Enabled for ${schedule.timeZonevalue} timezone from ${schedule.startDate} to  ${schedule.endDate}  </span></div>
+								<div class="col-sm-9"><span id="schedule-1-namespan" data-toggle="tooltip"  title='Scheduling Enabled'> Scheduling Enabled for ${schedule.timeZonevalue} timezone from ${schedule.startDate} to  ${schedule.endDate}  </span></div>
 								<div class="col-sm-1.5">
-								    <button type="button" class="btn btn-outline-info btn-pill" data-toggle="modal" data-target="#schdeulding" onclick="setupSchedule('edit','${schedule.id}')">
+								    <button type="button" class="btn btn-outline-info btn-pill" data-toggle="modal" data-target="#schdeulding" onclick="setupSchedule('edit','1')">
 								        <i class="fa fa-edit"><span></span></i>
 								    </button>&nbsp;
 								</div>   
 								<div class="col-sm-1.5">
-								    <button type="button" class="btn btn-outline-info btn-pill" onclick="delete_exp_content('schedule','${schedule.id}')">
+								    <button type="button" class="btn btn-outline-info btn-pill" onclick="delete_exp_content('schedule','1')">
 								            <i class="flaticon2-trash"><span></span></i>
 								        </button>
 								    </div>
@@ -475,7 +478,7 @@ function cancelOperation() {
 							</li>
 								 							
                            
-                         <script> schDetailsObj[escape('${schedule.id}')]= '${schedule.timeZonevalue}#${schedule.startDate}#${schedule.endDate}' ; </script>
+                         <script> schDetailsObj[escape('1')]= '${schedule.timeZonevalue}#${schedule.startDate}#${schedule.endDate}' ; </script>
                          <a href="" class="btn btn-success btn-pill" id="ablockstylesss"  data-toggle="modal" data-target="#schdeulding" onclick="setupSchedule('add','')" style="display:none; width: min-content">Add</a>
                          </c:if>       
                          <c:if test="${schedule.status ne 'scheduled'}"> 
@@ -501,10 +504,11 @@ function cancelOperation() {
                                     <label class="col-form-label col-lg-3 col-sm-12">TimeZone</label>
                                     <div class="col-lg-9 col-md-9 col-sm-12">
                                       <select class="form-control" placeholder="Select Your favourite" data-search="true" id="Timezonelist">
-							<!-- <option value="">--Select--</option> --> 
-							<%-- <c:forEach items="<%=getTimeZone()%>" var="timezoneVal">
-								<option value='${fn:split(timezoneVal,"@")[0]}'>${fn:split(timezoneVal,"@")[1]}</option>
-							</c:forEach> --%>
+							 <option value="">--Select--</option>  
+							 <c:forEach items="${zonelist}" var="zonevalue">
+							<option value='${zonevalue.zone_id}'>(${zonevalue.utcoffset}) ${zonevalue.displayname} (${zonevalue.zone_id})</option>
+							</c:forEach>
+							  
 						</select>
                                     </div>
                                  </div>

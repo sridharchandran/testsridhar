@@ -34,9 +34,47 @@ public interface  ExperienceRepository  extends JpaRepository<Experience, Long> 
 	@Transactional
     @Query(value="SELECT status,schedule_start,schedule_end,timezone_id where id = :id",nativeQuery=true)
     public List<Experience> findscheduleDate(@Param("id") int id);
-
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value="UPDATE experience e SET e.name=:name WHERE e.id=:id",nativeQuery=true)
+	public void updateName(@Param("name")String name, @Param("id")long id);
+	
+	@Modifying
+	@Transactional
+	@Query(value="UPDATE experience e SET e.status=:status WHERE e.id=:id",nativeQuery=true)
+	public void updatestatus(@Param("status")String status, @Param("id")long id);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value="UPDATE experience e SET e.schedule_start=:schedule_start WHERE e.id=:id",nativeQuery=true)
+	public void updatestartdate(@Param("schedule_start")String schedule_start, @Param("id")long id);
+	
+	@Modifying
+	@Transactional
+	@Query(value="UPDATE experience e SET e.schedule_end=:schedule_end WHERE e.id=:id",nativeQuery=true)
+	public void updateenddate(@Param("schedule_end")String schedule_end, @Param("id")long id);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value="UPDATE experience e SET e.timezone_id=:timezone_id WHERE e.id=:id",nativeQuery=true)
+	public void updatetimezoneval(@Param("timezone_id")String timezone_id, @Param("id")long id);
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value="update experience set status = 'off',schedule_start= NULL,schedule_end= NULL,timezone_id = NULL where id= :id",nativeQuery=true)
+	public void resetschdule(@Param("id")long id);
+	
+	
+ 
 	
 }
 	 	
+
+
 
 
