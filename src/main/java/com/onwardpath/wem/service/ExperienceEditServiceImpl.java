@@ -76,6 +76,34 @@ public class ExperienceEditServiceImpl implements ExperienceEdit {
 
 
 
+
+	@Override
+	public List<ExperienceEditContentDTO> experienceImage(String id) {
+		// TODO Auto-generated method stub
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append("select datatable.id") .append(" id,")
+		 .append("datatable.url").append(" content,")
+		  .append("''  segmentname, exp.name experience_name")
+		  .append(" from config datatable,experience exp")
+		  .append(" where datatable.experience_id = exp.id and exp.id='"+id+"'")
+		  .append(" union all")
+		  .append(" select datatable.segment_id").append(" id,")
+		  .append("datatable.url").append(" url,")
+		  .append("seg.name  segmentname, exp.name experience_name")
+		  .append(" from image datatable ,experience exp,segment seg")
+		  .append(" where datatable.experience_id = exp.id and seg.id=datatable.segment_id and exp.id='"+id+"'");
+		
+		List<ExperienceEditContentDTO> expCountQueryDTO = jdbcTemplate.query(sb.toString(),new EditMapper());
+		  
+		  
+		  System.out.println("List Size is:"+ expCountQueryDTO.size()); 
+		  return expCountQueryDTO;
+
+	}
+
+
+
  
 
 	 }

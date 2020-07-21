@@ -12,7 +12,7 @@ public interface ExperienceEdit{
 	
 	 public List<ExperienceEditContentDTO> experienceContent(String id);
 	 //public Experience saveeditExperiencename(Experience exps,int id,String expvalue);
-	 
+	 public List<ExperienceEditContentDTO> experienceImage(String id);
 	 public List<SchduleExpDTO> experienceschdule(String id);
 
 }

@@ -1,6 +1,7 @@
 package com.onwardpath.wem.entity;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ public class Image {
 	private int experience_id;
 	private int segment_id;
 	private String url;
-	private Date create_time;
+	private LocalDateTime create_time;
 	
 	public int getId() {
 		return id;
@@ -45,10 +46,10 @@ public class Image {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public Date getCreate_time() {
+	public LocalDateTime getCreate_time() {
 		return create_time;
 	}
-	public void setCreate_time(Date create_time) {
+	public void setCreate_time(LocalDateTime create_time) {
 		this.create_time = create_time;
 	}
 

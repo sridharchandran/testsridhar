@@ -1,19 +1,9 @@
-<%@page import="java.sql.Connection"%>
-<%@page import="java.util.LinkedList"%>
-<%@page import="java.util.TimeZone"%>
-<%@page import="java.util.concurrent.TimeUnit"%>
-<%@page import="java.sql.SQLException"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.PreparedStatement"%>
-<%@page import="com.onwardpath.wem.util.Database"%>
-<%@page import="com.onwardpath.wem.repository.SegmentRepository"
-%><%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"
-%><%@ page import="java.util.Map, com.onwardpath.wem.helper.ExperienceHelper" 
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"
 %><%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" 
 %><%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" 
 %>
  
-<%
+<%-- <%
 
 pageContext.setAttribute("newLineChar", "\n");
 String id= request.getParameter("id");
@@ -44,7 +34,7 @@ private LinkedList<String> getTimeZone() throws SQLException {
 
 } 
 %>
-<script>
+ --%><script>
 var expDetailsObj 	= 	{};
 var cfgDetailsObj 	= 	{};
 var schDetailsObj 	= 	{};
@@ -111,15 +101,181 @@ function addtoSchdeule(segment_id,timezone,startdate,endate) {
 		+ ButtonStart+ " onclick=\"delete_exp_content('schedule','"+ segment_id +"')\">" + DeleteSpan + ButtonEnd.replace("&nbsp;",'')
 		+"</li>";   	          	
 } 
+
+var index 			= 	1;
+var liStart			=	"<li class=\"list-group-item\" id="; 
+var nameStart		=   "<div class=\"col-sm-9\"> <span class=\"text-break\" id= ";
+var nameEnd			=   "</span> </div>";
+var divRow			=   "<div class=\"row d-flex align-items-center\" >";
+var ButtonStart 	= 	"<div class=\"col-sm-1.5\"> <button type=\"button\" class=\"btn btn-outline-info btn-pill\"";
+var EditSpan 		= 	"<i class=\"fa fa-edit\"><span></span></i>";
+var DeleteSpan 		= 	"<i class=\"flaticon2-trash\"><span></span></i>";
+var ButtonEnd 		= 	"</button>&nbsp;</div>";
+var NameSpan   		=   "";
+
+var spanEnd			=   "</span>";
+
+var url_id,actionis;
+
+     
+function delete_exp_content(type, id) {
+	var title = "Are you sure you want to delete the segment Content";
+	alert(type);
+	alert(id);
+	var text = document.getElementById(type+'-'+id + "-namespan").innerHTML
+	alert(text);   
+	var listId = "#" + type + "list-" + id;
+	var deleteConfirmation = "Deleted";
+	if ("url" === type) {
+		title = "Are you sure you want to delete the Page URL";
+		text = cfgDetailsObj[id];
+		deleteConfirmation = "Deleted"
+	}
+	swal.fire({
+		title : title,
+		text : text,
+		type : "warning",
+		showCancelButton : !0,
+		confirmButtonText : "Yes",
+		cancelButtonText : "No",
+		reverseButtons : !0
+	}).then(function(e) {
+		if (e.value) {
+			swal.fire(deleteConfirmation, text, "success")
+			$(listId).remove();
+			if ("url" === type) {
+				delete cfgDetailsObj[id];
+			} else if ("segment" === type) {
+				delete expDetailsObj[id];
+			}else{
+				delete schDetailsObj[id];
+				//document.getElementById("blockstyle").style.display = "block";
+				//document.getElementById("ablockstylesss").style.display = "block";
+				     
+				let elem = document.querySelector('#ablockstylesss');
+				elem.style.setProperty('display', 'block', 'important');
+			 	          
+			}
+		} else {
+			"cancel" === e.dismiss;
+			swal.fire("Cancelled", "Delete " + type, "error");
+		}
+
+	}); 
+} 
+function setupModal(action, action_id) {
+	var segment = document.getElementById("segment");
+	if (action === "edit") {
+		segment.value = action_id;
+		actionis = action_id;
+		document.getElementById("content").value = expDetailsObj[action_id];
+	} else {
+		actionis = "";
+		$("#segment").val($("#segment option:first").val());
+		document.getElementById("content").value = "";
+		
+	}
+} 
+function addContent() {
+	var segment = document.getElementById("segment");
+	var segementContent = document.getElementById("content").value
+	if (segementContent.length > 0) {
+		var _segid = segment.value;
+	
+		if (actionis && actionis!=_segid){
+			var listId = "#segmentlist-" + actionis;
+			$(listId).remove();
+			delete expDetailsObj[actionis];
+			
+		}
+		
+		if (!(_segid in expDetailsObj)) {
+			segment_name = segment.options[segment.selectedIndex].innerHTML;
+			addtoSegment(_segid, segment_name, segementContent);
+		}
+		expDetailsObj[_segid] = segementContent;
+		$("#segment_modal").modal("hide");
+	} else {
+		swal.fire("Content required for the Segment");
+	}
+}
+function addtoSegment(segment_id, segment_name,segementContent ) {
+	var addsegment = document.getElementById("addonContent");
+	addsegment.innerHTML += liStart+"\"segmentlist-"+segment_id+"\">"
+		+divRow
+		+nameStart  +  "\"segment-"+ segment_id+"-namespan\" data-toggle=\"tooltip\" title='"+segementContent+"'>" + segment_name + nameEnd
+		+ ButtonStart + " data-toggle=\"modal\" data-target=\"#segment_modal\" onclick=\"setupModal('edit','"+ segment_id+"')\" >" + EditSpan +ButtonEnd  
+		+ ButtonStart+ " onclick=\"delete_exp_content('segment','"+ segment_id +"')\">" + DeleteSpan + ButtonEnd.replace("&nbsp;",'')
+		+"</li>";
+	  	
+}
+   
+function contenturl(urlID) {
+	if (urlID in cfgDetailsObj) {
+		document.getElementById("pageurl").value = cfgDetailsObj[urlID];
+		url_id = urlID;
+	} else {
+		document.getElementById("pageurl").value = '';
+		url_id = index;
+		index++;
+	}
+}
+function addUrl() {
+	var pageUrl = document.getElementById("pageurl").value;
+	if (pageUrl.length > 0) {
+		if (!(url_id in cfgDetailsObj)) {
+			var addurl = document.getElementById("addonurl");
+			addurl.innerHTML += liStart+"\"urllist-"+url_id+"\">"
+				+divRow
+				+ nameStart +"\"url-"+ url_id+"-namespan\">" + pageUrl + nameEnd
+				+  ButtonStart + " data-toggle=\"modal\" data-target=\"#PageURL_Modal\" onclick=\"contenturl('"+ url_id+"')\">"	+ EditSpan +ButtonEnd 			
+				
+				+ ButtonStart + " onclick=\"delete_exp_content('url','"+ url_id +"')\">" + DeleteSpan + ButtonEnd.replace("&nbsp;",'')
+				+ "</li>";
+		} else {
+			document.getElementById('url-'+url_id + '-namespan').innerHTML = pageUrl;
+		}
+		cfgDetailsObj[url_id] = pageUrl;
+		url_id = "";
+		$("#PageURL_Modal").modal("hide");
+	} else {
+		Swal.fire('URL cannot be empty. Please enter an url')
+	}
+}
+ 
+function saveExperience() {
+	var finalexp_name = document.getElementById("form-expname").value;
+	if (finalexp_name) {
+		if (JSON.stringify(expDetailsObj) !== '{}' && JSON.stringify(cfgDetailsObj) !=='{}') {
+			var experienceid =document.getElementsByName("expid");
+			document.getElementById("form-contentdetails").value = JSON.stringify(expDetailsObj);
+			document.getElementById("form-urldetails").value = JSON.stringify(cfgDetailsObj);
+			document.getElementById("form-schdetails").value = JSON.stringify(schDetailsObj);
+			document.getElementById("experience-form").method = "post";
+			document.getElementById("experience-form").action = "editimagesave";
+			document.getElementById("experience-form").submit();
+		} else {
+			Swal.fire("Experience or URL Cannot be empty")
+		}
+	} else { 
+		Swal.fire("Please enter a value for  Experience Name")
+	}
+  
+}
+      
+function cancelOperation() {	
+	location.replace("/GeoReach?view=pages/experience-view-content.jsp")
+   
+}
 </script>
  
 <!-- <script src="https://code.jquery.com/jquery-3.3.1.js" type="text/javascript"></script> -->
-<script src="js/experience-edit.js" type="text/javascript"></script> 
-<c:set var="all_segements" value="<%=segmentRepository.getOrgSegments(org_id) %>" />
-<c:set var="experience_contents" value="<%=expHelper.experienceImage(id) %>" />
-<c:set var="scheduleValue" value="<%=expHelper.scheduleDate(id) %>" />
-<c:set var="experience_name" value="<%=expHelper.getexperienceName(id) %>" />
  
+ <%
+
+pageContext.setAttribute("newLineChar", "\n");
+ String id= request.getParameter("id");
+ %>
 <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
 	<div class="kt-portlet">
 		<div class="kt-portlet__head">
@@ -131,9 +287,12 @@ function addtoSchdeule(segment_id,timezone,startdate,endate) {
 		<form class="kt-form kt-form--label-right" id="experience-form" >
 			<div class="form-group row">
 				<label class="col-form-label col-lg-3 col-sm-12">Experience Name</label>
-				<div class="col-lg-4 col-md-9 col-sm-12">															
-					<input type="text"		id="form-expname"			name="expName"   class="form-control" aria-describedby="Experience Name"  placeholder="Expereince Name"  value='${experience_name}'>
-					<input type="hidden" 	id="form-contentdetails"	name="experienceDetails"  />
+				<div class="col-lg-4 col-md-9 col-sm-12">
+				<c:forEach items="${contentvalue}" var="content"  varStatus="counter" begin="0" end="0">
+																						
+					<input type="text"		id="form-expname"			name="expName"   class="form-control" aria-describedby="Experience Name"  placeholder="Expereince Name"  value='${content.experienceName}'>
+					</c:forEach>															
+				  <input type="hidden" 	id="form-contentdetails"	name="experienceDetails"  />
 					<input type="hidden"	id="form-urldetails"		name="urlList"   />
 					<input type="hidden"	id="form-schdetails"		name="schList"   />
 					            <input type="hidden" id="form-startdate" name="startdate">
@@ -151,7 +310,7 @@ function addtoSchdeule(segment_id,timezone,startdate,endate) {
 					<div class="kt-section">
 						<div class="kt-section__content kt-section__content--border">
 							<ul class="list-group" id="addonContent">
-							<c:forEach items="${experience_contents}" var="content"  varStatus="counter">
+							<c:forEach items="${contentvalue}" var="content"  varStatus="counter">
 							
 							<c:if test ="${not empty content.segmentName }">
 							
@@ -193,9 +352,11 @@ function addtoSchdeule(segment_id,timezone,startdate,endate) {
                                     <label class="col-form-label col-lg-3 col-sm-12">Segment</label>
                                     <div class="col-lg-9 col-md-9 col-sm-12">
                                        <select id="segment" class="form-control kt-select2 select2-hidden-accessible" name="segment-dropdown" style="width: 75%">
-                                          <c:forEach items="${all_segements}" var="segment" >
-							                      <option value="${segment.key}">${segment.value} </option>
-						                    </c:forEach>	
+                                          <c:forEach items="${seglist}" var="segment">
+							 
+							                       <option value="${segment.id}">${segment.name}</option>
+														</c:forEach>												
+		                    
                                        </select> 
                                     </div>
                                  </div>
@@ -226,7 +387,7 @@ function addtoSchdeule(segment_id,timezone,startdate,endate) {
                <div class="kt-section">
                   <div class="kt-section__content kt-section__content--border" >
                      <ul class="list-group" id="addonurl">
-                     <c:forEach items="${experience_contents}" var="content" varStatus="counter">
+                     <c:forEach items="${contentvalue}" var="content" varStatus="counter">
 			              <c:if test ="${empty content.segmentName }">
 			              <li class="list-group-item" id="urllist-${counter.count}">
 			               <div class="row d-flex align-items-center" >
@@ -293,16 +454,16 @@ function addtoSchdeule(segment_id,timezone,startdate,endate) {
 							status:${schedule.status}   
 							timezonefullvalue:${schedule.timeZonevalue} --%> 
 							<c:if test="${schedule.status eq 'scheduled'}">   
-							<li class="list-group-item" id="schedulelist-${schedule.id}">
+							<li class="list-group-item" id="schedulelist-1">
 								<div class="row d-flex align-items-center">
-								<div class="col-sm-9"><span id="schedule-${schedule.id}-namespan" data-toggle="tooltip"  title='Scheduling Enabled'> Scheduling Enabled for ${schedule.timeZonevalue} timezone from ${schedule.startDate} to  ${schedule.endDate}  </span></div>
+								<div class="col-sm-9"><span id="schedule-1-namespan" data-toggle="tooltip"  title='Scheduling Enabled'> Scheduling Enabled for ${schedule.timeZonevalue} timezone from ${schedule.startDate} to  ${schedule.endDate}  </span></div>
 								<div class="col-sm-1.5">
-								    <button type="button" class="btn btn-outline-info btn-pill" data-toggle="modal" data-target="#schdeulding" onclick="setupSchedule('edit','${schedule.id}')">
+								    <button type="button" class="btn btn-outline-info btn-pill" data-toggle="modal" data-target="#schdeulding" onclick="setupSchedule('edit','1')">
 								        <i class="fa fa-edit"><span></span></i>
 								    </button>&nbsp;
 								</div>   
 								<div class="col-sm-1.5">
-								    <button type="button" class="btn btn-outline-info btn-pill" onclick="delete_exp_content('schedule','${schedule.id}')">
+								    <button type="button" class="btn btn-outline-info btn-pill" onclick="delete_exp_content('schedule','1')">
 								            <i class="flaticon2-trash"><span></span></i>
 								        </button>
 								    </div>
@@ -310,7 +471,7 @@ function addtoSchdeule(segment_id,timezone,startdate,endate) {
 							</li>
 								 							
                            
-                         <script> schDetailsObj[escape('${schedule.id}')]= '${schedule.timeZonevalue}#${schedule.startDate}#${schedule.endDate}' ; </script>
+                         <script> schDetailsObj[escape('1')]= '${schedule.timeZonevalue}#${schedule.startDate}#${schedule.endDate}' ; </script>
                          <a href="" class="btn btn-success btn-pill" id="ablockstylesss"  data-toggle="modal" data-target="#schdeulding" onclick="setupSchedule('add','')" style="display:none; width: min-content">Add</a>
                          </c:if>       
                          <c:if test="${schedule.status ne 'scheduled'}"> 
@@ -337,8 +498,8 @@ function addtoSchdeule(segment_id,timezone,startdate,endate) {
                                     <div class="col-lg-9 col-md-9 col-sm-12">
                                       <select class="form-control" placeholder="Select Your favourite" data-search="true" id="Timezonelist">
 							<!-- <option value="">--Select--</option> --> 
-							<c:forEach items="<%=getTimeZone()%>" var="timezoneVal">
-								<option value='${fn:split(timezoneVal,"@")[0]}'>${fn:split(timezoneVal,"@")[1]}</option>
+							<c:forEach items="${zonelist}" var="zonevalue">
+							<option value='${zonevalue.zone_id}'>(${zonevalue.utcoffset}) ${zonevalue.displayname} (${zonevalue.zone_id})</option>
 							</c:forEach>
 						</select>
                                     </div>

@@ -35,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onwardpath.wem.entity.Config;
 import com.onwardpath.wem.entity.Content;
 import com.onwardpath.wem.entity.Experience;
+import com.onwardpath.wem.entity.Image;
 import com.onwardpath.wem.model.BarExpCreateFormDTO;
 import com.onwardpath.wem.model.ExperienceViewPostDTO;
 import com.onwardpath.wem.model.LinkExpCreateFormDTO;
@@ -46,6 +47,7 @@ import com.onwardpath.wem.model.StyleExpCreateFormDTO;
 import com.onwardpath.wem.repository.ConfigRepository;
 import com.onwardpath.wem.repository.ContentRepository;
 import com.onwardpath.wem.repository.ExperienceRepository;
+import com.onwardpath.wem.repository.ImageRepository;
 import com.onwardpath.wem.service.ExperienceEdit;
 import com.onwardpath.wem.service.ExperienceService;
 import com.onwardpath.wem.repository.NativeRepository;
@@ -86,6 +88,9 @@ public class ExperienceController {
 	
 	@Autowired
 	ConfigRepository configRepo;
+	
+	@Autowired
+	ImageRepository imgRepo;
 	
  
 	
@@ -147,6 +152,60 @@ public class ExperienceController {
 			expService.savecontent(content);
 		}
 		
+		saveeditconfig(id, request, session);
+		saveeditschedule(id, request);	
+			
+		modelAndView.setViewName("index.jsp?view=pages/experience-view");
+		return modelAndView;  
+	}
+	
+	@RequestMapping(value = "/editimage", method = RequestMethod.GET)
+	public ModelAndView editimage(ModelMap mp,HttpServletRequest request) throws IOException {
+		
+		ModelAndView modelAndView = expControllerImpl.validateAndGetSegmentList();
+		String id = request.getParameter("id");
+		System.out.println("idhere:"+id);
+		
+		modelAndView.addObject("contentvalue", editservice.experienceImage(id));
+		modelAndView.addObject("scheduleValue", editservice.experienceschdule(id));
+		modelAndView.addObject("zonelist", expseg.gettimezone());
+		modelAndView.setViewName("index.jsp?view=pages/experience-edit-image");
+		return modelAndView;  
+	} 
+	
+	@RequestMapping(value = "/editimagesave", method = RequestMethod.POST)
+	public ModelAndView editimagesavevalue(ModelMap mp,HttpServletRequest request,ImageExpCreateFormDTO imgExpCreateFormDTO,HttpSession session) throws IOException {
+		ModelAndView modelAndView =  new ModelAndView();
+		long id =   Integer.parseInt(request.getParameter("expid"));
+		System.out.println("idhere:"+id);
+		String expname = request.getParameter("expName");
+		System.out.println("name:"+expname);
+		expRepo.updateName(expname, id);
+		//editservice.saveeditExperiencename(exp, id, expname);
+		imgRepo.deleteimage((int) id); 
+		String experienceDetails = imgExpCreateFormDTO.getExperienceDetails();
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, String> map = mapper.readValue(experienceDetails, Map.class);
+		System.out.println(map);
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			int segment_id = Integer.parseInt(entry.getKey());
+			String urlvalue = entry.getValue();
+			Image img = new Image();
+			img.setExperience_id((int) id);
+			img.setSegment_id(segment_id);
+			img.setUrl(urlvalue);
+			img.setCreate_time(LocalDateTime.now());
+			expService.saveimage(img);
+		}
+		
+		saveeditconfig(id, request, session);
+		saveeditschedule(id, request);	
+		modelAndView.setViewName("index.jsp?view=pages/experience-view");
+		return modelAndView;  
+	}
+ 
+	public void saveeditconfig(long id,HttpServletRequest request,HttpSession session) throws JsonMappingException, JsonProcessingException {
+		
 		int user_Id = (Integer) session.getAttribute("user_id");
 		//int org_id = (Integer) session.getAttribute("org_id");
 		String configDetails = request.getParameter("urlList");
@@ -171,39 +230,38 @@ public class ExperienceController {
 			 
 				}
 		
-		//System.out.println("idhere:"+expname);
+	}
+	
+	public void saveeditschedule(long id,HttpServletRequest request) {
 		
 		String schListDetails = request.getParameter("schList");
-  		 
-		    if(!"{}".equals(schListDetails)) {
-		    	System.out.println("inside  if"+schListDetails);
-		    	expRepo.updatestatus("scheduled", id);
-		    	
-		    	if(request.getParameter("startdate") != null && request.getParameter("startdate") !="") {
-		    		expRepo.updatestartdate(request.getParameter("startdate"), id);
-		    			
-        	}
-        	if(request.getParameter("enddate") != null && request.getParameter("enddate") !="") {
-        		expRepo.updateenddate(request.getParameter("enddate"), id);
-        			
-        	}
-        	if(request.getParameter("timezoneval") != null && request.getParameter("timezoneval") !="") {
-        		
-                expRepo.updatetimezoneval(request.getParameter("timezoneval"), id);
-        		    	}    
-		        }else {
-		    	
-		    	expRepo.resetschdule(id);
-		    	
-		    	      
-		    	System.out.println("coming Inside else");
-		    }    
-     
+ 		 
+	    if(!"{}".equals(schListDetails)) {
+	    	System.out.println("inside  if"+schListDetails);
+	    	expRepo.updatestatus("scheduled", id);
+	    	
+	    	if(request.getParameter("startdate") != null && request.getParameter("startdate") !="") {
+	    		expRepo.updatestartdate(request.getParameter("startdate"), id);
+	    			
+    	}
+    	if(request.getParameter("enddate") != null && request.getParameter("enddate") !="") {
+    		expRepo.updateenddate(request.getParameter("enddate"), id);
+    			
+    	}
+    	if(request.getParameter("timezoneval") != null && request.getParameter("timezoneval") !="") {
+    		
+            expRepo.updatetimezoneval(request.getParameter("timezoneval"), id);
+    		    	}    
+	        }else {
+	    	
+	    	expRepo.resetschdule(id);
+	    	
+	    	      
+	    	System.out.println("coming Inside else");
+	    }    
+ 
 		
-		modelAndView.setViewName("index.jsp?view=pages/experience-view");
-		return modelAndView;  
 	}
-		      
 	// Function tot convert String to Date
 	public static Instant getDateFromString(String string) {
 

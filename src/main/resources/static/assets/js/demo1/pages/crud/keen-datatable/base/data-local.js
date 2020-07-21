@@ -1257,8 +1257,17 @@ function ktDATA()
     					overflow: 'visible',
     					autoHide: false,
     					template: function() {
+    						var mylink =""
+    							
+    							if(pagetype =="content"){
+    								mylink="editcontent"
+    							}
+    						if(pagetype =="image"){
+								mylink="editimage"
+							}
+    						 
     						return '\
-    						<a <a href="editcontent?id='+experid+'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit details">\
+    						<a <a href="'+mylink+'?id='+experid+'" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Edit details">\
     							<i class="la la-edit"></i>\
     						</a>\
     						<a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" title="Delete">\

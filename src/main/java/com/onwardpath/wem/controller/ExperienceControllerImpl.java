@@ -324,7 +324,7 @@ public class ExperienceControllerImpl {
 					Image image = new Image();
 					image.setExperience_id(exp_id);
 					image.setSegment_id(segment_id);
-					image.setCreate_time(date);
+					image.setCreate_time(LocalDateTime.now());
 					image.setUrl(urlvalue);
 					expService.saveimage(image);
 				}
